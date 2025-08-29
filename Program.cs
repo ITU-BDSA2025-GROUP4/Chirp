@@ -53,21 +53,9 @@ class ChirpMain
                 return;
             }
 
-            int messageLength = int.Parse(parts[1]);
-
-            // +3 to skip the two commas before and after msg len and the quote
-            int messageBeginIndex = parts[0].Length + parts[1].Length + 3;
-            int messageEndIndex = messageBeginIndex + messageLength - 1;
-
             string author = parts[0];
-            string message = currLine.Substring(messageBeginIndex, messageLength - 2);
-            string timestamp = currLine.Substring(messageEndIndex + 1);
-
-            if (!StringUtils.IsInteger(timestamp))
-            {
-                Console.WriteLine("Database file is incorrectly formatted");
-                return;
-            }
+            string timestamp = parts[1];
+            string message = parts[2];
 
             MessageChirp messageChirp = new MessageChirp(author, long.Parse(timestamp), message);
             Console.WriteLine(messageChirp);
@@ -79,9 +67,7 @@ class ChirpMain
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
-        int messageLength = message.Length + 2;
-
-        File.AppendAllText("./chirp_cli_db.csv", name + "," + messageLength + ",\"" + message + "\"," + timestamp + Environment.NewLine);
+        File.AppendAllText("./chirp_cli_db.csv", name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
         Console.WriteLine(name + " @ " + timestamp + ": " + message);
     }
 
