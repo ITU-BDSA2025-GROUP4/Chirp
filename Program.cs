@@ -5,10 +5,9 @@ bool isInteger(string x) {
     return x.Select(x => Char.IsDigit(x)).Aggregate((x, y) => x && y);
 }
 
-if (command == "chirp")
-{
-    if (args.Length < 2)
-    {
+if (command == "chirp") {
+
+    if (args.Length < 2) {
         Console.WriteLine("Please specify a message to chirp!");
         return;
     }
@@ -49,7 +48,7 @@ else if (command == "read")
             return;
         }
 
-        DateTimeOffset actualTime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(timestamp));
+        DateTimeOffset actualTime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(timestamp)).ToLocalTime();
         Console.WriteLine("Author: {0}, Message: {1}, Timestamp: {2}", author, message, actualTime);
 
         //        string author = parts[0];
@@ -58,5 +57,4 @@ else if (command == "read")
         //
         //        Console.WriteLine(author + " @ " + timestamp + ": " + message);
     }
-
 }
