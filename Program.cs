@@ -49,7 +49,6 @@ class ChirpMain
     static void read()
     {
 
-        Logger.get.LogError("Error test");
         var lines = File.ReadLines("./chirp_cli_db.csv");
         foreach (var currLine in lines.Skip(1))
         {
@@ -58,6 +57,7 @@ class ChirpMain
             if (parts.Length != 3 || !StringUtils.IsInteger(parts[1]))
             {
                 Console.WriteLine("Database file is incorrectly formatted");
+                Logger.get.LogWarn(String.Format("Invalid line in database: '{0}'", currLine));
                 return;
             }
 
@@ -108,11 +108,10 @@ class ChirpMain
                 chirpExit(0);
                 break;
             default:
+                Logger.get.Log(String.Format("User wrote unknown command: {0}", command));
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
-
-        Logger.get.LogWarn("Warn test");
     }
 
     static void interactive()
@@ -138,7 +137,8 @@ class ChirpMain
 
     static void Main(string[] args)
     {
-        Logger.get.Disable();
+        // Uncomment the line below in order to disable all logging
+//        Logger.get.Disable();
         if (args.Length == 0)
         {
             interactive();
