@@ -58,7 +58,6 @@ class ChirpMain
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
         File.AppendAllText("<path-to-db-file>", name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
-        Console.WriteLine(name + " @ " + timestamp + ": " + message);
     }
 
     static void help()
