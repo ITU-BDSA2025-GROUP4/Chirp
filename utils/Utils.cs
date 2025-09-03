@@ -33,16 +33,21 @@ namespace Utils {
 //        }
 //    }
 
-    public class StringUtils {
-        public static bool IsInteger(string x) {
+    public class StringUtils 
+    {
+        public static bool IsInteger(string x) 
+        {
             if(x.Length == 0) return false;
             return x.Select(x => Char.IsDigit(x)).Aggregate((x, y) => x && y);
         }
 
-        public static string GetFileName(string filepath) {
+        public static string GetFileName(string filepath) 
+        {
             int begin = -1;
-            for(int i = filepath.Length - 1; i >= 0; i--) {
-                if(filepath[i] == '/' || filepath[i] == '\\') {
+            for(int i = filepath.Length - 1; i >= 0; i--) 
+            {
+                if(filepath[i] == '/' || filepath[i] == '\\') 
+                {
                     begin = i;
                     break;
                 }
@@ -52,7 +57,8 @@ namespace Utils {
             return filepath.Substring(begin + 1);
         }
 
-        public static string TimeToString(DateTimeOffset time) {
+        public static string TimeToString(DateTimeOffset time) 
+        {
             String format = "dd/MM/yy HH:mm:ss";
             System.Globalization.CultureInfo locale = System.Globalization.CultureInfo.CurrentCulture;
 
@@ -67,9 +73,11 @@ namespace Utils {
     //
     // Thread safe Singleton pattern
     // https://inthetechpit.com/2021/04/25/singleton-pattern-c/
-    public sealed class Logger : IDisposable {
+    public sealed class Logger : IDisposable 
+    {
 
-        public enum Output : ushort {
+        public enum Output : ushort 
+        {
             FILE,
             STDERR,
             STDOUT
@@ -80,11 +88,17 @@ namespace Utils {
         private static Logger? instance = null;
         private static Mutex mut = new Mutex();
 
-        public static Logger get {
-            get {
-                lock(Logger.mut) {
-                    if(Logger.instance == null) {
+        public static Logger get 
+        {
+            get 
+            {
+                lock(Logger.mut) 
+                {
+                    if(Logger.instance == null) 
+                    {
                         Logger.instance = new Logger();
+                        AppDomain.CurrentDomain.UnhandledException 
+                            += new UnhandledExceptionEventHandler(CrashHandler);
                     }
                     return Logger.instance;
                 }
@@ -93,13 +107,22 @@ namespace Utils {
 
         private FileStream logFile;
 
-        private Logger() {
+        private Logger() 
+        {
             long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
             logFile = File.Create("./chirp_logs_" + timestamp + ".txt");
         }
 
-        public void Dispose() {
+        private static void CrashHandler(object sender, UnhandledExceptionEventArgs args) 
+        {
+            Exception e = (Exception) args.ExceptionObject;
+            Logger.get.LogError("Unhandled exception crash: " + e.Message);
+            Logger.get.Dispose();
+        }
+
+        public void Dispose() 
+        {
             logFile.Flush();
             logFile.Close();
         }
@@ -117,7 +140,8 @@ namespace Utils {
                     text
             );
 
-            switch(output) {
+            switch(output) 
+            {
                 case Output.FILE:
                     byte[] bytes = Encoding.UTF8.GetBytes(msg);
                     logFile.Write(bytes, 0, bytes.Length);

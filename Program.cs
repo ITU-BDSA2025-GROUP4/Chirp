@@ -40,7 +40,6 @@ public class MessageChirp : Chirp
 
 class ChirpMain
 {
-
     static void chirpExit(int statusCode) {
         Logger.get.Dispose();
         System.Environment.Exit(statusCode);
@@ -123,8 +122,6 @@ class ChirpMain
         {
             Console.Write("> ");
             string? input = Console.ReadLine();
-
-            Logger.get.Log("Test");
 
             if (input == null) break;
 
