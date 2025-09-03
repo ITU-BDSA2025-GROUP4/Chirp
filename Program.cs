@@ -40,8 +40,16 @@ public class MessageChirp : Chirp
 
 class ChirpMain
 {
+
+    static void chirpExit(int statusCode) {
+        Logger.get.Dispose();
+        System.Environment.Exit(statusCode);
+    }
+
     static void read()
     {
+
+        Logger.get.LogError("Error test");
         var lines = File.ReadLines("./chirp_cli_db.csv");
         foreach (var currLine in lines.Skip(1))
         {
@@ -97,13 +105,14 @@ class ChirpMain
                 help();
                 break;
             case "exit":
-                System.Environment.Exit(0);
+                chirpExit(0);
                 break;
-
             default:
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
+
+        Logger.get.LogWarn("Warn test");
     }
 
     static void interactive()
@@ -114,7 +123,10 @@ class ChirpMain
         while (true)
         {
             Console.Write("> ");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
+
+            Logger.get.Log("Test");
+
             if (input == null) break;
 
             string[] tokens = input.TrimEnd().TrimStart().Split(" ", 2);
@@ -126,6 +138,7 @@ class ChirpMain
 
     static void Main(string[] args)
     {
+        Logger.get.Disable();
         if (args.Length == 0)
         {
             interactive();
@@ -134,7 +147,8 @@ class ChirpMain
         {
             batch(args);
         }
-    }
 
+        chirpExit(0);
+    }
 
 }
