@@ -1,42 +1,22 @@
 ﻿
 using Utils;
 
-abstract public class Chirp
+// Todo: Fix this, for Now I just Assumed this was the format, for the UI class :)
+public record Cheep(string Author, string Message, long Timestamp);
+public static class UserInterface
 {
-    // Theese properties are set to init since they are immutable (they depend on the state of the world when the Chirp is created)
-    public string Username { get; private init; }
-    public long Timestamp { get; private init; }
-
-    public Chirp(string username, long timestamp)
+    private const string timeFormat = "dd/MM/yy HH:mm:ss";
+    public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
-        Username = username;
-        Timestamp = timestamp;
-    }
-
-    public override string ToString()
-    {
-        String format = "dd/MM/yy HH:mm:ss";
-        System.Globalization.CultureInfo locale = System.Globalization.CultureInfo.CurrentCulture;
-        DateTimeOffset actualTime = DateTimeOffset.FromUnixTimeSeconds(Timestamp).ToLocalTime();
-
-        return Username + " @ " + actualTime.ToString(format, locale);
+        foreach(Cheep cheep in cheeps)
+        {
+            DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+            
+            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " + cheep.Message);
+        }
     }
 }
 
-public class MessageChirp : Chirp
-{
-    public string Message { get; private set; }
-    public MessageChirp(string username, long timestamp, string message) : base(username, timestamp)
-    {
-        Message = message;
-    }
-
-    public override string ToString()
-    {
-
-        return base.ToString() + ": " + Message;
-    }
-}
 
 class ChirpMain
 {
@@ -47,8 +27,9 @@ class ChirpMain
 
     static void read()
     {
-
-        var lines = File.ReadLines("./chirp_cli_db.csv");
+        var cheeps = new List<Cheep>();
+        
+        var lines = File.ReadLines("<path-to-db-file>");
         foreach (var currLine in lines.Skip(1))
         {
             var parts = currLine.Split(",", 3);
@@ -64,9 +45,11 @@ class ChirpMain
             string timestamp = parts[1];
             string message = parts[2];
 
-            MessageChirp messageChirp = new MessageChirp(author, long.Parse(timestamp), message);
-            Console.WriteLine(messageChirp);
+            Cheep cheep = new(author,  message, long.Parse(timestamp));
+            cheeps.Add(cheep);
         }
+        
+        UserInterface.PrintCheeps(cheeps);
     }
 
     static void chirp(string message)
@@ -74,7 +57,7 @@ class ChirpMain
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
-        File.AppendAllText("./chirp_cli_db.csv", name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
+        File.AppendAllText("<path-to-db-file>", name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
         Console.WriteLine(name + " @ " + timestamp + ": " + message);
     }
 
