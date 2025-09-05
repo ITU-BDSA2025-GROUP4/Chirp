@@ -26,7 +26,7 @@ static class ChirpMain
         System.Environment.Exit(statusCode);
     }
 
-    const string chirpDbPath = "Chirp.CLI/chirp_cli_db.csv";
+    const string chirpDbPath = "Chirp.CLI/chirp_cli_db.csv"; // <- temp sulution to db pls fix later
     static void read()
     {
         var cheeps = new List<Cheep>();
@@ -69,6 +69,8 @@ static class ChirpMain
         Console.WriteLine("Commands:\nchirp [MESSAGE] | Chirps a message\nread | Displays all chirps\n? | Displays this menu\nexit | Exits Chirp.CLI\n");
     }
 
+    // @Obselete
+    // Used by interactive
     static void batch(string[] args)
     {
         string command = args[0];
@@ -119,7 +121,8 @@ static class ChirpMain
     }
 
 
-     const string help = @"Chirp.CLI.
+    // string that contains the help message
+    const string help = @"Chirp.CLI.
 
     Usage:
       Chirp.CLI interactive
@@ -134,10 +137,13 @@ static class ChirpMain
 
     ";
 
-    // 8 lines from DocoptNet docs
+    // 3 methods from DocoptNet docs
+    // https://docopt.github.io/docopt.net/dev/#api
     static int ShowHelp(string help) { Console.WriteLine(help); return 0; }
     static int ShowVersion(string version) { Console.WriteLine(version); return 0; }
     static int OnError(string usage) { Console.WriteLine(usage); return 1; }
+
+    // Method to activate diffrent parts of the program
     static int Run(IDictionary<string, ArgValue> arguments)
     {
         bool chirpbool = false;
@@ -155,46 +161,11 @@ static class ChirpMain
         return 0;
     }
 
-    static void start(IDictionary<string, ArgValue> result) {
-        /*
-        if (result.Item[interactive] == true) {
-            interactive();
-        }
-        if (result.Item[read] == true) {
-            read();
-        }
-        if (result.Item[chirp] == true) {
-            chirp(result.Item[text]);
-        }*/ 
-        Console.WriteLine("start");
-    }
-
     static int Main(string[] args)
     {
         // Uncomment the line below in order to disable all logging
 //        Logger.get.Disable();
-        /*
-        if (args.Length == 0)
-        {
-            interactive();
-        }
-        else
-        {
-            batch(args);
-        }
-        */
-        //
-        /*
-        return Docopt.CreateParser(help)
-                     .WithVersion("Naval Fate 2.0")
-                     .Parse(args)
-                     .Match(Run,
-                            result => ShowHelp(result.Help),
-                            result => ShowVersion(result.Version),
-                            result => OnError(result.Usage));
-        
-        */
-        return Docopt.CreateParser(help)
+        Docopt.CreateParser(help)
                     .WithVersion("Chirp.CLI 0.2")
                     .Parse(args)
                     .Match(Run,
@@ -203,7 +174,8 @@ static class ChirpMain
                             result => OnError(result.Usage)
                             );
 
-//        chirpExit(0);
+        chirpExit(0);
+        return 1;
     }
 
 }
