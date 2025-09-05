@@ -38,6 +38,7 @@ class ChirpMain
             {
                 Console.WriteLine("Database file is incorrectly formatted");
                 Logger.get.LogWarn(String.Format("Invalid line in database: '{0}'", currLine));
+
                 return;
             }
 
