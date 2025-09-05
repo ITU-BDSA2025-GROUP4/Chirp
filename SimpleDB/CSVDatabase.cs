@@ -4,12 +4,19 @@
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    // Init database from CSV file
     public CSVDatabase(string filepath) 
     {
         throw new NotImplementedException();
 //        if(!Path.Exists(filepath)) {
 //
 //        }
+    }
+
+    // Init empty databse
+    public CSVDatabase()
+    {
+        throw new NotImplementedException();
     }
 
     // Add entry to databasee
