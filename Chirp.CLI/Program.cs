@@ -48,8 +48,9 @@ static class ChirpMain
                 UserInterface.PrintCheeps(cheeps);
             }
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException e)
         {
+            Logger.get.LogWarn(String.Format("Database file not found: '{0}'", e.ToString()));
             Console.WriteLine("File to DataBase not found");
         }
         catch (Exception e)
