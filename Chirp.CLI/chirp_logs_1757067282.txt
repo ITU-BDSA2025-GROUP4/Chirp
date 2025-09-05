@@ -1,0 +1,6 @@
+[INFO]	Program.cs:Main:171 @ 05/09/25 12:14:42 | Running Chirp.CLI with arguments: System.String[]
+[INFO]	Program.cs:Run:152 @ 05/09/25 12:14:42 | Registered argument: 'interactive' with value: False
+[INFO]	Program.cs:Run:152 @ 05/09/25 12:14:42 | Registered argument: 'read' with value: False
+[INFO]	Program.cs:Run:152 @ 05/09/25 12:14:42 | Registered argument: 'chirp' with value: True
+[INFO]	Program.cs:Run:152 @ 05/09/25 12:14:42 | Registered argument: '<text>' with value: Heello there
+[ERROR]	Logger.cs:CrashHandler:61 @ 05/09/25 12:14:42 | Unhandled exception crash: Could not find a part of the path '/home/adam/Programming/csharp/Chirp/Chirp.CLI/Chirp.CLI/chirp_cli_db.csv'.

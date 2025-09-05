@@ -149,6 +149,7 @@ static class ChirpMain
     {
         bool chirpbool = false;
         foreach (var (key, value) in arguments){
+            Logger.get.Log("Registered argument: '" + key + "' with value: " + value);
             if (key == "interactive" && ((bool)value))
                 interactive();
             if (key == "read" && ((bool)value)) 
@@ -166,6 +167,9 @@ static class ChirpMain
     {
         // Uncomment the line below in order to disable all logging
 //        Logger.get.Disable();
+
+        Logger.get.Log("Running Chirp.CLI with arguments: " + args.ToString());
+
         Docopt.CreateParser(help)
                     .WithVersion("Chirp.CLI 0.2")
                     .Parse(args)
