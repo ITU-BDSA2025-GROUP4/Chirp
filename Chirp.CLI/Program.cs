@@ -50,7 +50,7 @@ static class ChirpMain
         }
         catch (FileNotFoundException)
         {
-            Console.Out.WriteLine("File to DataBase not found");
+            Console.WriteLine("File to DataBase not found");
         }
         catch (Exception e)
         {
