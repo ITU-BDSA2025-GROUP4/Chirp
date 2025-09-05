@@ -1,7 +1,10 @@
 ﻿
-using Utils;
 using System.Collections.Generic;
 using DocoptNet;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
+using Utils;
 
 // Todo: Fix this, for Now I just Assumed this was the format, for the UI class :)
 public record Cheep(string Author, string Message, long Timestamp);
@@ -29,42 +32,61 @@ static class ChirpMain
     const string chirpDbPath = "Chirp.CLI/chirp_cli_db.csv"; // <- temp sulution to db pls fix later
     static void read()
     {
-        var cheeps = new List<Cheep>();
-        
-        //var lines = File.ReadLines("<path-to-db-file>");
-        var lines = File.ReadLines(chirpDbPath);
-        foreach (var currLine in lines.Skip(1))
+        var csvconfig = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
         {
-            var parts = currLine.Split(",", 3);
+            HasHeaderRecord = true,
+            Delimiter = ",",
+            MissingFieldFound = null
+        };
 
-            if (parts.Length != 3 || !StringUtils.IsInteger(parts[1]))
+        try
+        {
+            using (var reader = new StreamReader("chirp_cli_db.csv"))
+            using (var csv = new CsvReader(reader, csvconfig))
             {
-                Console.WriteLine("Database file is incorrectly formatted");
-                Logger.get.LogWarn(String.Format("Invalid line in database: '{0}'", currLine));
-
-                return;
+                var cheeps = csv.GetRecords<Cheep>().ToList();
+                UserInterface.PrintCheeps(cheeps);
             }
-
-            string author = parts[0];
-            string timestamp = parts[1];
-            string message = parts[2];
-
-            Cheep cheep = new(author,  message, long.Parse(timestamp));
-            cheeps.Add(cheep);
         }
-        
-        UserInterface.PrintCheeps(cheeps);
+        catch (FileNotFoundException e)
+        {
+            Logger.get.LogWarn(String.Format("Database file not found: '{0}'", e.ToString()));
+            Console.WriteLine("File to DataBase not found");
+        }
+        catch (Exception e)
+        {
+            Logger.get.LogWarn(String.Format("Error parsing database: '{0}'", e.ToString()));
+            Console.WriteLine(e);
+            throw;
+        }
     }
-
+    
     static void chirp(string message)
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+        
+        using (var stream = new StreamWriter("chirp_cli_db.csv", append: true))
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = stream.BaseStream.Length == 0,
+                ShouldQuote = args => args.Field.ToString() == message, // Correct way to quote
+            };
 
-        //File.AppendAllText("<path-to-db-file>", name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
-        File.AppendAllText(chirpDbPath, name + "," + timestamp +  ",\"" + message + "\"" + Environment.NewLine);
+            using (var csv = new CsvWriter(stream, csvConfig))
+            {
+                if (stream.BaseStream.Length == 0)
+                {
+                    csv.WriteHeader<Cheep>();
+                    csv.NextRecord();
+                }
+
+                csv.WriteRecord(new Cheep(name, message, timestamp));
+                csv.NextRecord();
+            }
+        }
     }
-
     static void helpfunc()
     {
         Console.WriteLine("Commands:\nchirp [MESSAGE] | Chirps a message\nread | Displays all chirps\n? | Displays this menu\nexit | Exits Chirp.CLI\n");
