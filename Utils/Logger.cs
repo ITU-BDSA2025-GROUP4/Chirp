@@ -51,6 +51,10 @@ public sealed class Logger : IDisposable
         logFile = File.Create("./chirp_logs_" + timestamp + ".txt");
     }
 
+    /// <summary>
+    /// Only called when an unhandled exception occurs.
+    /// Forces loggger to flush and close file handle before program is terminated.
+    /// </summary>
     private static void CrashHandler(object sender, UnhandledExceptionEventArgs args) 
     {
         Exception e = (Exception) args.ExceptionObject;
@@ -58,12 +62,32 @@ public sealed class Logger : IDisposable
         Logger.get.Dispose();
     }
 
+    /// <summary>
+    /// Forces the logger to flush any content currently in the filestream to the file.
+    /// </summary>
+    public void flush() 
+    {
+        logFile.Flush();
+    }
+
+    /// <summary>
+    /// Efficetively disables the logger by flushing and closing the file handle.
+    /// Any subsequent logs made after dispose is called which result in an exception
+    /// </summary>
     public void Dispose() 
     {
         logFile.Flush();
         logFile.Close();
     }
 
+    /// <summary>
+    /// The logger's internal method for creating logs.
+    /// </summary>
+    /// <param name="label">The label placed in square brackets at the front of the log</param>
+    /// <param name="text">The primary message provided in the log</param>
+    /// <param name="file">The file name which the log call is being made from</param>
+    /// <param name="member">The method name which the log call is being made from</param>
+    /// <param name="line">The line number which the log call is being made from</param>
     private void internalLog(string label, string text, string file, string member, int line)
     {
         string timestamp = StringUtils.TimeToString(DateTimeOffset.Now.ToLocalTime());
@@ -92,51 +116,74 @@ public sealed class Logger : IDisposable
         }
     }
 
-    // Basic log
+    /// <summary>
+    /// Generates a new log with the "[INFO]" tag.
+    /// </summary>
+    /// <param name="text">The log message</param>
     public void Log(string text,
                     [CallerFilePath] string file = "",
                     [CallerMemberName] string member = "",
                     [CallerLineNumber] int line = 0)
     {
-
+        if(!enabled) return;
         internalLog("INFO", text, file, member, line);
     }
 
-    // Warning log
+    /// <summary>
+    /// Generates a new log with the "[WARN]" tag.
+    /// </summary>
+    /// <param name="text">The log message</param>
     public void LogWarn(string text,
                     [CallerFilePath] string file = "",
                     [CallerMemberName] string member = "",
                     [CallerLineNumber] int line = 0)
     {
-
+        if(!enabled) return;
         internalLog("WARN", text, file, member, line);
     }
 
-    // Error log
+    /// <summary>
+    /// Generates a new log with the "[ERROR]" tag.
+    /// </summary>
+    /// <param name="text">The log message</param>
     public void LogError(string text,
                     [CallerFilePath] string file = "",
                     [CallerMemberName] string member = "",
                     [CallerLineNumber] int line = 0)
     {
-
+        if(!enabled) return;
         internalLog("ERROR", text, file, member, line);
     }
 
+    /// <summary>
+    /// Changes the current output source of the logger.
+    /// If the same output source is given then nothing occurs.
+    /// </summary>
+    /// <param name="newOutput">The new output source of the logger</param>
     public void SetOutput(Output newOutput)
     {
         output = newOutput;
     }
 
+    /// <summary>
+    /// Disabler the logger
+    /// </summary>
     public void Disable()
     {
         enabled = false;
     }
 
+    /// <summary>
+    /// Enable the logger
+    /// </summary>
     public void Enable()
     {
         enabled = true;
     }
 
+    /// <summary>
+    /// Check if the logger is currently enabled.
+    /// </summary>
     public bool IsEnabled()
     {
         return enabled;
