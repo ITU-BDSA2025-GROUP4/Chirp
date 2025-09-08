@@ -6,8 +6,14 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using Utils;
 
+using SimpleDB;
+
 // Todo: Fix this, for Now I just Assumed this was the format, for the UI class :)
-public record Cheep(string Author, string Message, long Timestamp);
+public record Cheep(string Author, string Message, long Timestamp) {
+    public override string ToString() {
+        return String.Format("{0},\"{1}\",{2}", Author, Message, Timestamp);
+    }
+};
 public static class UserInterface
 {
     private const string timeFormat = "dd/MM/yy HH:mm:ss";
@@ -24,68 +30,28 @@ public static class UserInterface
 
 static class ChirpMain
 {
+
+
     static void chirpExit(int statusCode) {
         Logger.get.Dispose();
         System.Environment.Exit(statusCode);
     }
 
     const string chirpDbPath = "Chirp.CLI/chirp_cli_db.csv"; // <- temp sulution to db pls fix later
+    static CSVDatabase<Cheep> db = new CSVDatabase<Cheep>(chirpDbPath);
+
     static void read()
     {
-        var csvconfig = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true,
-            Delimiter = ",",
-            MissingFieldFound = null
-        };
-
-        try
-        {
-            using (var reader = new StreamReader("chirp_cli_db.csv"))
-            using (var csv = new CsvReader(reader, csvconfig))
-            {
-                var cheeps = csv.GetRecords<Cheep>().ToList();
-                UserInterface.PrintCheeps(cheeps);
-            }
-        }
-        catch (FileNotFoundException e)
-        {
-            Logger.get.LogWarn(String.Format("Database file not found: '{0}'", e.ToString()));
-            Console.WriteLine("File to DataBase not found");
-        }
-        catch (Exception e)
-        {
-            Logger.get.LogWarn(String.Format("Error parsing database: '{0}'", e.ToString()));
-            Console.WriteLine(e);
-            throw;
-        }
+        UserInterface.PrintCheeps(db.Read());
     }
     
     static void chirp(string message)
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-        
-        using (var stream = new StreamWriter("chirp_cli_db.csv", append: true))
-        {
-            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = stream.BaseStream.Length == 0,
-                ShouldQuote = args => args.Field.ToString() == message, // Correct way to quote
-            };
 
-            using (var csv = new CsvWriter(stream, csvConfig))
-            {
-                if (stream.BaseStream.Length == 0)
-                {
-                    csv.WriteHeader<Cheep>();
-                    csv.NextRecord();
-                }
-
-                csv.WriteRecord(new Cheep(name, message, timestamp));
-                csv.NextRecord();
-            }
-        }
+        db.Store(new Cheep(name, message, timestamp));
+        db.Write();
     }
     static void helpfunc()
     {
@@ -186,6 +152,7 @@ static class ChirpMain
 
     static int Main(string[] args)
     {
+//        Console.WriteLine(db.Read(1).Aggregate((a,b) => a).Message);
         // Uncomment the line below in order to disable all logging
 //        Logger.get.Disable();
         Docopt.CreateParser(help)
