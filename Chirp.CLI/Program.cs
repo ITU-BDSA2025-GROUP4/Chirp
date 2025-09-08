@@ -37,18 +37,17 @@ static class ChirpMain
         System.Environment.Exit(statusCode);
     }
 
-    private static readonly CsvDatabase<Cheep> db = new("Chirp.CLI/chirp_cli_db.csv");
+    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
 
     static void Read()
     {
         try
         {
-            db.ReadAll();
+            UserInterface.PrintCheeps(Db.ReadAll());
         }
         catch (FileNotFoundException e)
         {
             Logger.get.LogWarn(String.Format("Database file not found: '{0}'", e.ToString()));
-            Console.WriteLine("File to DataBase not found");
         }
         catch (Exception e)
         {
@@ -62,9 +61,7 @@ static class ChirpMain
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-
-        db.Store(new Cheep(name, message, timestamp));
+        Db.Store(new Cheep(name, message, timestamp));
     }
 
     static void helpfunc()

@@ -26,9 +26,8 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 
     // Init empty database
     public CsvDatabase()
-        : this(Path.Combine("Data", $"{Guid.NewGuid()}.csv"))
-    {
-    }
+        : this(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"))
+    { }
 
     private static void EnsureDirectoryExists(string path)
     {
@@ -110,7 +109,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     {
         using var scope = new CsvReadScope(_path, _config);
         var buffer = new Queue<T>(limit);
-
+     
         while (scope.Csv.Read())
         {
             if (buffer.Count == limit)
