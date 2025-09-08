@@ -48,7 +48,9 @@ public sealed class Logger : IDisposable
     {
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
-        logFile = File.Create("./chirp_logs_" + timestamp + ".txt");
+        // This does nothing if the dir already exists according to .NET docs
+        System.IO.Directory.CreateDirectory("./logs");
+        logFile = File.Create("./logs/chirp_logs_" + timestamp + ".txt");
     }
 
     private static void CrashHandler(object sender, UnhandledExceptionEventArgs args) 
