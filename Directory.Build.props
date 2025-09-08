@@ -10,12 +10,23 @@
 
   <Target Name="LogCsvSeed" BeforeTargets="Build">
         <Message Importance="High" Text="CSV seed full path: @(CsvSeed->'%(FullPath)')" />
-        <Exec Command="powershell -NoProfile -Command ^
+
+        <!-- For Windows -->
+        <Exec Condition=" '$(OS)' == 'Windows_NT' " Command="powershell -NoProfile -Command ^
       if (Test-Path '%(CsvSeed.FullPath)') { ^
         $i=Get-Item '%(CsvSeed.FullPath)'; ^
         Write-Host ('CSV seed length: ' + $i.Length + ' bytes'); ^
       } else { ^
         Write-Host 'CSV seed MISSING'; ^
       }" />
+
+        <!-- For Linux and OSX -->
+        <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="
+          if [ -e '%(CsvSeed.FullPath)' ]; then
+              echo 'CSV seed length: `wc -c '%(CsvSeed.FullPath)' | grep -Eo '^[0-9]+'` bytes'
+          else 
+              echo 'CSV seed MISSING'
+          fi " />
+
     </Target>
 </Project>
