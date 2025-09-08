@@ -3,9 +3,9 @@
 namespace SimpleDB;
 
 using System.Collections.Generic;
+
 using CsvHelper;
 using CsvHelper.Configuration;
-
 
 public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 {
@@ -17,9 +17,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         _path = Path.GetFullPath(path);
         _config = config ?? new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            HasHeaderRecord = true,
-            Delimiter = ",",
-            MissingFieldFound = null
+            HasHeaderRecord = true, Delimiter = ",", MissingFieldFound = null
         };
 
         EnsureDirectoryExists(_path);
@@ -54,11 +52,13 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     {
         private StreamReader Stream { get; }
         public CsvReader Csv { get; }
+
         public CsvReadScope(string path, CsvConfiguration cfg)
         {
             Stream = new StreamReader(path);
             Csv = new CsvReader(Stream, cfg);
         }
+
         public void Dispose()
         {
             Csv.Dispose();
@@ -71,18 +71,20 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     {
         private StreamWriter Stream { get; }
         public CsvWriter Csv { get; }
+
         public CsvWriteScope(string path, CsvConfiguration cfg, bool append = true)
         {
             Stream = new StreamWriter(path, append);
             Csv = new CsvWriter(Stream, cfg);
         }
+
         public void Dispose()
         {
             Csv.Dispose();
             Stream.Dispose();
         }
     }
-    
+
     //
     private void EnsureHeaderIfNeeded(CsvWriter csv)
     {
@@ -108,13 +110,14 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     {
         using var scope = new CsvReadScope(_path, _config);
         var buffer = new Queue<T>(limit);
-        
-        while(scope.Csv.Read())
+
+        while (scope.Csv.Read())
         {
             if (buffer.Count == limit)
             {
                 buffer.Dequeue();
             }
+
             buffer.Enqueue(scope.Csv.GetRecord<T>());
         }
 
@@ -122,7 +125,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     }
 
     // Return all entries
-    public IEnumerable<T> Read()
+    public IEnumerable<T> ReadAll()
     {
         using var scope = new CsvReadScope(_path, _config);
         return scope.Csv.GetRecords<T>().ToList();
@@ -145,10 +148,10 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     public int Size()
     {
         using var scope = new CsvReadScope(_path, _config);
-        
+
         if (_config.HasHeaderRecord)
         {
-            if (!scope.Csv.Read()) return 0;   
+            if (!scope.Csv.Read()) return 0;
             scope.Csv.ReadHeader();
         }
 
