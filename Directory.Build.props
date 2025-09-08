@@ -1,8 +1,12 @@
 ﻿<Project>
     <ItemGroup>
-      <CsvSeed Include="$(MSBuildThisFileDirectory)Resources\Data\chirp_cli_db.csv" />
+      <CsvSeed Include="$(TargetDir)Resources\Data\chirp_cli_db.csv" />
 
-        <Content Include="@(CsvSeed)">
+        <!-- 
+          Condition is to ensure it only searches for the csv file in the resources
+          folder of Chirp.CLI and not all the other modules.
+        -->
+        <Content Condition="$(TargetDir.Contains('Chirp.CLI'))" Include="@(CsvSeed)">
             <Link>Resources\data\chirp_cli_db.csv</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
