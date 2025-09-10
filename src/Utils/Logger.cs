@@ -144,5 +144,9 @@ public sealed class Logger : IDisposable
         return enabled;
     }
 
+    public string GetLogFileName() {
+        return logFile.Name;
+    }
+
 
 }
