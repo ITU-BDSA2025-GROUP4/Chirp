@@ -184,7 +184,7 @@ static class ChirpMain
         // Uncomment the line below in order to disable all logging
 //        Logger.get.Disable();
         Docopt.CreateParser(help)
-            .WithVersion("Chirp.CLI 1.0.1")
+            .WithVersion("Chirp.CLI 1.0.2")
             .Parse(args)
             .Match(Run,
                 result => ShowHelp(result.Help),
