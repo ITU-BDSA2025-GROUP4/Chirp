@@ -22,6 +22,10 @@ jobs:
             target: osx-x64
     runs-on: ${{ matrix.os }}
 
+    permissions:
+      contents: read
+      issues: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v1
