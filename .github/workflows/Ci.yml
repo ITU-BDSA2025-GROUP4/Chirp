@@ -31,13 +31,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Generate meta data
-        shell: bash
-        run: |
-          tag=$(git describe --tags --abbrev=9)
-          ./scripts/generate_version.sh $(echo -n "$tag")
-
-      - name: Output meta data file
-        run: echo "meta data=$(cat ./src/Chirp.CLI/Version.cs)" >> $GITHUB_OUTPUT
+        run: bash scripts/generate_version.sh
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1

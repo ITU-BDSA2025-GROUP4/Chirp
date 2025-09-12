@@ -2,7 +2,7 @@
 
 FILEPATH="src/Chirp.CLI/Version.cs"
 NAMESPACE="MetaData"
-VERSION=${1}
+VERSION=$(git describe --tags --abbrev=9)
 
 
 if [ -z $VERSION ]; then
