@@ -37,7 +37,9 @@ jobs:
 #      run: dotnet restore --project src/Chirp.CLI
       
     - name: Build
-      run: dotnet build --project src/Chirp.CLI --configuration Release --no-restore
+      working-directory: ./src/Chirp.CLI
+      run: dotnet build --configuration Release --no-restore
     
     - name: TestUtils
-      run: dotnet test --project tests/Utils.Tests --no-restore --verbosity normal
+      working-directory: ./tests/Utils.Tests
+      run: dotnet test --no-restore --verbosity normal
