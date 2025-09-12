@@ -59,7 +59,7 @@ Logger.get.Disable();
 // Enable the logger
 Logger.get.Enable();
 
-// Get the current enabeled status
+// Check whether if the logger is enabled or not
 bool isEnabled = Logger.IsEnabled();
 ```
 
