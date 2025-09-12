@@ -1,12 +1,8 @@
 ﻿<Project>
     <ItemGroup>
-      <CsvSeed Include="$(TargetDir)Resources\Data\chirp_cli_db.csv" />
+      <CsvSeed Include="$(MSBuildThisFileDirectory)Resources\Data\chirp_cli_db.csv" />
 
-        <!-- 
-          Condition is to ensure it only searches for the csv file in the resources
-          folder of Chirp.CLI and not all the other modules.
-        -->
-        <Content Condition="$(TargetDir.Contains('Chirp.CLI')) And '$(OS)' == 'Windows_NT'" Include="@(CsvSeed)">
+        <Content Include="@(CsvSeed)" Condition="'$(OS)' == 'Windows_NT'">
             <Link>Resources\data\chirp_cli_db.csv</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -24,14 +20,5 @@
         Write-Host 'CSV seed MISSING'; ^
       }" />
     </Target>
-  </Project>
+</Project>
 
-        <!-- For Linux and OSX -->
-        <!--        <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="
-          if [ -e '%(CsvSeed.FullPath)' ]; then
-              echo 'CSV seed length: `wc -c '%(CsvSeed.FullPath)' | grep -Eo '^[0-9]+'` bytes'
-          else 
-              echo 'CSV seed MISSING'
-          fi " />
-
-    </Target>-->
