@@ -23,9 +23,7 @@ jobs:
             target: osx-x64
     runs-on: ${{ matrix.os }}
 
-    permissions:
-      contents: read
-      issues: write
+    permissions: write-all
 
     steps:
       - name: Checkout
