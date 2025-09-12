@@ -27,6 +27,9 @@ jobs:
 
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v1
+
       - name: Generate meta data
         shell: bash
         run: |
@@ -35,9 +38,6 @@ jobs:
 
       - name: Output meta data file
         run: echo "meta data=$(cat ./src/Chirp.CLI/Version.cs)" >> $GITHUB_OUTPUT
-
-      - name: Checkout
-        uses: actions/checkout@v1
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
