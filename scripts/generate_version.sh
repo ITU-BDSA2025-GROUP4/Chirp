@@ -2,12 +2,12 @@
 
 FILEPATH="src/Chirp.CLI/Version.cs"
 NAMESPACE="MetaData"
-VERSION=${1}
+VERSION_RAW=${1}
 
-VERSION=$(echo -n "${VERSION}" | grep -Eo "^[^-]+")
+VERSION=$(echo -n "${VERSION_RAW}" | grep -Eo "^[^-]+")
 
 if [ -z $VERSION ]; then
-    echo "No version number given";
+    echo "No version number given: Raw version: ${VERSION_RAW}, trimmed version: ${VERSION}";
     exit 1;
 fi
 
