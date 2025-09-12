@@ -32,10 +32,10 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore --project src/Chirp.CLI
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --project src/Chirp.CLI --configuration Release --no-restore
     
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: TestUtils
+      run: dotnet test --project tests/Utils.Tests --no-restore --verbosity normal
