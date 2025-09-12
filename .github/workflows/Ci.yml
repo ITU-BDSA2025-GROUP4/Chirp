@@ -40,6 +40,7 @@ jobs:
           # Define some variables for things we need
           tag=$(git describe --tags --abbrev=9)
           release_name="Chirp.CLI-$tag-${{ matrix.target }}"
+          ./scripts/generate_version.sh $(echo -n "$tag")
 
           # Build everything
           dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
