@@ -33,17 +33,17 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      working-directory: ./src/Chirp.CLI
+      working-directory: src/Chirp.CLI
       run: dotnet restore
 
     - name: Install dependencies for unit tests
-      working-directory: ./tests/Utils.Tests
+      working-directory: test/Utils.Tests
       run: dotnet restore
       
     - name: Build
-      working-directory: ./src/Chirp.CLI
+      working-directory: src/Chirp.CLI
       run: dotnet build --configuration Release --no-restore
     
     - name: TestUtils
-      working-directory: ./tests/Utils.Tests
+      working-directory: test/Utils.Tests
       run: dotnet test --no-restore --verbosity normal
