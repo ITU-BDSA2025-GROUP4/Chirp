@@ -32,9 +32,13 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-          # This explodes. Run still works though
-#    - name: Install dependencies
-#      run: dotnet restore --project src/Chirp.CLI
+    - name: Install dependencies
+      working-directory: ./src/Chirp.CLI
+      run: dotnet restore
+
+    - name: Install dependencies for unit tests
+      working-directory: ./tests/Utils.Tests
+      run: dotnet restore
       
     - name: Build
       working-directory: ./src/Chirp.CLI
