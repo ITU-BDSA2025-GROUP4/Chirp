@@ -6,7 +6,7 @@
           Condition is to ensure it only searches for the csv file in the resources
           folder of Chirp.CLI and not all the other modules.
         -->
-        <Content Condition="$(TargetDir.Contains('Chirp.CLI'))" Include="@(CsvSeed)">
+        <Content Condition="$(TargetDir.Contains('Chirp.CLI')) And '$(OS)' == 'Windows_NT'" Include="@(CsvSeed)">
             <Link>Resources\data\chirp_cli_db.csv</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -23,14 +23,15 @@
       } else { ^
         Write-Host 'CSV seed MISSING'; ^
       }" />
+    </Target>
+  </Project>
 
         <!-- For Linux and OSX -->
-        <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="
+        <!--        <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="
           if [ -e '%(CsvSeed.FullPath)' ]; then
               echo 'CSV seed length: `wc -c '%(CsvSeed.FullPath)' | grep -Eo '^[0-9]+'` bytes'
           else 
               echo 'CSV seed MISSING'
           fi " />
 
-    </Target>
-</Project>
+    </Target>-->
