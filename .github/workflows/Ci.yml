@@ -1,13 +1,33 @@
 name: Publish
-on:
-  workflow_dispatch:
-  release:
-    types: [published]
+#on:
+#  workflow_dispatch:
+#  release:
+#    types: [published]
+run-name: ${{ github.actor }} is publishing Release ${{ github.ref_name }}
 
+permissions:
+  contents: write-all
+
+on:
+  push:
+    tags:
+      - "[0-9]+\.[0-9]+\.[0-9]+"
 
 jobs:
+  prep-release:
+    name: Prepare GitHub Release
+    needs: test
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
   release:
     name: Release
+    needs: prep-release
     strategy:
       matrix:
         kind: ['linux', 'windows', 'macOS']
@@ -21,16 +41,19 @@ jobs:
           - kind: macOS
             os: macos-latest
             target: osx-x64
+          - kind: macOS
+            os: macosarm-latest
+            target: osx-arm64
     runs-on: ${{ matrix.os }}
 
     permissions: write-all
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v5
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.109
 
@@ -59,7 +82,7 @@ jobs:
           rm -r "$release_name"
 
 
-      - name: Publish
+      - name: Populate GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: "Chirp.CLI*"
