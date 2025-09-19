@@ -12,22 +12,31 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     private readonly string _path;
     private readonly CsvConfiguration _config;
 
+    private List<T> _entries;
+    private List<T> _buffer;
+
     public CsvDatabase(string path, CsvConfiguration? config = null)
     {
         _path = Path.GetFullPath(path);
+        _buffer = new List<T>();
         _config = config ?? new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            HasHeaderRecord = true, Delimiter = ",", MissingFieldFound = null
+            HasHeaderRecord = true,
+            Delimiter = ",",
+            MissingFieldFound = null
         };
+
 
         EnsureDirectoryExists(_path);
         EnsureHeaderExists();
-    }
 
-    // Init empty database
-    public CsvDatabase()
-        : this(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"))
-    { }
+
+        // Initialize the entries of the database
+        _entries = ReadAllFromFile();
+}
+
+// Init empty database
+public CsvDatabase() : this(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")) {}
 
     private static void EnsureDirectoryExists(string path)
     {
@@ -98,64 +107,63 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     // Add entry to databases
     public void Store(T record)
     {
-        using var scope = new CsvWriteScope(_path, _config);
-        EnsureHeaderIfNeeded(scope.Csv);
-        scope.Csv.WriteRecord(record);
-        scope.Csv.NextRecord();
+        _entries.Add(record);
     }
 
     // Return N latest entries
     public IEnumerable<T> Read(int limit)
     {
-        using var scope = new CsvReadScope(_path, _config);
-        var buffer = new Queue<T>(limit);
-     
-        while (scope.Csv.Read())
-        {
-            if (buffer.Count == limit)
-            {
-                buffer.Dequeue();
-            }
+        _buffer.Clear();
+        _buffer.EnsureCapacity(limit);
 
-            buffer.Enqueue(scope.Csv.GetRecord<T>());
+        if (limit >= Size()) return _entries;
+
+        for (int i = 0; i < limit; i++)
+        {
+            _buffer.Add(_entries[i]);
         }
 
-        return buffer.ToList();
+        return _buffer;
     }
 
-    // Return all entries
-    public IEnumerable<T> ReadAll()
+    // Reads all entries from the database file and returns them contained in a list
+    private List<T> ReadAllFromFile()
     {
         using var scope = new CsvReadScope(_path, _config);
         return scope.Csv.GetRecords<T>().ToList();
     }
 
+
+    // Return all entries
+    public IEnumerable<T> ReadAll()
+    {
+        return Read(Size());
+    }
+
     // Write changes to file
     public void Write()
     {
-        throw new NotImplementedException();
+        using var scope = new CsvWriteScope(_path, _config, false);
+        EnsureHeaderIfNeeded(scope.Csv);
+        scope.Csv.WriteRecords(_entries);
     }
 
     // Returns all queries that match lambda function condition 
     public IEnumerable<T> Query(Func<T, bool> condition)
     {
-        using var scope = new CsvReadScope(_path, _config);
-        return scope.Csv.GetRecords<T>().Where(condition).ToList();
+        _buffer.Clear();
+
+        foreach (var entry in _entries)
+        {
+            if (condition(entry)) _buffer.Add(entry);
+        }
+
+        return _buffer;
     }
 
     // Number of entries in DB
     public int Size()
     {
-        using var scope = new CsvReadScope(_path, _config);
-
-        if (_config.HasHeaderRecord)
-        {
-            if (!scope.Csv.Read()) return 0;
-            scope.Csv.ReadHeader();
-        }
-
-        int count = 0;
-        while (scope.Csv.Read()) count++;
-        return count;
+        return _entries.Count();
     }
 }
