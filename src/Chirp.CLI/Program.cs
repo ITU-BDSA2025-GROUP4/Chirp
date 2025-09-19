@@ -76,7 +76,9 @@ static class ChirpMain
         var url = String.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message, timestamp);
 
         // TODO: This gives response 'Cheep'ed' if successful, we should check this
-        client.GetAsync(url);
+        var response = client.GetAsync(url);
+
+        response.Wait();
 
     }
 

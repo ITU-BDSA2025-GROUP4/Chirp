@@ -62,6 +62,6 @@ app.MapGet(
     }
 );
 
-app.MapGet("/", () => "Use /cheep");
+app.MapGet("/", () => "Use /cheeps");
 
 app.Run();
