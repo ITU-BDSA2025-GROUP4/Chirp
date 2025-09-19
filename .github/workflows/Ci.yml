@@ -16,7 +16,6 @@ on:
 jobs:
   prep-release:
     name: Prepare GitHub Release
-    needs: test
 
     runs-on: ubuntu-latest
     steps:
