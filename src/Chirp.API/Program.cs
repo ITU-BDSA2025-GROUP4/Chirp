@@ -2,6 +2,8 @@ using Query;
 using Chirp.Types;
 using SimpleDB;
 
+using System.Runtime.InteropServices;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
@@ -65,3 +67,6 @@ app.MapGet(
 app.MapGet("/", () => "Use /cheeps");
 
 app.Run();
+
+// Remember to save changes to DB before exiting
+db.Write();
