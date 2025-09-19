@@ -34,13 +34,14 @@ public static class UserInterface
 
 static class ChirpMain
 {
+    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
     static void ChirpExit(int statusCode)
     {
         Logger.get.Dispose();
+        Db.Write();
         System.Environment.Exit(statusCode);
     }
 
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
 
     static void Read()
     {
@@ -185,7 +186,7 @@ static class ChirpMain
     static int Main(string[] args)
     {
         // Uncomment the line below in order to disable all logging
-//        Logger.get.Disable();
+        //        Logger.get.Disable();
         Docopt.CreateParser(help)
             .WithVersion(Version.version)
             .Parse(args)
