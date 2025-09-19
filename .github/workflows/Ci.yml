@@ -6,7 +6,7 @@ name: Publish
 run-name: ${{ github.actor }} is publishing Release ${{ github.ref_name }}
 
 permissions:
-  contents: write-all
+  contents: write
 
 on:
   push:
