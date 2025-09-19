@@ -13,8 +13,13 @@ using Utils;
 using MetaData;
 
 using SimpleDB;
-
 using Chirp.Types; 
+
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Collections.Generic;
+using System.Text.Json;
 
 public static class UserInterface
 {
@@ -33,11 +38,17 @@ public static class UserInterface
 
 static class ChirpMain
 {
+
     static void ChirpExit(int statusCode)
     {
         Logger.get.Dispose();
         System.Environment.Exit(statusCode);
     }
+
+    private static HttpClient client = new()
+    {
+        BaseAddress = new Uri("http://localhost:5000")
+    };
 
     private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
 
@@ -45,7 +56,8 @@ static class ChirpMain
     {
         try
         {
-            UserInterface.PrintCheeps(Db.ReadAll());
+            var result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
+            if(result != null) UserInterface.PrintCheeps(result);
         }
         catch (FileNotFoundException e)
         {
@@ -63,7 +75,12 @@ static class ChirpMain
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-        Db.Store(new Cheep(name, message, timestamp));
+
+        var url = String.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message, timestamp);
+
+        // TODO: This gives response 'Cheep'ed' if successful, we should check this
+        client.GetAsync(url);
+
     }
 
     static void helpfunc()
