@@ -13,9 +13,13 @@ using Utils;
 using MetaData;
 
 using SimpleDB;
+using Chirp.Types; 
 
-// Todo: Fix this, for Now I just Assumed this was the format, for the UI class :)
-public record Cheep(string Author, string Message, long Timestamp);
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Collections.Generic;
+using System.Text.Json;
 
 public static class UserInterface
 {
@@ -42,12 +46,17 @@ static class ChirpMain
         System.Environment.Exit(statusCode);
     }
 
+    private static HttpClient client = new()
+    {
+        BaseAddress = new Uri("http://localhost:5000")
+    };
 
     static void Read()
     {
         try
         {
-            UserInterface.PrintCheeps(Db.ReadAll());
+            var result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
+            if(result != null) UserInterface.PrintCheeps(result);
         }
         catch (FileNotFoundException e)
         {
@@ -65,7 +74,14 @@ static class ChirpMain
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-        Db.Store(new Cheep(name, message, timestamp));
+
+        var url = String.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message, timestamp);
+
+        // TODO: This gives response 'Cheep'ed' if successful, we should check this
+        var response = client.GetAsync(url);
+
+        response.Wait();
+
     }
 
     static void helpfunc()

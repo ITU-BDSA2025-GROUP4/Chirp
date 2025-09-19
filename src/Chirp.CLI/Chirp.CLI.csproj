@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
+    <ProjectReference Include="..\Chirp.Types\Chirp.Types.csproj" />
   </ItemGroup>
 
   <ItemGroup>
