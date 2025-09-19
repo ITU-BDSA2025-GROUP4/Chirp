@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿namespace Chirp.Cli;
+using System.Collections.Generic;
 
 using DocoptNet;
 
@@ -8,6 +9,8 @@ using CsvHelper.Configuration;
 using System.Globalization;
 
 using Utils;
+
+using MetaData;
 
 using SimpleDB;
 
@@ -184,7 +187,7 @@ static class ChirpMain
         // Uncomment the line below in order to disable all logging
 //        Logger.get.Disable();
         Docopt.CreateParser(help)
-            .WithVersion("Chirp.CLI 1.0.2")
+            .WithVersion(Version.version)
             .Parse(args)
             .Match(Run,
                 result => ShowHelp(result.Help),

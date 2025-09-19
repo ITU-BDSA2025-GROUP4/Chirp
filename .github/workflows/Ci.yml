@@ -23,15 +23,13 @@ jobs:
             target: osx-x64
     runs-on: ${{ matrix.os }}
 
-    permissions: write-all
+    permissions:
+      contents: read
+      issues: write
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v1
-
-      - name: Generate meta data
-        run: bash scripts/generate_version.sh
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
@@ -44,6 +42,10 @@ jobs:
           # Define some variables for things we need
           tag=$(git describe --tags --abbrev=9)
           release_name="Chirp.CLI-$tag-${{ matrix.target }}"
+
+          FILEPATH="src/Chirp.CLI/Version.cs"
+          NAMESPACE="MetaData"
+          echo "namespace ${NAMESPACE} { public static class Version { public static string version = \"${tag}\";}}" > $FILEPATH
 
           # Build everything
           dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
