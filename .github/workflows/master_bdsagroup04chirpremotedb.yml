@@ -27,7 +27,7 @@ jobs:
         run: dotnet build src/SimpleDB/ --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/SimpleDB/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/Chirp.CLI/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
