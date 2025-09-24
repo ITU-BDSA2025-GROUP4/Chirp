@@ -35,8 +35,8 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         _entries = ReadAllFromFile();
 }
 
-// Init empty database
-public CsvDatabase() : this(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")) {}
+    // Init empty database
+    public CsvDatabase() : this("./logs/tmp_db" + DateTimeOffset.Now.ToUnixTimeSeconds() + ".csv") {}
 
     private static void EnsureDirectoryExists(string path)
     {

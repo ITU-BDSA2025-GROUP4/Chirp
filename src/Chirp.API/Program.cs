@@ -1,67 +1,36 @@
-using Query;
-using Chirp.Types;
-using SimpleDB;
 
-using System.Runtime.InteropServices;
+using Chirp.APICore;
+using Chirp.Types;
+
+using SimpleDB;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-CsvDatabase<Cheep> db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
+IDatabaseRepository<Cheep> db =
+    new CsvDatabase<Cheep>(
+            Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")
+);
+
+APICore core = new APICore(db);
+
+Dictionary<string, string> QueryToDict(IQueryCollection collection)
+{
+    return collection
+        .Where(x => x.Value.ToString() != "")
+        .ToDictionary(x => x.Key, x => x.Value.ToString());
+}
 
 app.MapGet(
     "/cheeps",
     (HttpRequest request, HttpResponse response) =>
-    {
-        var predicates = new List<Func<Cheep, bool>>();
-        var allQueryParamters = Enum.GetValues(typeof(QueryParamter)).Cast<QueryParamter>();
-
-        foreach(Query.QueryParamter x
-                in 
-                allQueryParamters) 
-        {
-            var queryKey = x.ToString();
-            var queryValue = request.Query[queryKey].ToString();
-
-            // If value was provided for queryKey, then add that rpedicate
-            if(queryValue != "" && x.KeyMatchesValue(queryValue)) {
-                predicates.Add( x.ToPredicate(queryValue) );
-            }
-        }
-
-        if(predicates.Count() > 0) {
-            // This applies all predicates on each cheep
-            return db.Query((Cheep x) => predicates.Aggregate(true,
-                        (acc, f) => acc && f(x)
-                    ));
-        }else {
-            return db.ReadAll();
-        }
-});
+        core.Cheeps(QueryToDict(request.Query))
+);
 
 app.MapGet(
     "/cheep",
-    (HttpRequest request, HttpRequest response) => 
-    {
-
-        var author = request.Query["author"].ToString();
-        var message = request.Query["message"].ToString();
-        var timestampStr = request.Query["timestamp"].ToString();
-
-        if(author == "") { return "Missing author"; } 
-        if(message == "") { return "Missing message"; } 
-        if(timestampStr == "") { return "Missing timestamp"; } 
-
-        long timestamp = 0;
-        if(!long.TryParse(timestampStr, out timestamp)) {
-            return "Timestamp must be in unix time format";
-        }
-
-        db.Store(new Cheep(author, message, timestamp));
-
-        return "Cheep'ed";
-
-    }
+    (HttpRequest request, HttpRequest response) =>
+    core.ToString( core.Cheep(QueryToDict(request.Query)) )
 );
 
 app.MapGet("/", () => "Use /cheeps");
@@ -69,4 +38,4 @@ app.MapGet("/", () => "Use /cheeps");
 app.Run();
 
 // Remember to save changes to DB before exiting
-db.Write();
+//db.Write();
