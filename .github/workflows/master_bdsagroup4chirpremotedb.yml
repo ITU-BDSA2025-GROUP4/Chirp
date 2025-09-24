@@ -24,7 +24,7 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build src/Chirp.API/Chirp.API.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish src/Chirp.API/Chirp.API.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -64,3 +64,4 @@ jobs:
           package: ./publish
 
           
+
