@@ -61,6 +61,7 @@ jobs:
         with:
           app-name: 'bdsagroup04chirpremotedb'
           slot-name: 'Production'
-          package: .
+          package: ./myapp
 
           
+
