@@ -1,8 +1,8 @@
 namespace Chirp.CLI.Tests;
 
 using Xunit;
-
 using Chirp.Cli;
+
 
 public class End2EndTests
 {
@@ -10,18 +10,15 @@ public class End2EndTests
     [Fact]
     public void TestReadCheeps()
     {
-        var args = new string[] { "chirp", "read" };
+        var expectedResult = "ropf @ 08/01/23 14:09:20: Hello, BDSA students!/nrnie @ 08/02/23 14:19:38: Welcome to the course!/nrnie @ 08/02/23 14:37:38: I hope you had a good summer./nropf @ 08/02/23 15:04:47: Cheeping cheeps on Chirp :)";
+
+        var args = new string[] { "read" };
         ConsoleListener.Listen();
 
-        //        var result = ChirpMain.Main(args);
-        //        Assert.Equal(0, result);
-        //
-        Console.WriteLine("dk");
-        Console.WriteLine("idk");
+        ChirpMain.Main(args);
         var output = ConsoleListener.Export();
 
-
-        Console.WriteLine(output);
+        Assert.Equal(expectedResult, output);
 
         //nu assert at det passer med noget forventet :)
     }
