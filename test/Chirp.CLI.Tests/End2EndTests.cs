@@ -2,48 +2,61 @@ namespace Chirp.CLI.Tests;
 
 using Xunit;
 using Chirp.Cli;
+using SimpleDB;
+using APICore;
+using Chirp.Types;
+using System.Diagnostics;
+
+    
+using System.Net.Http;
+using System.Net.Http.Json;
 
 
-public class End2EndTests
+
+
+public class End2EndTests : IDisposable
 {
 
+    private readonly Process _process;
+    public End2EndTests()
+    {
+        _process = new Process();
+        _process.StartInfo.FileName = "dotnet";
+        _process.StartInfo.Arguments = "run --project C:\\Users\\August\\Desktop\\Chirp\\src\\Chirp.API\\Chirp.API.csproj --urls=http://localhost:5000/ --path C:\\Users\\August\\Desktop\\Chirp\\test\\Chirp.CLI.Tests\\chirp_cli_db.csv";
+        _process.Start();
+        
+        Thread.Sleep(1000);
+    }
+   
     [Fact]
     public void TestReadCheeps()
     {
-        var expectedResult = "ropf @ 08/01/23 14:09:20: Hello, BDSA students!/nrnie @ 08/02/23 14:19:38: Welcome to the course!/nrnie @ 08/02/23 14:37:38: I hope you had a good summer./nropf @ 08/02/23 15:04:47: Cheeping cheeps on Chirp :)";
-
         var args = new string[] { "read" };
         ConsoleListener.Listen();
 
-        ChirpMain.Main(args);
+        var result = ChirpMain.Main(args);
         var output = ConsoleListener.Export();
 
+        Assert.Equal(0, result);
+        
+        var expectedResult = "ropf @ 01-08-23 14:09:20: Hello, BDSA students!\r\nadho @ 02-08-23 14:19:38: Welcome to the course!\r\nadho @ 02-08-23 14:37:38: I hope you had a good summer.\r\nropf @ 02-08-23 15:04:47: Cheeping cheeps on Chirp :)\r\n";
         Assert.Equal(expectedResult, output);
-
-        //nu assert at det passer med noget forventet :)
     }
+        
+        //todo add testcheep, logger error atm
+        [Fact]
+        public void TestCheep()
+        {
+        }
 
-    //    [Fact]
-    //    public void TestReadTenCheeps()
-    //    {
-    //        var args = new string[] { "chirp", "read" };
-    //        ConsoleListener.Listen();
-    //
-    //        var result = ChirpMain.Main(args);
-    //        Assert.Equal(0, result);
-    //
-    //        var output = ConsoleListener.Export();
-    //
-    //        Console.WriteLine(output);
-    //        //nu assert at det passer med noget forventet :)
-    //    }
-    //
-    //    [Fact]
-    //    public void TestCheep()
-    //    {
-    //        //var args = new string[] { "chirp", "Hello!!!" };
-    //        //Assert.Equal(0, ChirpMain.Main(args));
-    //
-    //        // Now read and see if the chirp we added is there
-    //    }
+        public void Dispose()
+        {
+            if (!_process.HasExited)
+            {
+                _process.Kill(true);
+                _process.WaitForExit();
+            }
+
+            _process.Dispose();
+        }
 }

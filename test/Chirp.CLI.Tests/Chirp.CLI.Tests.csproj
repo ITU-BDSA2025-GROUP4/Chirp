@@ -12,7 +12,11 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\src\Chirp.API\Chirp.API.csproj" />
+        <ProjectReference Include="..\..\src\Chirp.APICore\Chirp.APICore.csproj" />
+        <ProjectReference Include="..\..\src\SimpleDB\SimpleDB.csproj" />
         <ProjectReference Include="..\..\src\Chirp.CLI\Chirp.CLI.csproj" />
+        <ProjectReference Include="..\..\src\Chirp.Types\Chirp.Types.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Using Include="Xunit" />
