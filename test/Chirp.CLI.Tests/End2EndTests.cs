@@ -22,7 +22,11 @@ public class End2EndTests : IDisposable
     {
         _process = new Process();
         _process.StartInfo.FileName = "dotnet";
-        _process.StartInfo.Arguments = "run --project C:\\Users\\August\\Desktop\\Chirp\\src\\Chirp.API\\Chirp.API.csproj --urls=http://localhost:5000/ --path C:\\Users\\August\\Desktop\\Chirp\\test\\Chirp.CLI.Tests\\chirp_cli_db.csv";
+        
+        var projectPath = Path.GetFullPath("../../../../../src/Chirp.API/Chirp.API.csproj");
+        var csvPath = Path.GetFullPath("../../../chirp_cli_db.csv");
+        
+        _process.StartInfo.Arguments = $"run --project {projectPath} --urls=http://localhost:5000/ --path {csvPath}";
         _process.Start();
         
         Thread.Sleep(1000);
