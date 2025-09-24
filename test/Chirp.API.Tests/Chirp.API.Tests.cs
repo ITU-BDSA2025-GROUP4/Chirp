@@ -21,9 +21,7 @@ public class APICoreUnitTest
         return core;
     }
 
-    private static (APICore, Cheep[]) APIDataSetA()
-    {
-        APICore core = EmptyAPI();
+    private static Cheep[] DataSetA() {
 
         var cheepData = new Cheep[]{
             new Cheep("bob",    "hello",                              100 ),
@@ -37,6 +35,15 @@ public class APICoreUnitTest
             new Cheep("admin",  "what?",                              5003),
 
         };
+
+        return cheepData;
+    }
+
+    private static (APICore, Cheep[]) APIDataSetA()
+    {
+        APICore core = EmptyAPI();
+
+        var cheepData = DataSetA();
 
         var query = EmptyQuery();
         foreach (Cheep i in cheepData)
@@ -308,6 +315,32 @@ public class APICoreUnitTest
                 && x.Timestamp < beforeTime
                 && x.Author == byUser
         )));
+    }
+
+    [Theory]
+    [InlineData("bob", "test", 123)]
+    [InlineData("tom", "message with spaces", 54321)]
+    public void WriteSingle(string name, string message, long timestamp) 
+    {
+        APICore core = EmptyAPI();
+        var query = EmptyQuery();
+
+        query.Add("author", name);
+        query.Add("message", message);
+        query.Add("timestamp", timestamp.ToString());
+
+        var result = core.Cheep(query);
+        var expected = APICore.CheepStatusCode.SUCCESS;
+        Assert.Equal(result, expected);
+
+        var resultCollection = core.Cheeps(EmptyQuery());
+        var expectedSize = 1;
+        Assert.Equal(resultCollection.Count(), expectedSize);
+
+        var cheep = resultCollection.First();
+        Assert.Equal(cheep.Author, name);
+        Assert.Equal(cheep.Message, message);
+        Assert.Equal(cheep.Timestamp, timestamp);
     }
 
     

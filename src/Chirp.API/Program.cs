@@ -29,7 +29,7 @@ app.MapGet(
 
 app.MapGet(
     "/cheep",
-    (HttpRequest request, HttpRequest response) =>
+    (HttpRequest request, HttpResponse response) =>
     core.ToString( core.Cheep(QueryToDict(request.Query)) )
 );
 
