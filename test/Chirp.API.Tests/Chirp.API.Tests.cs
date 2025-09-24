@@ -85,6 +85,17 @@ public class APICoreUnitTest
             Assert.Equal(core.Cheep(query), APICore.CheepStatusCode.SUCCESS);
         }
 
+        // QUERY ALL
+        query.Clear();
+        var result = core.Cheeps(query);
+        Assert.Equal(result.Count(), cheepData.Length);
+
+        Assert.True(
+            result.Select(x => cheepData.Contains(x)).Aggregate((a, b) => a && b)
+        );
+
+        
+
     }
 
 }
