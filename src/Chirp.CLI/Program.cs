@@ -53,15 +53,18 @@ public static class UserInterface
     }
 }
 
+enum BatchResult
+{
+    Stop,
+    Continue
+}
+
 
 public static class ChirpMain
 {
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
     static void ChirpExit(int statusCode)
     {
         Logger.get.Dispose();
-        Db.Write();
-        System.Environment.Exit(statusCode);
     }
 
     private static HttpClient client = new()
@@ -110,7 +113,7 @@ public static class ChirpMain
 
     // @Obselete
     // Used by interactive
-    static void batch(string[] args)
+    static BatchResult batch(string[] args)
     {
         string command = args[0];
 
@@ -123,7 +126,7 @@ public static class ChirpMain
                 if (args.Length < 2)
                 {
                     Console.WriteLine("Chirp requires a message");
-                    return;
+                    break;
                 }
 
                 Chirp(args[1]);
@@ -133,12 +136,14 @@ public static class ChirpMain
                 break;
             case "exit":
                 ChirpExit(0);
-                break;
+                return BatchResult.Stop;
             default:
                 Logger.get.Log(String.Format("User wrote unknown command: {0}", command));
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
+
+        return BatchResult.Continue;
     }
 
     static void interactive()
@@ -156,7 +161,12 @@ public static class ChirpMain
             string[] tokens = input.TrimEnd().TrimStart().Split(" ", 2);
             if (tokens.Length == 0) continue;
 
-            batch(tokens);
+            var result = batch(tokens);
+
+            if (result == BatchResult.Stop)
+            {
+                break;
+            }
         }
     }
 
@@ -231,6 +241,6 @@ public static class ChirpMain
             );
 
         ChirpExit(0);
-        return 1;
+        return 0;
     }
 }
