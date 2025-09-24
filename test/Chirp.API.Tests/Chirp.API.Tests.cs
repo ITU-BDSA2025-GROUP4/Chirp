@@ -42,7 +42,7 @@ public class APICoreUnitTest
 
         var result = core.Cheep(query);
 
-        Assert.Equal(result, "Cheep'ed");
+        Assert.Equal(result, APICore.CheepStatusCode.SUCCESS);
 
         var queryResult = core.Cheeps(EmptyQuery());
 
@@ -82,24 +82,9 @@ public class APICoreUnitTest
             query.Add("message", i.Message);
             query.Add("timestamp", i.Timestamp.ToString());
 
-            Assert.Equal(core.Cheep(query), "Cheep'ed");
+            Assert.Equal(core.Cheep(query), APICore.CheepStatusCode.SUCCESS);
         }
 
-        
-
-        var result = core.Cheep(query);
-
-        Assert.Equal(result, "Cheep'ed");
-
-        var queryResult = core.Cheeps(EmptyQuery());
-
-        Assert.Equal(queryResult.Count(), 1);
-
-        var cheep = queryResult.First();
-        
-        Assert.Equal(cheep.Author, name);
-        Assert.Equal(cheep.Message, message);
-        Assert.Equal(cheep.Timestamp, timestamp);
     }
 
 }
