@@ -7,10 +7,23 @@ using SimpleDB;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-IDatabaseRepository<Cheep> db =
-    new CsvDatabase<Cheep>(
-            Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")
-);
+string dbPath = null;
+
+for (int i = 0; i < args.Length; i++)
+{
+    if (args[i] == "--path")
+    {
+        if (i + 1 < args.Length)
+        {
+            dbPath = args[i+1];
+               break;
+        }
+    }
+}
+
+dbPath ??= Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv");
+
+IDatabaseRepository<Cheep> db = new CsvDatabase<Cheep>(dbPath);
 
 APICore core = new APICore(db);
 
