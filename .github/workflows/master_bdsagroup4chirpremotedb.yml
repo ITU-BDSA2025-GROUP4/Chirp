@@ -61,7 +61,8 @@ jobs:
         with:
           app-name: 'bdsagroup4chirpremotedb'
           slot-name: 'Production'
-          package: ./publish
+          package: .
 
           
+
 
