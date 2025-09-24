@@ -24,19 +24,17 @@ using System.Text.Json;
 public static class UserInterface
 {
     private const string timeFormat = "dd/MM/yy HH:mm:ss";
-
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
         {
             DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-
             Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " + cheep.Message);
         }
     }
 }
 
-static class ChirpMain
+public static class ChirpMain
 {
     private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
     static void ChirpExit(int statusCode)
@@ -199,7 +197,7 @@ static class ChirpMain
         return 0;
     }
 
-    static int Main(string[] args)
+    public static int Main(string[] args)
     {
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
