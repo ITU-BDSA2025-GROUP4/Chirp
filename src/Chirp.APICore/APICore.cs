@@ -38,6 +38,10 @@ public class APICore {
         }
     }
 
+    public void Write() {
+        db.Write();
+    }
+
     public CheepStatusCode Cheep(Dictionary<string, string> queryParameters) {
 
         if(!queryParameters.ContainsKey("author")) {
