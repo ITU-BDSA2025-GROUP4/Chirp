@@ -13,14 +13,39 @@ public class APICore {
         db = database;
     }
 
-    public string Cheep(Dictionary<string, string> queryParameters) {
+    public enum CheepStatusCode {
+        SUCCESS,
+        MISSING_AUTHOR,
+        MISSING_MESSAGE,
+        MISSING_TIMESTAMP,
+        INVALID_TIMESTAMP
+    }
+
+    public string ToString(CheepStatusCode code ) {
+        switch(code) {
+            case APICore.CheepStatusCode.SUCCESS:
+                return "Cheep'ed";
+            case APICore.CheepStatusCode.MISSING_AUTHOR:
+                return "Missing author name";
+            case APICore.CheepStatusCode.MISSING_MESSAGE:
+                return "Missing message";
+            case APICore.CheepStatusCode.MISSING_TIMESTAMP:
+                return "Missing timestamp";
+            case APICore.CheepStatusCode.INVALID_TIMESTAMP:
+                return "Invalid timestamp";
+            default:
+                return "UKNOWN ERROR";
+        }
+    }
+
+    public CheepStatusCode Cheep(Dictionary<string, string> queryParameters) {
 
         if(!queryParameters.ContainsKey("author")) {
-            return "Missing author";
+            return CheepStatusCode.MISSING_AUTHOR;
         }else if(!queryParameters.ContainsKey("message")) {
-            return "Missing message";
+            return CheepStatusCode.MISSING_MESSAGE;
         }else if(!queryParameters.ContainsKey("timestamp")) {
-            return "Missing timestamp";
+            return CheepStatusCode.MISSING_TIMESTAMP;
         }
 
         var author = queryParameters["author"];;
@@ -29,12 +54,12 @@ public class APICore {
 
         long timestamp = 0;
         if(!long.TryParse(timestampStr, out timestamp)) {
-            return "Timestamp must be in unix time format";
+            return CheepStatusCode.INVALID_TIMESTAMP;
         }
 
         db.Store(new Cheep(author, message, timestamp));
 
-        return "Cheep'ed: " + message + " by " + author + " " + timestamp;
+        return CheepStatusCode.SUCCESS;
 
     }
     public IEnumerable<Cheep> Cheeps(Dictionary<string, string> actualQueryParameters)
@@ -56,13 +81,11 @@ public class APICore {
         }
 
         if(predicates.Count() > 0) {
-            Console.WriteLine("Pred, DB size: " + db.ReadAll().Count());
             // This applies all predicates on each cheep
             return db.Query((Cheep x) => predicates.Aggregate(true,
                         (acc, f) => acc && f(x)
                         ));
         }else {
-            Console.WriteLine("All, DB size: " + db.ReadAll().Count());
             return db.ReadAll();
         }
     }
