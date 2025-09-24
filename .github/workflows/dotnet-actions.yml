@@ -33,11 +33,19 @@ jobs:
     - name: Install dependencies for unit tests
       working-directory: test/Utils.Tests
       run: dotnet restore
+      working-directory: test/Chirp.API.Tests
+      run: dotnet restore
       
     - name: Build
       working-directory: src/Chirp.CLI
       run: dotnet build --configuration Release --no-restore
     
-    - name: TestUtils
+    - name: Utils Unit test
       working-directory: test/Utils.Tests
       run: dotnet test --no-restore --verbosity normal
+
+    - name: API Unit test
+      working-directory: test/Chirp.API.Tests
+      run: dotnet test --no-restore --verbosity normal
+
+
