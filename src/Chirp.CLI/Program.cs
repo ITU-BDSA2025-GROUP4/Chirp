@@ -1,6 +1,4 @@
 ﻿namespace Chirp.Cli;
-using System.Collections.Generic;
-
 using DocoptNet;
 
 using CsvHelper;
@@ -13,13 +11,34 @@ using Utils;
 using MetaData;
 
 using SimpleDB;
-using Chirp.Types; 
+using Chirp.Types;
 
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text;
+
+// This terrible construction merely exists to enable us to read the output from the application which is needed in the End2End tests of Chirp.CLI
+// It works by redirecting stdout to its internal StringWriter. Use with caution.
+public static class ConsoleListener
+{
+    private static StringWriter _buffer = new StringWriter();
+
+    // Redirects stdout to the _buffer 
+    public static void Listen()
+    {
+        Console.SetOut(_buffer);
+    }
+
+    // Converts the contets of recorded output to a string
+    public static string Export()
+    {
+        string output = _buffer.ToString();
+        return output;
+    }
+}
 
 public static class UserInterface
 {
@@ -33,6 +52,7 @@ public static class UserInterface
         }
     }
 }
+
 
 public static class ChirpMain
 {
@@ -54,7 +74,7 @@ public static class ChirpMain
         try
         {
             var result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
-            if(result != null) UserInterface.PrintCheeps(result);
+            if (result != null) UserInterface.PrintCheeps(result);
         }
         catch (FileNotFoundException e)
         {
