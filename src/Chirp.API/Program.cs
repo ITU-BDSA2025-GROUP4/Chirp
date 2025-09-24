@@ -37,5 +37,5 @@ app.MapGet("/", () => "Use /cheeps");
 
 app.Run();
 
-// Remember to save changes to DB before exiting
-//db.Write();
+// Write DB to file before quitting
+core.Write();

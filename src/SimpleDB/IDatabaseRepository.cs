@@ -6,4 +6,5 @@ public interface IDatabaseRepository<T>
     public IEnumerable<T> ReadAll();
     public IEnumerable<T> Query(Func<T, bool> condition);
     public void Store(T record);
+    public void Write();
 }
