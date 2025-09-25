@@ -47,10 +47,30 @@ public class End2EndTests : IDisposable
         Assert.Equal(expectedResult, output);
     }
         
-        //todo add testcheep, logger error atm
+        //todo add testcheep, logger error atm - aulh, on it - vitb
         [Fact]
         public void TestCheep()
         {
+            //set up a cheep (did not use cheep class)
+            var author = "testuser";
+            var message = $"Hello from the end-to-end test! {DateTimeOffset.Now.ToUnixTimeSeconds()}";
+            var timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+            var url = $"/cheep?author={Uri.EscapeDataString(author)}&message={Uri.EscapeDataString(message)}&timestamp={timestamp}";
+
+            // testing request
+            var client = new HttpClient { BaseAddress = new Uri("http://localhost:5000") };
+            var response = client.GetAsync(url).Result;
+            Assert.True(response.IsSuccessStatusCode);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            Assert.Equal("Cheep'ed", responseString);
+
+            // Testing permanence
+            ConsoleListener.Listen();
+            var args = new string[] { "read" };
+            var output = ConsoleListener.Export();
+            var expectedOutputSubstring = $"{author} @ {DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime():dd/MM/yy HH:mm:ss}: {message}";
+            Assert.Contains(expectedOutputSubstring, output);
         }
 
         public void Dispose()
