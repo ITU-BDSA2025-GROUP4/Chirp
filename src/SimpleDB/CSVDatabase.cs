@@ -8,27 +8,33 @@ namespace SimpleDB;
 public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 {
     private readonly CsvConfiguration _config;
-    private readonly string _path;
+    private readonly string? _path;
     private readonly List<T> _buffer;
 
     private readonly List<T> _entries;
 
-    public CsvDatabase(string path, CsvConfiguration? config = null)
+    public CsvDatabase(TextReader reader, CsvConfiguration? config = null)
     {
-        _path = Path.GetFullPath(path);
-        _buffer = new List<T>();
+        _buffer = [];
         _config = config ?? new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            HasHeaderRecord = true, Delimiter = ",", MissingFieldFound = null
+            HasHeaderRecord = true,
+            Delimiter = ",",
+            MissingFieldFound = null
         };
 
+        using var csv = new CsvReader(reader, _config);
+        _entries = csv.GetRecords<T>().ToList();
+      
+    }
+    
+    public CsvDatabase(string path, CsvConfiguration? config = null)
+        : this(new StreamReader(path), config)
+    {
+        _path = Path.GetFullPath(path);
 
         EnsureDirectoryExists(_path);
         EnsureHeaderExists();
-
-
-        // Initialize the entries of the database
-        _entries = ReadAllFromFile();
     }
 
     // Init empty database
@@ -71,6 +77,11 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     // Write changes to file
     public void Write()
     {
+        if (_path == null)
+        {
+            return;
+        }
+
         using CsvWriteScope scope = new(_path, _config, false);
         EnsureHeaderIfNeeded(scope.Csv);
         scope.Csv.WriteRecords(_entries);
@@ -81,19 +92,17 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     {
         _buffer.Clear();
 
-        foreach (T entry in _entries)
+        foreach (var entry in _entries.Where(condition))
         {
-            if (condition(entry))
-            {
-                _buffer.Add(entry);
-            }
+            _buffer.Add(entry);
         }
 
         return _buffer;
     }
 
-    private static void EnsureDirectoryExists(string path)
+    private void EnsureDirectoryExists(string path)
     {
+        if (string.IsNullOrWhiteSpace(_path)) return;
         string? dir = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(dir))
         {
@@ -103,6 +112,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 
     private void EnsureHeaderExists()
     {
+        if (string.IsNullOrWhiteSpace(_path)) return;
         bool needHeader = !File.Exists(_path) || new FileInfo(_path).Length == 0;
         if (!needHeader || !_config.HasHeaderRecord)
         {
