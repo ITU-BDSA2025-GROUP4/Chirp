@@ -1,6 +1,4 @@
 ﻿namespace Chirp.Cli;
-using System.Collections.Generic;
-
 using DocoptNet;
 
 using CsvHelper;
@@ -13,37 +11,60 @@ using Utils;
 using MetaData;
 
 using SimpleDB;
-using Chirp.Types; 
+using Chirp.Types;
 
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text;
+
+// This terrible construction merely exists to enable us to read the output from the application which is needed in the End2End tests of Chirp.CLI
+// It works by redirecting stdout to its internal StringWriter. Use with caution.
+public static class ConsoleListener
+{
+    private static StringWriter _buffer = new StringWriter();
+
+    // Redirects stdout to the _buffer 
+    public static void Listen()
+    {
+        Console.SetOut(_buffer);
+    }
+
+    // Converts the contets of recorded output to a string
+    public static string Export()
+    {
+        string output = _buffer.ToString();
+        return output;
+    }
+}
 
 public static class UserInterface
 {
     private const string timeFormat = "dd/MM/yy HH:mm:ss";
-
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
         {
             DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-
             Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " + cheep.Message);
         }
     }
 }
 
-static class ChirpMain
+enum BatchResult
 {
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
+    Stop,
+    Continue
+}
+
+
+public static class ChirpMain
+{
     static void ChirpExit(int statusCode)
     {
         Logger.get.Dispose();
-        Db.Write();
-        System.Environment.Exit(statusCode);
     }
 
     private static HttpClient client = new()
@@ -56,7 +77,7 @@ static class ChirpMain
         try
         {
             var result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
-            if(result != null) UserInterface.PrintCheeps(result);
+            if (result != null) UserInterface.PrintCheeps(result);
         }
         catch (FileNotFoundException e)
         {
@@ -92,7 +113,7 @@ static class ChirpMain
 
     // @Obselete
     // Used by interactive
-    static void batch(string[] args)
+    static BatchResult batch(string[] args)
     {
         string command = args[0];
 
@@ -105,7 +126,7 @@ static class ChirpMain
                 if (args.Length < 2)
                 {
                     Console.WriteLine("Chirp requires a message");
-                    return;
+                    break;
                 }
 
                 Chirp(args[1]);
@@ -115,12 +136,14 @@ static class ChirpMain
                 break;
             case "exit":
                 ChirpExit(0);
-                break;
+                return BatchResult.Stop;
             default:
                 Logger.get.Log(String.Format("User wrote unknown command: {0}", command));
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
+
+        return BatchResult.Continue;
     }
 
     static void interactive()
@@ -138,7 +161,12 @@ static class ChirpMain
             string[] tokens = input.TrimEnd().TrimStart().Split(" ", 2);
             if (tokens.Length == 0) continue;
 
-            batch(tokens);
+            var result = batch(tokens);
+
+            if (result == BatchResult.Stop)
+            {
+                break;
+            }
         }
     }
 
@@ -199,7 +227,7 @@ static class ChirpMain
         return 0;
     }
 
-    static int Main(string[] args)
+    public static int Main(string[] args)
     {
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
@@ -213,6 +241,6 @@ static class ChirpMain
             );
 
         ChirpExit(0);
-        return 1;
+        return 0;
     }
 }
