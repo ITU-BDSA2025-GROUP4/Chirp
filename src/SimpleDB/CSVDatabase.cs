@@ -10,7 +10,6 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     private readonly CsvConfiguration _config;
     private readonly string? _path;
     private readonly List<T> _buffer;
-
     private readonly List<T> _entries;
 
     public CsvDatabase(TextReader reader, CsvConfiguration? config = null)
