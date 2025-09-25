@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace SimpleDB;
 
 public interface IDatabaseRepository<T>
