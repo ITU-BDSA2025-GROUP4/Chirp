@@ -123,7 +123,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         scope.Csv.NextRecord();
     }
 
-    //
+    
     private void EnsureHeaderIfNeeded(CsvWriter csv)
     {
         if (!_config.HasHeaderRecord)
