@@ -1,19 +1,17 @@
 ﻿using System.Globalization;
 
-namespace SimpleDB;
-
-using System.Collections.Generic;
-
 using CsvHelper;
 using CsvHelper.Configuration;
 
+namespace SimpleDB;
+
 public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 {
-    private readonly string _path;
     private readonly CsvConfiguration _config;
+    private readonly string _path;
+    private readonly List<T> _buffer;
 
-    private List<T> _entries;
-    private List<T> _buffer;
+    private readonly List<T> _entries;
 
     public CsvDatabase(string path, CsvConfiguration? config = null)
     {
@@ -21,9 +19,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         _buffer = new List<T>();
         _config = config ?? new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            HasHeaderRecord = true,
-            Delimiter = ",",
-            MissingFieldFound = null
+            HasHeaderRecord = true, Delimiter = ",", MissingFieldFound = null
         };
 
 
@@ -33,26 +29,120 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
 
         // Initialize the entries of the database
         _entries = ReadAllFromFile();
-}
+    }
 
     // Init empty database
-    public CsvDatabase() : this("./logs/tmp_db" + DateTimeOffset.Now.ToUnixTimeSeconds() + ".csv") {}
+    public CsvDatabase() : this("./logs/tmp_db" + DateTimeOffset.Now.ToUnixTimeSeconds() + ".csv")
+    {
+    }
+
+    // Add entry to databases
+    public void Store(T record)
+    {
+        _entries.Add(record);
+    }
+
+    // Return N latest entries
+    public IEnumerable<T> Read(int limit)
+    {
+        _buffer.Clear();
+        _buffer.EnsureCapacity(limit);
+
+        if (limit >= Size())
+        {
+            return _entries;
+        }
+
+        for (int i = 0; i < limit; i++)
+        {
+            _buffer.Add(_entries[i]);
+        }
+
+        return _buffer;
+    }
+
+
+    // Return all entries
+    public IEnumerable<T> ReadAll()
+    {
+        return Read(Size());
+    }
+
+    // Write changes to file
+    public void Write()
+    {
+        using CsvWriteScope scope = new(_path, _config, false);
+        EnsureHeaderIfNeeded(scope.Csv);
+        scope.Csv.WriteRecords(_entries);
+    }
+
+    // Returns all queries that match lambda function condition 
+    public IEnumerable<T> Query(Func<T, bool> condition)
+    {
+        _buffer.Clear();
+
+        foreach (T entry in _entries)
+        {
+            if (condition(entry))
+            {
+                _buffer.Add(entry);
+            }
+        }
+
+        return _buffer;
+    }
 
     private static void EnsureDirectoryExists(string path)
     {
-        var dir = Path.GetDirectoryName(path);
+        string? dir = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(dir))
+        {
             Directory.CreateDirectory(dir);
+        }
     }
 
     private void EnsureHeaderExists()
     {
-        var needHeader = !File.Exists(_path) || new FileInfo(_path).Length == 0;
-        if (!needHeader || !_config.HasHeaderRecord) return;
+        bool needHeader = !File.Exists(_path) || new FileInfo(_path).Length == 0;
+        if (!needHeader || !_config.HasHeaderRecord)
+        {
+            return;
+        }
 
-        using var scope = new CsvWriteScope(_path, _config, append: true);
+        using CsvWriteScope scope = new(_path, _config);
         scope.Csv.WriteHeader<T>();
         scope.Csv.NextRecord();
+    }
+
+    //
+    private void EnsureHeaderIfNeeded(CsvWriter csv)
+    {
+        if (!_config.HasHeaderRecord)
+        {
+            return;
+        }
+
+        bool needHeader = !File.Exists(_path) || new FileInfo(_path).Length == 0;
+        if (!needHeader)
+        {
+            return;
+        }
+
+        csv.WriteHeader<T>();
+        csv.NextRecord();
+    }
+
+    // Reads all entries from the database file and returns them contained in a list
+    private List<T> ReadAllFromFile()
+    {
+        using CsvReadScope scope = new(_path, _config);
+        return scope.Csv.GetRecords<T>().ToList();
+    }
+
+    // Number of entries in DB
+    public int Size()
+    {
+        return _entries.Count();
     }
 
     //RAII style wrapper to handle resource management
@@ -91,79 +181,5 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
             Csv.Dispose();
             Stream.Dispose();
         }
-    }
-
-    //
-    private void EnsureHeaderIfNeeded(CsvWriter csv)
-    {
-        if (!_config.HasHeaderRecord) return;
-        var needHeader = !File.Exists(_path) || new FileInfo(_path).Length == 0;
-        if (!needHeader) return;
-
-        csv.WriteHeader<T>();
-        csv.NextRecord();
-    }
-
-    // Add entry to databases
-    public void Store(T record)
-    {
-        _entries.Add(record);
-    }
-
-    // Return N latest entries
-    public IEnumerable<T> Read(int limit)
-    {
-        _buffer.Clear();
-        _buffer.EnsureCapacity(limit);
-
-        if (limit >= Size()) return _entries;
-
-        for (int i = 0; i < limit; i++)
-        {
-            _buffer.Add(_entries[i]);
-        }
-
-        return _buffer;
-    }
-
-    // Reads all entries from the database file and returns them contained in a list
-    private List<T> ReadAllFromFile()
-    {
-        using var scope = new CsvReadScope(_path, _config);
-        return scope.Csv.GetRecords<T>().ToList();
-    }
-
-
-    // Return all entries
-    public IEnumerable<T> ReadAll()
-    {
-        return Read(Size());
-    }
-
-    // Write changes to file
-    public void Write()
-    {
-        using var scope = new CsvWriteScope(_path, _config, false);
-        EnsureHeaderIfNeeded(scope.Csv);
-        scope.Csv.WriteRecords(_entries);
-    }
-
-    // Returns all queries that match lambda function condition 
-    public IEnumerable<T> Query(Func<T, bool> condition)
-    {
-        _buffer.Clear();
-
-        foreach (var entry in _entries)
-        {
-            if (condition(entry)) _buffer.Add(entry);
-        }
-
-        return _buffer;
-    }
-
-    // Number of entries in DB
-    public int Size()
-    {
-        return _entries.Count();
     }
 }

@@ -1,16 +1,14 @@
-
-using Chirp.APICore;
 using Chirp.Types;
 
 using SimpleDB;
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+WebApplication app = builder.Build();
 
 IDatabaseRepository<Cheep> db =
     new CsvDatabase<Cheep>(
-            Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")
-);
+        Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv")
+    );
 
 APICore core = new APICore(db);
 
@@ -30,7 +28,7 @@ app.MapGet(
 app.MapGet(
     "/cheep",
     (HttpRequest request, HttpResponse response) =>
-    core.ToString( core.Cheep(QueryToDict(request.Query)) )
+        core.ToString(core.Cheep(QueryToDict(request.Query)))
 );
 
 app.MapGet("/", () => "Use /cheeps");

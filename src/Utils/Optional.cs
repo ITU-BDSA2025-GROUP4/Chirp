@@ -1,6 +1,5 @@
 namespace Utils;
 
-
 //    Might need an optional time later, this doesn't compile btw
 //
 //    public class Optional<T> {

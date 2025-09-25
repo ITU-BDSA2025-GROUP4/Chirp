@@ -1,7 +1,5 @@
 ﻿namespace Utils.Tests;
 
-using Xunit;
-
 using static StringUtils;
 
 public class IsIntegerUnitTest
@@ -13,7 +11,7 @@ public class IsIntegerUnitTest
     [InlineData("0")]
     public void GeneralUseTrue(string x)
     {
-        Assert.True( IsInteger(x) );
+        Assert.True(IsInteger(x));
     }
 
     [Theory]
@@ -23,7 +21,7 @@ public class IsIntegerUnitTest
     [InlineData("3-")]
     public void GeneralUseFalse(string x)
     {
-        Assert.False( IsInteger(x) );
+        Assert.False(IsInteger(x));
     }
 
     [Theory]
@@ -32,13 +30,13 @@ public class IsIntegerUnitTest
     [InlineData("- 5")]
     public void EdgeCasesFalse(string x)
     {
-        Assert.False( IsInteger(x) );
+        Assert.False(IsInteger(x));
     }
 
     [Theory]
     [InlineData("-0")]
     public void EdgeCasesTrue(string x)
     {
-        Assert.True( IsInteger(x) );
+        Assert.True(IsInteger(x));
     }
 }

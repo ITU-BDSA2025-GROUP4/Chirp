@@ -1,25 +1,16 @@
-﻿namespace Chirp.Cli;
-using System.Collections.Generic;
+﻿using System.Net.Http.Json;
+
+using Chirp.Types;
 
 using DocoptNet;
 
-using CsvHelper;
-using CsvHelper.Configuration;
-
-using System.Globalization;
+using SimpleDB;
 
 using Utils;
 
-using MetaData;
+using Version = MetaData.Version;
 
-using SimpleDB;
-using Chirp.Types; 
-
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Collections.Generic;
-using System.Text.Json;
+namespace Chirp.Cli;
 
 public static class UserInterface
 {
@@ -29,62 +20,85 @@ public static class UserInterface
     {
         foreach (Cheep cheep in cheeps)
         {
-            DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+            DateTimeOffset timestamp =
+                DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
 
-            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " + cheep.Message);
+            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " +
+                              cheep.Message);
         }
     }
 }
 
-static class ChirpMain
+internal static class ChirpMain
 {
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv"));
-    static void ChirpExit(int statusCode)
-    {
-        Logger.get.Dispose();
-        Db.Write();
-        System.Environment.Exit(statusCode);
-    }
+    // string that contains the help message
+    private const string help = @"Chirp.CLI.
 
-    private static HttpClient client = new()
+    Usage:
+      Chirp.CLI interactive
+      Chirp.CLI read
+      Chirp.CLI chirp <text>
+      Chirp.CLI (-h | --help)
+      Chirp.CLI --version
+
+    Options:
+      -h --help     Show this screen.
+      --version     Show version.
+
+    ";
+
+    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory,
+        "Resources", "Data", "chirp_cli_db.csv"));
+
+    private static readonly HttpClient client = new()
     {
         BaseAddress = new Uri("http://localhost:5000")
     };
 
-    static void Read()
+    private static void ChirpExit(int statusCode)
+    {
+        Logger.get.Dispose();
+        Db.Write();
+        Environment.Exit(statusCode);
+    }
+
+    private static void Read()
     {
         try
         {
-            var result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
-            if(result != null) UserInterface.PrintCheeps(result);
+            List<Cheep>? result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
+            if (result != null)
+            {
+                UserInterface.PrintCheeps(result);
+            }
         }
         catch (FileNotFoundException e)
         {
-            Logger.get.LogWarn(String.Format("Database file not found: '{0}'", e.ToString()));
+            Logger.get.LogWarn(string.Format("Database file not found: '{0}'", e));
         }
         catch (Exception e)
         {
-            Logger.get.LogWarn(String.Format("Error parsing database: '{0}'", e.ToString()));
+            Logger.get.LogWarn(string.Format("Error parsing database: '{0}'", e));
             Console.WriteLine(e);
             throw;
         }
     }
 
-    static void Chirp(string message)
+    private static void Chirp(string message)
     {
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
-        var url = String.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message, timestamp);
+        string url = string.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message,
+            timestamp);
 
         // TODO: This gives response 'Cheep'ed' if successful, we should check this
-        var response = client.GetAsync(url);
+        Task<HttpResponseMessage> response = client.GetAsync(url);
 
         response.Wait();
-
     }
 
-    static void helpfunc()
+    private static void helpfunc()
     {
         Console.WriteLine(
             "Commands:\nchirp [MESSAGE] | Chirps a message\nread | Displays all chirps\n? | Displays this menu\nexit | Exits Chirp.CLI\n");
@@ -92,7 +106,7 @@ static class ChirpMain
 
     // @Obselete
     // Used by interactive
-    static void batch(string[] args)
+    private static void batch(string[] args)
     {
         string command = args[0];
 
@@ -117,13 +131,13 @@ static class ChirpMain
                 ChirpExit(0);
                 break;
             default:
-                Logger.get.Log(String.Format("User wrote unknown command: {0}", command));
+                Logger.get.Log(string.Format("User wrote unknown command: {0}", command));
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
     }
 
-    static void interactive()
+    private static void interactive()
     {
         Console.WriteLine("Running Chirp.CLI in interactive mode, type ? to re-display help");
         helpfunc();
@@ -133,73 +147,73 @@ static class ChirpMain
             Console.Write("> ");
             string? input = Console.ReadLine();
 
-            if (input == null) break;
+            if (input == null)
+            {
+                break;
+            }
 
             string[] tokens = input.TrimEnd().TrimStart().Split(" ", 2);
-            if (tokens.Length == 0) continue;
+            if (tokens.Length == 0)
+            {
+                continue;
+            }
 
             batch(tokens);
         }
     }
 
-
-    // string that contains the help message
-    const string help = @"Chirp.CLI.
-
-    Usage:
-      Chirp.CLI interactive
-      Chirp.CLI read
-      Chirp.CLI chirp <text>
-      Chirp.CLI (-h | --help)
-      Chirp.CLI --version
-
-    Options:
-      -h --help     Show this screen.
-      --version     Show version.
-
-    ";
-
     // 3 methods from DocoptNet docs
     // https://docopt.github.io/docopt.net/dev/#api
-    static int ShowHelp(string help)
+    private static int ShowHelp(string help)
     {
         Console.WriteLine(help);
         return 0;
     }
 
-    static int ShowVersion(string version)
+    private static int ShowVersion(string version)
     {
         Console.WriteLine(version);
         return 0;
     }
 
-    static int OnError(string usage)
+    private static int OnError(string usage)
     {
         Console.WriteLine(usage);
         return 1;
     }
 
     // Method to activate diffrent parts of the program
-    static int Run(IDictionary<string, ArgValue> arguments)
+    private static int Run(IDictionary<string, ArgValue> arguments)
     {
         bool chirpbool = false;
-        foreach (var (key, value) in arguments)
+        foreach ((string key, ArgValue value) in arguments)
         {
-            if (key == "interactive" && ((bool)value))
+            if (key == "interactive" && (bool)value)
+            {
                 interactive();
-            if (key == "read" && ((bool)value))
+            }
+
+            if (key == "read" && (bool)value)
+            {
                 Read();
-            if (key == "chirp" && ((bool)value))
+            }
+
+            if (key == "chirp" && (bool)value)
+            {
                 chirpbool = true;
+            }
+
             if (key == "<text>" && chirpbool)
-                Chirp(((string)value));
+            {
+                Chirp((string)value);
+            }
             //Console.WriteLine("{0} = {1}", key, value);
         }
 
         return 0;
     }
 
-    static int Main(string[] args)
+    private static int Main(string[] args)
     {
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
