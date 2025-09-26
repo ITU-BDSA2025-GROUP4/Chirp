@@ -6,13 +6,25 @@ public interface ICheepService
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
+public static class CheepServiceUtils
+{
+    public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("dd/MM/yyyy HH:mm:ss");
+    }
+    
+}
+
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel> _cheeps = new()
         {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
+            new CheepViewModel("Helge", "Hello, BDSA students!", CheepServiceUtils.UnixTimeStampToDateTimeString(1690892208)),
+            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", CheepServiceUtils.UnixTimeStampToDateTimeString(1690895308)),
         };
 
     public List<CheepViewModel> GetCheeps()
@@ -25,13 +37,4 @@ public class CheepService : ICheepService
         // filter by the provided author name
         return _cheeps.Where(x => x.Author == author).ToList();
     }
-
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
-    {
-        // Unix timestamp is seconds past epoch
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss");
-    }
-
 }
