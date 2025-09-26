@@ -1,31 +1,26 @@
 namespace Utils;
 
-//    Might need an optional time later, this doesn't compile btw
-//
-//    public class Optional<T> {
-//        private T? value;
-//        public bool HasValue {get; private set;}
-//
-//        public Optional(T value) {
-//            this.value = value;
-//            HasValue = true;
-//        }
-//
-//        private static Optional<T>? emptyOptional;
-//        protected Optional() {
-//            HasValue = false;
-//        }
-//
-//        public static Optional<T> Empty() {
-//            if(emptyOptional == null) {
-//                emptyOptional = Optional();
-//            }
-//
-//            return emptyOptional;
-//        }
-//
-//        public T Value() {
-//            if(!HasValue) throw new Exception("Called value when optional is empty");
-//            return this.value;
-//        }
-//    }
+public struct Optional<T> {
+    private T? value;
+    public bool HasValue {get; private set;}
+
+    public Optional(T value) {
+        this.value = value;
+        HasValue = true;
+    }
+
+    public Optional() {
+        HasValue = false;
+    }
+
+    public T ValueOrDefault(T def) 
+    {
+        if(HasValue) return value;
+        else return def;
+    }
+
+    public T Value() {
+        if(!HasValue) throw new NullReferenceException("Called value when optional's internal value is null");
+        else return value;
+    }
+}
