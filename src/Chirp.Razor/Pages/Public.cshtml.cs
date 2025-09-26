@@ -5,7 +5,7 @@ namespace Chirp.Razor.Pages;
 
 public class PublicModel : PageModel
 {
-    private static int _pageSize = 32;
+    private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
     public List<CheepViewModel> Cheeps { get; set; }
@@ -17,9 +17,7 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet([FromQuery] int page = 1)
     {
-        // probably paginate in db
-        // maybe make abstract datastructure
-        Console.WriteLine(page);
+        page = page > 1 ? page : 1;
         Cheeps = _service.GetCheeps().Skip((page - 1) * _pageSize).Take(_pageSize).ToList();
         return Page();
     }
