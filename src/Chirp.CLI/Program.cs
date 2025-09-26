@@ -48,7 +48,7 @@ public static class UserInterface
         foreach (Cheep cheep in cheeps)
         {
             DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " + cheep.Message);
+            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture) + ": " + cheep.Message);
         }
     }
 }
