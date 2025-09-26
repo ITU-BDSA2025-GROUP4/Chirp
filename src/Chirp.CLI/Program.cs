@@ -229,18 +229,25 @@ public static class ChirpMain
 
     private static int Main(string[] args)
     {
+
+        SQLiteDatabase<Test> db = new SQLiteDatabase<Test>("../SimpleDB/Data/chirp_sql.db", "Cheep");
+
+        var results = db.Read(1);
+
+        Console.WriteLine(results.First());
+
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
-        Docopt.CreateParser(help)
-            .WithVersion(Version.version)
-            .Parse(args)
-            .Match(Run,
-                result => ShowHelp(result.Help),
-                result => ShowVersion(result.Version),
-                result => OnError(result.Usage)
-            );
-
-        ChirpExit(0);
+//        Docopt.CreateParser(help)
+//            .WithVersion(Version.version)
+//            .Parse(args)
+//            .Match(Run,
+//                result => ShowHelp(result.Help),
+//                result => ShowVersion(result.Version),
+//                result => OnError(result.Usage)
+//            );
+//
+//        ChirpExit(0);
         return 0;
     }
 }
