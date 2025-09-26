@@ -43,12 +43,17 @@ public static class ConsoleListener
 public static class UserInterface
 {
     private const string timeFormat = "dd/MM/yy HH:mm:ss";
+
+    public static string FormatTimestamp(long timestamp)
+    {
+        return DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture);
+    }
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
         {
             DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture) + ": " + cheep.Message);
+            Console.WriteLine(cheep.Author + " @ " + FormatTimestamp(cheep.Timestamp) + ": " + cheep.Message);
         }
     }
 }
