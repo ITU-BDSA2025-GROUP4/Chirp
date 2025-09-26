@@ -135,7 +135,6 @@ public static class ChirpMain
                 helpfunc();
                 break;
             case "exit":
-                ChirpExit(0);
                 return BatchResult.Stop;
             default:
                 Logger.get.Log(String.Format("User wrote unknown command: {0}", command));
