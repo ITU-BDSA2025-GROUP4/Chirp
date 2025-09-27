@@ -4,36 +4,17 @@ namespace SimpleDB;
 
 using Utils;
 using System;
-using System.Data;
 using System.Data.SQLite;
-
-public record Test(string author, string message, long timestamp) : ISQLType<Test>
-{
-
-    public static Test Extract(SQLiteDataReader reader)
-    {
-        int id = reader.GetInt32(0);
-        string author = reader.GetString(1);
-        string message = reader.GetString(2);
-        long timestamp = reader.GetInt64(3);
-
-        return new Test(author, message, timestamp);
-    }
-
-    public static string ExpectedTable()
-    {
-        return "Cheep";
-    }
-
-}
 
 public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : ISQLType<T>
 {
 
     private SQLiteConnection _conn;
-    private string _table;
+    private SQLTableQueries _queries;
 
-    public SQLiteDatabase(string filepath, string table)
+    private List<T> _buffer;
+
+    public SQLiteDatabase(string filepath)
     {
         if(!Path.Exists(filepath)) 
             throw new FileNotFoundException("Could not find: " + filepath);
@@ -41,14 +22,13 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : ISQLTyp
             filepath = Path.GetFullPath(filepath);
 
         _conn = new SQLiteConnection("Data Source=" + filepath);
-        _table = table;
 
         _conn.Open();
 
-        if(!DoesTableExist(table)) {
-            throw new Exception("Welp");
-        }
+        int numOfColumns = typeof(T).GetProperties().Length;
+        _queries = new SQLTableQueries(_conn, T.ExpectedTable(), numOfColumns);
 
+        _buffer = new List<T>(); 
     }
 
     ~SQLiteDatabase()
@@ -56,40 +36,51 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : ISQLTyp
         _conn.Close();
     }
 
+    // If limit <= 0, then it returns everything
     public IEnumerable<T> Read(int limit)
     {
-        SQLiteCommand cmd = SQLqueries.SelectLatestCheeps(_conn, limit);
+        _buffer.Clear();
 
-        List<T> results = new List<T>();
+        Optional<SQLiteDataReader> readerOpt; 
+        if(limit > 0) readerOpt = _queries.SelectFromTableWithLimit(limit);
+        else readerOpt = _queries.SelectFromTable();
 
-        DataTable dt = new DataTable();
-        dt.Load( cmd.ExecuteReader() );
-
-        using (SQLiteDataReader reader = cmd.ExecuteReader()) 
+        if(!readerOpt.HasValue)
         {
-            if(reader.HasRows)
-            while(reader.Read()) {
-                
-                results.Add(T.Extract(reader));
-            }
+            Console.WriteLine("Query failed\n");
+            return _buffer;
         }
 
-        return results;
+        SQLiteDataReader reader = readerOpt.Value();
+        if(!reader.HasRows)
+        {
+            Console.WriteLine("Query is empty\n");
+            return _buffer;
+        }
+
+        while(reader.Read()) {
+            _buffer.Add(T.Extract(reader));
+        }
+
+        reader.Close();
+        return _buffer;
     }
 
     public IEnumerable<T> ReadAll()
     {
-        return Read(Size());
+        return Read(0);
     }
 
     public IEnumerable<T> Query(Func<T, bool> condition)
     {
-        return ReadAll().Where(condition);
+        throw new NotImplementedException();
     }
 
     public void Store(T record)
     {
-        throw new NotImplementedException();
+        var cmd = _queries.InsertIntoTable();
+        record.Insert(cmd.Parameters);
+        cmd.ExecuteNonQuery();
     }
 
     public void Write()
@@ -99,37 +90,19 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : ISQLTyp
 
     public int Size()
     {
-        var cmd = SQLqueries.SelectCountTable(_conn, "Cheep");
+        Optional<SQLiteDataReader> cmd = _queries.CountTableEntries();
 
-        using (SQLiteDataReader reader = cmd.ExecuteReader()) 
+        if(!cmd.HasValue) return 0;
+
+        using (SQLiteDataReader reader = cmd.Value()) 
         {
-            if(!reader.HasRows) {
+            if(!reader.HasRows)
                 return 0;
-            }
 
             if(reader.Read())
-            {
                 return reader.GetInt32(0);
-            }
         }
 
         return 0;
-    }
-
-    private bool DoesTableExist(string table) 
-    {
-        var cmd = SQLqueries.SelectTableNames(_conn);
-
-        using (SQLiteDataReader reader = cmd.ExecuteReader()) 
-        {
-            if(!reader.HasRows) {
-                return false;
-            }
-            while(reader.Read()) {
-                string tableInDatabase = reader.GetString(0);
-                if(tableInDatabase == table) return true;
-            }
-        }
-        return false;
     }
 }
