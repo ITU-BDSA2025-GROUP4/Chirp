@@ -1,16 +1,13 @@
 namespace Utils;
 
-public struct Optional<T> {
-    private T? value;
-    public bool HasValue {get; private set;}
+
+public readonly struct Optional<T> {
+    private readonly T value;
+    public readonly bool HasValue;
 
     public Optional(T value) {
         this.value = value;
         HasValue = true;
-    }
-
-    public Optional() {
-        HasValue = false;
     }
 
     public T ValueOrDefault(T def) 
@@ -20,7 +17,18 @@ public struct Optional<T> {
     }
 
     public T Value() {
-        if(!HasValue) throw new NullReferenceException("Called value when optional's internal value is null");
+        if(!HasValue) throw new NullReferenceException("Called Value() on empty Optional");
         else return value;
+    }
+}
+
+public static class Optional {
+    public static Optional<T> Of<T>(T value)
+    {
+        return new Optional<T>(value);
+    }
+    public static Optional<T> Empty<T>()
+    { 
+        return new Optional<T>();
     }
 }

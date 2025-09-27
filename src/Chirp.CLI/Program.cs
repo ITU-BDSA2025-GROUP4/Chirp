@@ -230,11 +230,35 @@ public static class ChirpMain
     private static int Main(string[] args)
     {
 
-        SQLiteDatabase<Test> db = new SQLiteDatabase<Test>("../SimpleDB/Data/chirp_sql.db", "Cheep");
+        SQLiteDatabase<Cheep> db = new SQLiteDatabase<Cheep>("../SimpleDB/Data/chirp_sql.db");
 
-        var results = db.Read(1);
+        Console.WriteLine("Query with read limit = 2");
+        var results = db.Read(2);
 
-        Console.WriteLine(results.First());
+        foreach(var i in results) {
+            Console.WriteLine(i);
+        }
+
+        var results2 = db.ReadAll();
+
+        Console.WriteLine("---------------------");
+        Console.WriteLine("With no read limit");
+
+        foreach(var i in results2) {
+            Console.WriteLine(i);
+        }
+
+        db.Store( new Cheep("TESTING", "MESSAGE", 123) );
+
+        var results3 = db.ReadAll();
+
+        Console.WriteLine("---------------------");
+        Console.WriteLine("Query after insertion");
+
+        foreach(var i in results3) {
+            Console.WriteLine(i);
+        }
+
 
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
