@@ -11,7 +11,7 @@ using Xunit;
 
 namespace CSVDatabase.Tests;
 
-public class CsvDatabaseTest
+public class CSVDatabaseTest
 {
     [Fact]
     public void Ctor_TextReader_LoadsAllRecords()
