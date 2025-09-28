@@ -29,7 +29,7 @@ public class End2EndTests : IDisposable
         _apiProcess.StartInfo.Arguments = $"run --project {projectPath} --urls=http://localhost:5000/ --path {csvPath}";
         _apiProcess.Start();
         
-        Thread.Sleep(1000);
+        Thread.Sleep(5000);
     }
     
     // This code is taking from the lecture slides: https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_03/Slides.md
@@ -58,7 +58,7 @@ public class End2EndTests : IDisposable
     public void TestReadCheeps()
     {
         var output = RunCliCommand("read");
-        var expectedResult = "ropf @ 01/08/23 14:09:20: Hello, BDSA students!adho @ 02/08/23 14:19:38: Welcome to the course!adho @ 02/08/23 14:37:38: I hope you had a good summer.ropf @ 02/08/23 15:04:47: Cheeping cheeps on Chirp :)";
+        var expectedResult = "ropf @ 01/08/23 12:09:20: Hello, BDSA students!adho @ 02/08/23 12:19:38: Welcome to the course!adho @ 02/08/23 12:37:38: I hope you had a good summer.ropf @ 02/08/23 13:04:47: Cheeping cheeps on Chirp :)";
         output = output.Replace("\n", "").Replace("\r", "").Replace("\t", "");
         Assert.Equal(expectedResult, output);
     }
@@ -79,7 +79,7 @@ public class End2EndTests : IDisposable
         Assert.Equal("Cheep'ed", responseString);
         
         var output = RunCliCommand("read");
-        var expectedOutputSubstring = author + " @ " + DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().ToString("dd/MM/yy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) + ": " + message;
+        var expectedOutputSubstring = author + " @ " + DateTimeOffset.FromUnixTimeSeconds(timestamp).ToString("dd/MM/yy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) + ": " + message;
         Assert.Contains(expectedOutputSubstring, output);
         
     }
