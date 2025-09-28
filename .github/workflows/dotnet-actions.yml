@@ -41,6 +41,9 @@ jobs:
 
     - name: Install dependencies for cli unit test
       working-directory: test/Chirp.CLI.Tests
+
+    - name: Install dependencies for SQL database unit test
+      working-directory: test/SQLiteDatabase.Tests
       run: dotnet restore
       
     - name: Build
@@ -57,6 +60,9 @@ jobs:
 
     - name: Chirp.CLI Unit test
       working-directory: test/Chirp.CLI.Tests
+
+    - name: SQL database Unit test
+      working-directory: test/SQLiteDatabase.Tests
       run: dotnet test --no-restore --verbosity normal
 
 
