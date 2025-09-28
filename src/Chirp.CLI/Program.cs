@@ -44,6 +44,7 @@ public static class ChirpMain
 {
     static void ChirpExit(int statusCode)
     {
+        Db.Write();
         Logger.get.Dispose();
     }
     // string that contains the help message
@@ -69,12 +70,6 @@ public static class ChirpMain
         BaseAddress = new Uri("http://localhost:5000")
     };
 
-    private static void ChirpExit(int statusCode)
-    {
-        Logger.get.Dispose();
-        Db.Write();
-        Environment.Exit(statusCode);
-    }
 
     private static void Read()
     {
