@@ -29,7 +29,28 @@ public class End2EndTests : IDisposable
         _apiProcess.StartInfo.Arguments = $"run --project {projectPath} --urls=http://localhost:5000/ --path {csvPath}";
         _apiProcess.Start();
         
-        Thread.Sleep(5000);
+        // Waits with proceeding till our API is actually up and running
+        var waitTime = TimeSpan.FromSeconds(20);
+        var stopwatch = Stopwatch.StartNew();
+        
+        using var client = new HttpClient { BaseAddress = new Uri("http://localhost:5000") };
+        while (stopwatch.Elapsed < waitTime)
+        {
+            try
+            {
+                var res = client.GetAsync("/cheeps").Result;
+
+                if (res.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+            catch { /* If we get an error, the API process has not started */ }
+
+            Thread.Sleep(500);
+        }
+        
+        throw new TimeoutException("Chirp.API did not start within 20 seconds");
     }
     
     // This code is taking from the lecture slides: https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_03/Slides.md
