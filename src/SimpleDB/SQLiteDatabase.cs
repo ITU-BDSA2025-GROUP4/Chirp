@@ -43,6 +43,7 @@ internal sealed class SQLTable<T> : DbContext where T : class
 public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
 {
     private SQLTable<T> _table;
+    private List<T> _unsavedEntires;
     private List<T> _buffer;
 
     public SQLiteDatabase(string filepath)
@@ -59,6 +60,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
         _table.Database.OpenConnection();
 
         _buffer = new List<T>(); 
+        _unsavedEntires = new List<T>(); 
     }
 
     public SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
@@ -77,12 +79,18 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
     {
         _buffer.Clear();
 
-        _buffer.AddRange(
-                limit > 0 ? 
-                _table.Get().Take(limit)
-                :
-                _table.Get()
-        );
+        if(limit <= 0) 
+        {
+            _buffer.AddRange(_table.Get());
+            _buffer.AddRange(_unsavedEntires);
+
+            return _buffer;
+        }
+
+        _buffer.AddRange(_unsavedEntires.Take(limit));
+
+        limit -= _buffer.Count();
+        _buffer.AddRange(_table.Get().Take(limit));
 
         return _buffer;
     }
@@ -100,47 +108,34 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
             _table.Get().Where(condition)
         );
 
+        _buffer.AddRange(
+            _unsavedEntires.Where(condition)
+        );
+
         return _buffer;
-    }
-
-    public Task StoreAsync(T record)
-    {
-        _table.Get().Add(record);
-        return _table.SaveChangesAsync();
-    }
-
-    public void StoreWithoutWriting(T record)
-    {
-        _table.Get().Add(record);
     }
 
     public void Store(IEnumerable<T> record)
     {
         _table.Get().AddRange(record);
-        var task = _table.SaveChangesAsync();
-        task.Wait();
+        _unsavedEntires.AddRange(record);
     }
 
     public void Store(T record)
     {
         _table.Get().Add(record);
-        var task = _table.SaveChangesAsync();
-        task.Wait();
-    }
-
-    public Task WriteAsync()
-    {
-        return _table.SaveChangesAsync();
+        _unsavedEntires.Add(record);
     }
 
     public void Write()
     {
         var task = _table.SaveChangesAsync();
+        _unsavedEntires.Clear();
         task.Wait();
     }
 
     public int Size()
     {
-        return _table.Get().Count();
+        return _table.Get().Count() + _unsavedEntires.Count();
     }
 }
