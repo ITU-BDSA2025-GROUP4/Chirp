@@ -1,17 +1,12 @@
 namespace SimpleDB;
 
-// TODO: Check that given table exists in file
+// NOTE: THE NAME OF THE TYPE BEING PUT INTO THE DB IS USED AT THE TABLE NAME
 
 using Utils;
 using System;
 using System.Data;
 using System.Data.SQLite;
 using Microsoft.EntityFrameworkCore;
-
-public interface ISQLType<T>
-{
-    public static abstract string TableName();
-}
 
 internal sealed class SQLTable<T> : DbContext where T : class
 {
@@ -27,8 +22,8 @@ internal sealed class SQLTable<T> : DbContext where T : class
         Database.EnsureCreated();
     }
 
-    // The following configures EF to create a Sqlite database file in the
-    // special "local" folder for your platform.
+    // From Microsoft docs
+    // https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseSqlite($"Data Source={DbPath}");
@@ -45,7 +40,7 @@ internal sealed class SQLTable<T> : DbContext where T : class
     }
 }
 
-public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class, ISQLType<T>
+public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
 {
     private SQLTable<T> _table;
     private List<T> _buffer;
@@ -58,14 +53,15 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class, 
             SQLiteConnection.CreateFile(filepath);
         }
 
+        
         filepath = Path.GetFullPath(filepath);
-        _table = new SQLTable<T>(filepath, T.TableName());
+        _table = new SQLTable<T>(filepath, typeof(T).Name);
         _table.Database.OpenConnection();
 
         _buffer = new List<T>(); 
     }
 
-    public SQLiteDatabase() : this( StringUtils.UniqueFilePath("./logs/", "sql")  )
+    public SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
     {}
 
     ~SQLiteDatabase()
@@ -148,4 +144,3 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class, 
         return _table.Get().Count();
     }
 }
-

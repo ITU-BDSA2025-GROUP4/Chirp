@@ -1,19 +1,13 @@
 ﻿namespace Chirp.Types;
 
-using Microsoft.EntityFrameworkCore;
+public class Cheep {
 
-using SimpleDB;
-
-using System.Data;
-using System.Data.SQLite;
-
-public class Cheep : ISQLType<Cheep> {
-
-    public int Id { get; set; }
+    public int    Id        { get; set; }
     public string Author    { get; set; }
     public string Message   { get; set; }
     public long   Timestamp { get; set; }
 
+    // Need both constructors, otherwise Entity Core can't properly math the type with the SQL table
     protected Cheep(int Id, string Author, string Message, long Timestamp)
     {
         this.Author = Author;
@@ -21,7 +15,6 @@ public class Cheep : ISQLType<Cheep> {
         this.Timestamp = Timestamp;
         this.Id = Id;
     }
-
     public Cheep(string Author, string Message, long Timestamp)
     {
         this.Author = Author;
@@ -29,16 +22,12 @@ public class Cheep : ISQLType<Cheep> {
         this.Timestamp = Timestamp;
     }
 
-    public static string TableName()
-    {
-        return "Cheep";
-    }
-
     public override String ToString()
     {
         return String.Format("Cheep {{ Author: {0}, Message: {1}, Timestamp {2} }}", Author, Message, Timestamp);
     }
 
+    // Used in unit tests
     public bool Equals(Cheep? other)
     {
         if (ReferenceEquals(null, other)) return false;
