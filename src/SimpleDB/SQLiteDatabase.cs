@@ -43,7 +43,7 @@ internal sealed class SQLTable<T> : DbContext where T : class
 public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
 {
     private SQLTable<T> _table;
-    private List<T> _unsavedEntires;
+    private List<T> _unsavedEntries;
     private List<T> _buffer;
 
     public SQLiteDatabase(string filepath)
@@ -60,7 +60,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
         _table.Database.OpenConnection();
 
         _buffer = new List<T>(); 
-        _unsavedEntires = new List<T>(); 
+        _unsavedEntries = new List<T>(); 
     }
 
     public SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
@@ -82,12 +82,12 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
         if(limit <= 0) 
         {
             _buffer.AddRange(_table.Get());
-            _buffer.AddRange(_unsavedEntires);
+            _buffer.AddRange(_unsavedEntries);
 
             return _buffer;
         }
 
-        _buffer.AddRange(_unsavedEntires.Take(limit));
+        _buffer.AddRange(_unsavedEntries.Take(limit));
 
         limit -= _buffer.Count();
         _buffer.AddRange(_table.Get().Take(limit));
@@ -109,7 +109,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
         );
 
         _buffer.AddRange(
-            _unsavedEntires.Where(condition)
+            _unsavedEntries.Where(condition)
         );
 
         return _buffer;
@@ -118,24 +118,24 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
     public void Store(IEnumerable<T> record)
     {
         _table.Get().AddRange(record);
-        _unsavedEntires.AddRange(record);
+        _unsavedEntries.AddRange(record);
     }
 
     public void Store(T record)
     {
         _table.Get().Add(record);
-        _unsavedEntires.Add(record);
+        _unsavedEntries.Add(record);
     }
 
     public void Write()
     {
         var task = _table.SaveChangesAsync();
-        _unsavedEntires.Clear();
+        _unsavedEntries.Clear();
         task.Wait();
     }
 
     public int Size()
     {
-        return _table.Get().Count() + _unsavedEntires.Count();
+        return _table.Get().Count() + _unsavedEntries.Count();
     }
 }
