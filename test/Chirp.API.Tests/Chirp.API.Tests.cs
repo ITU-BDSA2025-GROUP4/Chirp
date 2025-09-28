@@ -64,7 +64,7 @@ public class APICoreUnitTest
     {
         return (queryResult.Distinct().Count() ==  expected.Count())
             &&
-            queryResult.Select(x => expected.Where(y => y.Equals(x)).Count() == 1).Aggregate(true, (a, b) => a && b);
+            queryResult.Select(x => expected.Where(y => x.Equals(y)).Count() == 1).Aggregate(true, (a, b) => a && b);
     }
 
     [Fact]
