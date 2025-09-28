@@ -1,39 +1,53 @@
-﻿using System.Net.Http.Json;
-
-using Chirp.Types;
+namespace Chirp.Cli;
 
 using DocoptNet;
-
-using SimpleDB;
-
 using Utils;
 
 using Version = MetaData.Version;
 
-namespace Chirp.Cli;
+using SimpleDB;
+using Chirp.Types;
+
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text;
 
 public static class UserInterface
 {
     private const string timeFormat = "dd/MM/yy HH:mm:ss";
 
+    public static string FormatTimestamp(long timestamp)
+    {
+        return DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture);
+    }
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
         {
-            DateTimeOffset timestamp =
-                DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-
-            Console.WriteLine(cheep.Author + " @ " + timestamp.ToString(timeFormat) + ": " +
-                              cheep.Message);
+            DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+            Console.WriteLine(cheep.Author + " @ " + FormatTimestamp(cheep.Timestamp) + ": " + cheep.Message);
         }
     }
 }
 
-internal static class ChirpMain
+enum BatchResult
 {
+    Stop,
+    Continue
+}
+
+
+public static class ChirpMain
+{
+    static void ChirpExit(int statusCode)
+    {
+        Logger.get.Dispose();
+    }
     // string that contains the help message
     private const string help = @"Chirp.CLI.
-
     Usage:
       Chirp.CLI interactive
       Chirp.CLI read
@@ -106,7 +120,7 @@ internal static class ChirpMain
 
     // @Obselete
     // Used by interactive
-    private static void batch(string[] args)
+    static BatchResult batch(string[] args)
     {
         string command = args[0];
 
@@ -119,7 +133,7 @@ internal static class ChirpMain
                 if (args.Length < 2)
                 {
                     Console.WriteLine("Chirp requires a message");
-                    return;
+                    break;
                 }
 
                 Chirp(args[1]);
@@ -128,13 +142,14 @@ internal static class ChirpMain
                 helpfunc();
                 break;
             case "exit":
-                ChirpExit(0);
-                break;
+                return BatchResult.Stop;
             default:
                 Logger.get.Log(string.Format("User wrote unknown command: {0}", command));
                 Console.WriteLine("Unknown command {0}, use '?' for help", command);
                 break;
         }
+
+        return BatchResult.Continue;
     }
 
     private static void interactive()
@@ -158,7 +173,12 @@ internal static class ChirpMain
                 continue;
             }
 
-            batch(tokens);
+            var result = batch(tokens);
+
+            if (result == BatchResult.Stop)
+            {
+                break;
+            }
         }
     }
 
@@ -227,6 +247,6 @@ internal static class ChirpMain
             );
 
         ChirpExit(0);
-        return 1;
+        return 0;
     }
 }
