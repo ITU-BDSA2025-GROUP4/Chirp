@@ -1,8 +1,15 @@
 namespace SimpleDB;
 
+/*
+ * RETIRED CODE, DON'T USE
+ */
+
 using Utils;
 using System.Text;
+using System.Data;
 using System.Data.SQLite;
+
+
 
 /*
  * This abstracts SQL queries behind method calls. Please use this for all SQL
@@ -186,9 +193,21 @@ public class SQLTableQueries {
 
 }
 
-public interface ISQLType<T>
+public struct SQLTableDescription 
 {
-    public static abstract T Extract(SQLiteDataReader reader);
-    public void Insert(SQLiteParameterCollection parameters);
-    public static abstract string ExpectedTable();
+    public string tableName;
+    public (string, DbType)[] columns;
+}
+
+
+
+public struct ColumnWriter
+{
+    private SQLiteCommand _cmd;
+
+    private ColumnWriter(SQLiteCommand cmd)
+    {
+        _cmd = cmd;
+    }
+
 }

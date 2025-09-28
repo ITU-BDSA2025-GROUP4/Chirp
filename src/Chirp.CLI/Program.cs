@@ -8,12 +8,8 @@ using Version = MetaData.Version;
 using SimpleDB;
 using Chirp.Types;
 
-using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text;
 
 public static class UserInterface
 {
@@ -229,49 +225,18 @@ public static class ChirpMain
 
     private static int Main(string[] args)
     {
-
-        SQLiteDatabase<Cheep> db = new SQLiteDatabase<Cheep>("../SimpleDB/Data/chirp_sql.db");
-
-        Console.WriteLine("Query with read limit = 2");
-        var results = db.Read(2);
-
-        foreach(var i in results) {
-            Console.WriteLine(i);
-        }
-
-        var results2 = db.ReadAll();
-
-        Console.WriteLine("---------------------");
-        Console.WriteLine("With no read limit");
-
-        foreach(var i in results2) {
-            Console.WriteLine(i);
-        }
-
-        db.Store( new Cheep("TESTING", "MESSAGE", 123) );
-
-        var results3 = db.ReadAll();
-
-        Console.WriteLine("---------------------");
-        Console.WriteLine("Query after insertion");
-
-        foreach(var i in results3) {
-            Console.WriteLine(i);
-        }
-
-
         // Uncomment the line below in order to disable all logging
         //        Logger.get.Disable();
-//        Docopt.CreateParser(help)
-//            .WithVersion(Version.version)
-//            .Parse(args)
-//            .Match(Run,
-//                result => ShowHelp(result.Help),
-//                result => ShowVersion(result.Version),
-//                result => OnError(result.Usage)
-//            );
-//
-//        ChirpExit(0);
+        Docopt.CreateParser(help)
+            .WithVersion(Version.version)
+            .Parse(args)
+            .Match(Run,
+                result => ShowHelp(result.Help),
+                result => ShowVersion(result.Version),
+                result => OnError(result.Usage)
+            );
+
+        ChirpExit(0);
         return 0;
     }
 }

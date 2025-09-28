@@ -7,6 +7,7 @@
     <ItemGroup>
         <PackageReference Include="System.Data.SQLite" version="2.0.1" />
         <PackageReference Include="SourceGear.sqlite3" version="3.50.4.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
     </ItemGroup>
 
     <PropertyGroup>

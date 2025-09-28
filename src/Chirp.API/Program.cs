@@ -23,7 +23,15 @@ for (int i = 0; i < args.Length; i++)
 
 dbPath ??= Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv");
 
-IDatabaseRepository<Cheep> db = new CsvDatabase<Cheep>(dbPath);
+IDatabaseRepository<Cheep> db; 
+if(dbPath.EndsWith(".csv")) 
+{
+    db = new CsvDatabase<Cheep>(dbPath);
+}
+else 
+{
+    db = new SQLiteDatabase<Cheep>(dbPath);
+}
 
 APICore core = new APICore(db);
 

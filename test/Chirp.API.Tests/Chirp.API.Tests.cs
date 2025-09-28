@@ -8,7 +8,6 @@ using Chirp.Types;
 
 public class APICoreUnitTest
 {
-
     private static Dictionary<string, string> EmptyQuery()
     {
         return new Dictionary<string, string>();
@@ -16,7 +15,7 @@ public class APICoreUnitTest
 
     private static APICore EmptyAPI()
     {
-        CsvDatabase<Cheep> db = new();
+        SQLiteDatabase<Cheep> db = new();
         APICore core = new APICore(db);
         return core;
     }
@@ -65,7 +64,7 @@ public class APICoreUnitTest
     {
         return (queryResult.Distinct().Count() ==  expected.Count())
             &&
-            queryResult.Select(x => expected.Contains(x)).Aggregate(true, (a, b) => a && b);
+            queryResult.Select(x => expected.Where(y => y.Equals(x)).Count() == 1).Aggregate(true, (a, b) => a && b);
     }
 
     [Fact]
@@ -109,19 +108,19 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Timestamp, timestamp);
     }
 
-    [Fact]
-    public void QueryAll()
-    {
-        (APICore core, Cheep[] expectedData) = APIDataSetA();
+  [Fact]
+  public void QueryAll()
+  {
+      (APICore core, Cheep[] expectedData) = APIDataSetA();
 
-        var query = EmptyQuery();
+      var query = EmptyQuery();
 
-        var result = core.Cheeps(query);
-        Assert.True(
-            QueryResultMatchesData(result, expectedData)
-        );
+      var result = core.Cheeps(query);
+      Assert.True(
+          QueryResultMatchesData(result, expectedData)
+      );
 
-    }
+  }
 
     [Theory]
     [InlineData("bob")]
@@ -195,9 +194,6 @@ public class APICoreUnitTest
         var query = EmptyQuery();
 
         var queryKey = APICore.Query.ToString(APICore.QueryParameter.notByUsers);
-
-        var thingy = names.Aggregate((x,y) => x + "," + y);
-        Console.WriteLine(thingy);
 
         query.Add(queryKey, names.Aggregate((x,y) => x + "," + y));
         var expectedOccurences = expectedData.Where(x => !names.Contains(x.Author)).Count();
