@@ -29,7 +29,28 @@ public class End2EndTests : IDisposable
         _apiProcess.StartInfo.Arguments = $"run --project {projectPath} --urls=http://localhost:5000/ --path {csvPath}";
         _apiProcess.Start();
         
-        Thread.Sleep(1000);
+        // Waits with proceeding till our API is actually up and running
+        var waitTime = TimeSpan.FromSeconds(20);
+        var stopwatch = Stopwatch.StartNew();
+        
+        using var client = new HttpClient { BaseAddress = new Uri("http://localhost:5000") };
+        while (stopwatch.Elapsed < waitTime)
+        {
+            try
+            {
+                var res = client.GetAsync("/cheeps").Result;
+
+                if (res.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+            catch { /* If we get an error, the API process has not started */ }
+
+            Thread.Sleep(500);
+        }
+        
+        throw new TimeoutException("Chirp.API did not start within 20 seconds");
     }
     
     // This code is taking from the lecture slides: https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_03/Slides.md
@@ -58,7 +79,7 @@ public class End2EndTests : IDisposable
     public void TestReadCheeps()
     {
         var output = RunCliCommand("read");
-        var expectedResult = "ropf @ 01/08/23 14:09:20: Hello, BDSA students!adho @ 02/08/23 14:19:38: Welcome to the course!adho @ 02/08/23 14:37:38: I hope you had a good summer.ropf @ 02/08/23 15:04:47: Cheeping cheeps on Chirp :)";
+        var expectedResult = "ropf @ 01/08/23 12:09:20: Hello, BDSA students!adho @ 02/08/23 12:19:38: Welcome to the course!adho @ 02/08/23 12:37:38: I hope you had a good summer.ropf @ 02/08/23 13:04:47: Cheeping cheeps on Chirp :)";
         output = output.Replace("\n", "").Replace("\r", "").Replace("\t", "");
         Assert.Equal(expectedResult, output);
     }
@@ -79,7 +100,7 @@ public class End2EndTests : IDisposable
         Assert.Equal("Cheep'ed", responseString);
         
         var output = RunCliCommand("read");
-        var expectedOutputSubstring = author + " @ " + DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().ToString("dd/MM/yy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) + ": " + message;
+        var expectedOutputSubstring = author + " @ " + DateTimeOffset.FromUnixTimeSeconds(timestamp).ToString("dd/MM/yy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) + ": " + message;
         Assert.Contains(expectedOutputSubstring, output);
         
     }

@@ -21,13 +21,12 @@ public static class UserInterface
 
     public static string FormatTimestamp(long timestamp)
     {
-        return DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture);
+        return DateTimeOffset.FromUnixTimeSeconds(timestamp).ToString(timeFormat, System.Globalization.CultureInfo.InvariantCulture);
     }
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
         {
-            DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
             Console.WriteLine(cheep.Author + " @ " + FormatTimestamp(cheep.Timestamp) + ": " + cheep.Message);
         }
     }
