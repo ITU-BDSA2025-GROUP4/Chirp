@@ -1,11 +1,16 @@
+using SimpleDB;
+using Chirp.Types;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+var dbPath = !string.IsNullOrWhiteSpace(envPath)
+    ? envPath
+    : Path.Combine(Path.GetTempPath(), "chirp.db");
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService, CheepService>();
-
-string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
-var dbPath = !string.IsNullOrWhiteSpace(envPath) ? envPath : Path.Combine(Path.GetTempPath(), "chirp.db");
+builder.Services.AddSingleton<ICheepService>(cheepService => new CheepService(dbPath);
 
 
 var app = builder.Build();
