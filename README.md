@@ -1,9 +1,16 @@
-# Running the Web API(Chirp.API)
+# Using the CLI
+```
+Usage:
+      Chirp.CLI interactive [--azure]
+      Chirp.CLI read [--azure]
+      Chirp.CLI chirp <text> [--azure]
+      Chirp.CLI (-h | --help)
+      Chirp.CLI --version
+```
 
-Currently Chirp.CLI expects that the API is listening to port 5000.
+Please use the flag `--azure` to make the application communicate with the deployed Azure Web app. If the `--azure` flag is not present, the CLI will expect that the API is listening on `localhost` with port `5000`.
 
-You can set the port like so:
+To launch the Web API (Chirp.API) please use the following command to ensure it runs on the correct port:
 ```
 dotnet run --project src/Chirp.API --urls=http://localhost:5000/
 ```
-
