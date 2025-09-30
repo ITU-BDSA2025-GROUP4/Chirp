@@ -4,9 +4,9 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup4chirprazor
 
 on:
-  push:
-    branches:
-      - chirp-razor
+  release:
+    types: 
+      - published
   workflow_dispatch:
 
 jobs:
@@ -64,3 +64,4 @@ jobs:
           package: .
 
           
+
