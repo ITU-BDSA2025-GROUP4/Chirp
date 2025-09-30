@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   DOTNET_VERSION: '9.0.109' # The .NET SDK version to use
