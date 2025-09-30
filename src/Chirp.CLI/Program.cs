@@ -43,15 +43,14 @@ public static class ChirpMain
 {
     static void ChirpExit(int statusCode)
     {
-        Db.Write();
         Logger.get.Dispose();
     }
     // string that contains the help message
     private const string help = @"Chirp.CLI.
     Usage:
-      Chirp.CLI interactive
-      Chirp.CLI read
-      Chirp.CLI chirp <text>
+      Chirp.CLI interactive [--azure]
+      Chirp.CLI read [--azure]
+      Chirp.CLI chirp <text> [--azure]
       Chirp.CLI (-h | --help)
       Chirp.CLI --version
 
@@ -61,17 +60,29 @@ public static class ChirpMain
 
     ";
 
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory,
-        "Resources", "Data", "chirp_cli_db.csv"));
+    private static HttpClient? client = null;
 
-    private static readonly HttpClient client = new()
+    private static void CreateHttpClient(bool useAzure)
     {
-        BaseAddress = new Uri("http://localhost:5000")
-    };
+        client = new()
+        {
+        BaseAddress = new Uri(
+                useAzure ?
+                "https://bdsagroup4chirpremotedb-fsh6avgedzbpene2.norwayeast-01.azurewebsites.net"
+                :
+                "http://localhost:5000"
+                )
+        };
+    }
 
 
     private static void Read()
     {
+        if(client == null)
+        {
+            throw new Exception("HTTP Client is null, this shouldn't have happened");
+        }
+
         try
         {
             List<Cheep>? result = client.GetFromJsonAsync<List<Cheep>>("/cheeps").Result;
@@ -94,13 +105,17 @@ public static class ChirpMain
 
     private static void Chirp(string message)
     {
+        if(client == null)
+        {
+            throw new Exception("HTTP Client is null, this shouldn't have happened");
+        }
+
         string name = Environment.UserName;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
         string url = string.Format("/cheep?author={0}&message={1}&timestamp={2}", name, message,
             timestamp);
 
-        // TODO: This gives response 'Cheep'ed' if successful, we should check this
         Task<HttpResponseMessage> response = client.GetAsync(url);
 
         response.Wait();
@@ -200,8 +215,17 @@ public static class ChirpMain
     private static int Run(IDictionary<string, ArgValue> arguments)
     {
         bool chirpbool = false;
+        bool useAzure = false;
+
+        if((bool)arguments["--azure"])
+        {
+            useAzure = true;
+        }
+        CreateHttpClient(useAzure);
+
         foreach ((string key, ArgValue value) in arguments)
         {
+
             if (key == "interactive" && (bool)value)
             {
                 interactive();
