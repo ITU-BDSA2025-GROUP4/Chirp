@@ -1,3 +1,6 @@
+using SimpleDB;
+using Chirp.Types;  
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
@@ -20,21 +23,20 @@ public static class CheepServiceUtils
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel("Helge", "Hello, BDSA students!", CheepServiceUtils.UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", CheepServiceUtils.UnixTimeStampToDateTimeString(1690895308)),
-        };
+    private readonly IDatabaseRepository<Cheep> _database;
+
+    public CheepService(string dbPath)
+    {
+        _database = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.SQL, dbPath);
+    }
 
     public List<CheepViewModel> GetCheeps()
     {
-        return _cheeps;
+        return _database.ReadAll().Select(cheep => new CheepViewModel(cheep.Author, cheep.Message, CheepServiceUtils.UnixTimeStampToDateTimeString(cheep.Timestamp))).ToList();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
-        // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        return _database.Query(x => x.Author == author).Select(cheep => new CheepViewModel(cheep.Author, cheep.Message, CheepServiceUtils.UnixTimeStampToDateTimeString(cheep.Timestamp))).ToList();
     }
 }
