@@ -10,7 +10,7 @@ var dbPath = !string.IsNullOrWhiteSpace(envPath)
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService>(cheepService => new CheepService(dbPath);
+builder.Services.AddSingleton<ICheepService>(cheepService => new CheepService(dbPath));
 
 
 var app = builder.Build();
