@@ -19,7 +19,6 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         EnsureDirectoryExists(_path);
         EnsureHeaderExists();
 
-        Console.WriteLine("READING FROM: " +  Path.GetFullPath(path)  );
         _entries = ReadAllFromFile();
     }
 
