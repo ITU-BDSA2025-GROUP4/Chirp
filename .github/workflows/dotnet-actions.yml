@@ -45,6 +45,10 @@ jobs:
     - name: Install dependencies for SQL database unit test
       working-directory: test/SQLiteDatabase.Tests
       run: dotnet restore
+
+    - name: Install dependencies for CSV database unit test
+      working-directory: test/CSVDatabase.Tests
+      run: dotnet restore
       
     - name: Build
       working-directory: src/Chirp.CLI
@@ -63,6 +67,10 @@ jobs:
 
     - name: SQL database Unit test
       working-directory: test/SQLiteDatabase.Tests
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: CSV database unit test
+      working-directory: test/CSVDatabase.Tests
       run: dotnet test --no-restore --verbosity normal
 
 
