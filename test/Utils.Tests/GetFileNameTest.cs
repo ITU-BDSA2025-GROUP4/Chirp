@@ -1,7 +1,5 @@
 ﻿namespace Utils.Tests;
 
-using Xunit;
-
 using static StringUtils;
 
 public class GetFileNameUnitTest

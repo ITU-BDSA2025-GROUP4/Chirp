@@ -34,8 +34,20 @@ jobs:
       working-directory: test/Utils.Tests
       run: dotnet restore
 
+
     - name: Install dependencies for API unit test
       working-directory: test/Chirp.API.Tests
+      run: dotnet restore
+
+    - name: Install dependencies for cli unit test
+      working-directory: test/Chirp.CLI.Tests
+
+    - name: Install dependencies for SQL database unit test
+      working-directory: test/SQLiteDatabase.Tests
+      run: dotnet restore
+
+    - name: Install dependencies for CSV database unit test
+      working-directory: test/CSVDatabase.Tests
       run: dotnet restore
       
     - name: Build
@@ -48,6 +60,17 @@ jobs:
 
     - name: API Unit test
       working-directory: test/Chirp.API.Tests
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: Chirp.CLI Unit test
+      working-directory: test/Chirp.CLI.Tests
+
+    - name: SQL database Unit test
+      working-directory: test/SQLiteDatabase.Tests
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: CSV database unit test
+      working-directory: test/CSVDatabase.Tests
       run: dotnet test --no-restore --verbosity normal
 
 
