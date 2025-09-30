@@ -1,7 +1,8 @@
+namespace SimpleDB;
+
 using System.Collections.Concurrent;
 using CsvHelper.Configuration;
 
-namespace SimpleDB;
 
 public enum DatabaseType
 {

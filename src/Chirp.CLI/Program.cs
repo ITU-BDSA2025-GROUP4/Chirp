@@ -39,7 +39,6 @@ public static class ChirpMain
 {
     static void ChirpExit(int statusCode)
     {
-        Db.Write();
         Logger.get.Dispose();
     }
     // string that contains the help message
@@ -56,9 +55,6 @@ public static class ChirpMain
       --version     Show version.
 
     ";
-
-    private static readonly CsvDatabase<Cheep> Db = new(Path.Combine(AppContext.BaseDirectory,
-        "Resources", "Data", "chirp_cli_db.csv"));
 
     private static readonly HttpClient client = new()
     {

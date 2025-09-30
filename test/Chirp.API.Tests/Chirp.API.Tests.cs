@@ -4,6 +4,7 @@ using Xunit;
 
 using SimpleDB;
 using APICore;
+using Utils;
 using Chirp.Types;
 
 public class APICoreUnitTest
@@ -15,7 +16,8 @@ public class APICoreUnitTest
 
     private static APICore EmptyAPI()
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate());
+
         APICore core = new APICore(db);
         return core;
     }

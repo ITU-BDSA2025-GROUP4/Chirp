@@ -46,7 +46,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
     private List<T> _unsavedEntries;
     private List<T> _buffer;
 
-    public SQLiteDatabase(string filepath)
+    internal SQLiteDatabase(string filepath)
     {
         if(!Path.Exists(filepath))
         {
@@ -63,7 +63,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
         _unsavedEntries = new List<T>(); 
     }
 
-    public SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
+    internal SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
     {}
 
     ~SQLiteDatabase()

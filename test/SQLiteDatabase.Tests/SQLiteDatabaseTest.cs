@@ -2,6 +2,7 @@
 
 using Chirp.Types;
 using SimpleDB;
+using Utils;
 
 public class SQLiteDatabaseTest
 {
@@ -27,7 +28,7 @@ public class SQLiteDatabaseTest
     [Fact]
     public void NoResultsGivenEmptyDatabase()
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         int expected = 0;
 
@@ -41,7 +42,7 @@ public class SQLiteDatabaseTest
     public void OneEntryGivesOneResult(int datasetIndex)
     {
         var data = DataSetA();
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         int expectedCount = 1;
         Cheep expectedCheep = data[datasetIndex];
@@ -60,7 +61,7 @@ public class SQLiteDatabaseTest
     public void OneEntryGivesOneResultWithWrite(int datasetIndex)
     {
         var data = DataSetA();
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         int expectedCount = 1;
         Cheep expectedCheep = data[datasetIndex];
@@ -77,7 +78,7 @@ public class SQLiteDatabaseTest
     [Fact]
     public void MultipleEntries()
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         var data = DataSetA();
         int expectedCount = data.Count();
@@ -95,7 +96,7 @@ public class SQLiteDatabaseTest
     [Fact]
     public void MultipleEntriesWrite()
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         var data = DataSetA();
         int expectedCount = data.Count();
@@ -115,7 +116,7 @@ public class SQLiteDatabaseTest
     [Fact]
     public void ReadWithLimit()
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         var data = DataSetA();
         int expectedCount = data.Count() / 2;
@@ -136,7 +137,7 @@ public class SQLiteDatabaseTest
     [InlineData("invalid")]
     public void QueryEntiresByAuthor(string author)
     {
-        SQLiteDatabase<Cheep> db = new();
+        IDatabaseRepository<Cheep> db = DatabaseSessionRegistry<Cheep>.OpenInMemory("" + Id.Generate());
 
         var data = DataSetA();
         var expectedData = data.Where(x => x.Author == author);

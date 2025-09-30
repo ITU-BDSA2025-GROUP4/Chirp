@@ -26,11 +26,11 @@ dbPath ??= Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cl
 IDatabaseRepository<Cheep> db; 
 if(dbPath.EndsWith(".csv")) 
 {
-    db = new CsvDatabase<Cheep>(dbPath);
+    db = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.CSV, dbPath);
 }
 else 
 {
-    db = new SQLiteDatabase<Cheep>(dbPath);
+    db = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.SQL, dbPath);
 }
 
 APICore core = new APICore(db);

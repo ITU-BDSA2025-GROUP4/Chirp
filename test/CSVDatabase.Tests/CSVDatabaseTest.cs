@@ -6,6 +6,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 
 using SimpleDB;
+using Utils;
 
 using Xunit;
 
@@ -21,8 +22,8 @@ public class CSVDatabaseTest
             new Cheep("a1", "m1", 1), new Cheep("a2", "m2", 2), new Cheep("a3", "m3", 3),
         };
 
-        using var r = new StringReader(ToCsvString(rows));
-        var db = new CsvDatabase<Cheep>(r);
+        using TextReader r = new StringReader(ToCsvString(rows));
+        var db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate(), r);
 
         Assert.Equal(3, db.Size());
         Assert.True(rows.All(x => db.ReadAll().Contains(x)));
@@ -32,7 +33,7 @@ public class CSVDatabaseTest
     public void Store_IncreasesSize_AndAppearsInReadAll()
     {
         using var r = new StringReader(ToCsvString([]));
-        var db = new CsvDatabase<Cheep>(r);
+        var db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate(), r);
 
         var c = new Cheep("Ask", "Hello", 42);
         db.Store(c);
@@ -54,7 +55,7 @@ public class CSVDatabaseTest
         };
 
         using var r = new StringReader(ToCsvString(rows));
-        var db = new CsvDatabase<Cheep>(r);
+        var db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate(), r);
 
         var result = db.Read(limit).ToList();
         Assert.Equal(Math.Min(limit, rows.Length), result.Count);
@@ -71,7 +72,7 @@ public class CSVDatabaseTest
         };
 
         using var r = new StringReader(ToCsvString(rows));
-        var db = new CsvDatabase<Cheep>(r);
+        var db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate(), r);
 
         var onlyAlice = db.Query(c => c.Author == "Alice").ToList();
         Assert.Equal(2, onlyAlice.Count);
@@ -82,7 +83,7 @@ public class CSVDatabaseTest
     public void Write_NoPathCtor_DoesNotThrow()
     {
         using var r = new StringReader(ToCsvString([]));
-        var db = new CsvDatabase<Cheep>(r);
+        var db = DatabaseSessionRegistry<Cheep>.OpenInMemory(""+Id.Generate(), r);
         db.Store(new Cheep("A", "X", 1));
 
         var ex = Record.Exception(() => db.Write());
