@@ -4,13 +4,13 @@ using Chirp.Razor.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
-//var dbPath = !string.IsNullOrWhiteSpace(envPath)
-//    ? envPath
-//    : Path.Combine(Path.GetTempPath(), "chirp.db");
+string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+var dbPath = !string.IsNullOrWhiteSpace(envPath)
+    ? envPath
+    : Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
@@ -21,10 +21,6 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChirpDbContext>();
-
-    // Not entirely sure if this is needed
-    // It looks like it does any pending migrations of the database schema, so I think its good to have
-    context.Database.Migrate();
 
     DbInitializer.SeedDatabase(context);
 }
