@@ -1,7 +1,7 @@
 using Chirp.Razor.Models;
 using Chirp.Razor.Data;
 
-using Microsoft.EntityFrameworkCore; // for ToListAsync()
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Chirp.Razor.Repositories;
