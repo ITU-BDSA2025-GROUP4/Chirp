@@ -1,19 +1,28 @@
-using SimpleDB;
-using Chirp.Types;
+using Microsoft.EntityFrameworkCore;
+using Chirp.Razor.Data;
+using Chirp.Razor.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
-var dbPath = !string.IsNullOrWhiteSpace(envPath)
-    ? envPath
-    : Path.Combine(Path.GetTempPath(), "chirp.db");
+//string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+//var dbPath = !string.IsNullOrWhiteSpace(envPath)
+//    ? envPath
+//    : Path.Combine(Path.GetTempPath(), "chirp.db");
 
-// Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService>(cheepService => new CheepService(dbPath));
+builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<ICheepService, CheepService>();
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ChirpDbContext>();
+    DbInitializer.SeedDatabase(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
