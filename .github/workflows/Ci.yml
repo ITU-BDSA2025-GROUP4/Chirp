@@ -56,7 +56,7 @@ jobs:
         with:
           dotnet-version: 9.0.109
 
-      - name: Build
+      - name: Build CLI
         shell: bash
         run: |
           # Define some variables for things we need
@@ -80,11 +80,31 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
 
+      - name: Build API
+        shell: bash
+        run: |
+          # Define some variables for things we need
+          tag=$(git describe --tags --abbrev=9)
+          release_name="Chirp.API-$tag-${{ matrix.target }}"
+
+          # Build everything
+          dotnet publish src/Chirp.API/Chirp.API.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+          # Delete output directory
+          rm -r "$release_name"
+
 
       - name: Populate GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: "Chirp.CLI*"
+          files: "Chirp.*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
