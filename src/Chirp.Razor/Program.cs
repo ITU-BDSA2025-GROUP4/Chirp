@@ -21,6 +21,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChirpDbContext>();
+
+    // Not entirely sure if this is needed
+    // It looks like it does any pending migrations of the database schema, so I think its good to have
+    context.Database.Migrate();
+
     DbInitializer.SeedDatabase(context);
 }
 
