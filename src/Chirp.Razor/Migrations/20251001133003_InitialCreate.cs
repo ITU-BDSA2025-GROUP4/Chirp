@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Razor.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDBSchema : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace Chirp.Razor.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,7 +31,7 @@ namespace Chirp.Razor.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Razor.Migrations
 {
     [DbContext(typeof(ChirpDbContext))]
-    [Migration("20251001025453_InitialDBSchema")]
-    partial class InitialDBSchema
+    [Migration("20251001133003_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace Chirp.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -49,7 +47,6 @@ namespace Chirp.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Timestamp")

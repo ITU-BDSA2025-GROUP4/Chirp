@@ -24,11 +24,9 @@ namespace Chirp.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -46,7 +44,6 @@ namespace Chirp.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Timestamp")
