@@ -1,5 +1,7 @@
 namespace Utils;
 
+using System.Globalization;
+
 public static class TimestampUtils {
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
@@ -11,5 +13,11 @@ public static class TimestampUtils {
     public static string DateTimeTimeStampToDateTimeString(DateTime timestamp)
     {
         return timestamp.ToString("dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    public static DateTime DateTimeStringToDateTimeTimeStamp(string timestamp)
+    {
+        CultureInfo ct = new("da-DK");
+        return DateTime.Parse(timestamp, ct);
     }
 }
