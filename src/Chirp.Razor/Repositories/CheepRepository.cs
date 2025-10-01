@@ -19,6 +19,7 @@ public class CheepRepository : ICheepRepository
     {
         return await _context.Cheeps
             .Include(c => c.Author)
+            .OrderByDescending(c => c.Timestamp)
             .Select(c => new CheepViewModel(c.Author.Name, c.Text, Utils.TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
@@ -27,6 +28,7 @@ public class CheepRepository : ICheepRepository
     {
         return await _context.Cheeps
             .Include(c => c.Author)
+            .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(c => new CheepViewModel(c.Author.Name, c.Text, Utils.TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
@@ -38,6 +40,7 @@ public class CheepRepository : ICheepRepository
         return await _context.Cheeps
             .Include(c => c.Author)
             .Where(condition)
+            .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(c => new CheepViewModel(c.Author.Name, c.Text, Utils.TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
