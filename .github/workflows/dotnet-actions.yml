@@ -64,6 +64,7 @@ jobs:
 
     - name: Chirp.Razor Unit test
       working-directory: test/Chirp.Razor.Tests
+      run: dotnet test --no-restore --verbosity normal
 
     - name: SQL database Unit test
       working-directory: test/SQLiteDatabase.Tests
