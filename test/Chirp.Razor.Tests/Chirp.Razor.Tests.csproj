@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Chirp.Razor\Chirp.Razor.csproj" />
+              <ProjectReference Include="..\..\src\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>

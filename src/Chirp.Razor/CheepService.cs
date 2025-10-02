@@ -1,42 +1,29 @@
-using SimpleDB;
-using Chirp.Types;  
+using Chirp.Razor.Models;
+using Chirp.Razor.Repositories;
 
-public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
-}
-
-public static class CheepServiceUtils
-{
-    public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
-    {
-        // Unix timestamp is seconds past epoch
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-    }
-    
+    public Task<IEnumerable<CheepViewModel>> GetCheeps(int page, int pageSize);
+    public Task<IEnumerable<CheepViewModel>> GetCheepsFromAuthor(string author, int page, int pageSize);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly IDatabaseRepository<Cheep> _database;
+    private readonly ICheepRepository _repository;
 
-    public CheepService(string dbPath)
+    public CheepService(ICheepRepository repository)
     {
-        _database = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.SQL, dbPath);
+        _repository = repository;
     }
 
-    public List<CheepViewModel> GetCheeps()
+    public async Task<IEnumerable<CheepViewModel>> GetCheeps(int page, int pageSize)
     {
-        return _database.ReadAll().Select(cheep => new CheepViewModel(cheep.Author, cheep.Message, CheepServiceUtils.UnixTimeStampToDateTimeString(cheep.Timestamp))).ToList();
+        return await _repository.Read(page, pageSize);
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public async Task<IEnumerable<CheepViewModel>> GetCheepsFromAuthor(string author, int page, int pageSize)
     {
-        return _database.Query(x => x.Author == author).Select(cheep => new CheepViewModel(cheep.Author, cheep.Message, CheepServiceUtils.UnixTimeStampToDateTimeString(cheep.Timestamp))).ToList();
+        return await _repository.Query(c => c.Author.Name == author, page, pageSize);
     }
 }
