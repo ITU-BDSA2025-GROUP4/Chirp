@@ -12,7 +12,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
     private readonly List<T> _entries;
     private readonly List<T> _buffer = [];
 
-    public CsvDatabase(string path, CsvConfiguration? config = null)
+    internal CsvDatabase(string path, CsvConfiguration? config = null)
     {
         _path = Path.GetFullPath(path);
         _config = config ?? CreateConfig();
@@ -21,7 +21,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         _entries = ReadAllFromFile();
     }
 
-    public CsvDatabase(TextReader reader, CsvConfiguration? config = null)
+    internal CsvDatabase(TextReader reader, CsvConfiguration? config = null)
     {
         _path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".csv");
         _config = config ?? CreateConfig();
@@ -29,7 +29,7 @@ public sealed class CsvDatabase<T> : IDatabaseRepository<T>
         _entries = csv.GetRecords<T>().ToList();
     }
 
-    public CsvDatabase() : this("./logs/tmp_db" + DateTimeOffset.Now.ToUnixTimeSeconds() + ".csv") {}
+    internal CsvDatabase() : this("./logs/tmp_db" + DateTimeOffset.Now.ToUnixTimeSeconds() + ".csv") {}
 
     private static void EnsureDirectoryExists(string path)
     {

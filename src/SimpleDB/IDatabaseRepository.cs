@@ -10,4 +10,5 @@ public interface IDatabaseRepository<T>
     IEnumerable<T> Query(Func<T, bool> condition);
     void Store(T record);
     void Write();
+    int Size();
 }

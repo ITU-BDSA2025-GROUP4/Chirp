@@ -23,7 +23,15 @@ for (int i = 0; i < args.Length; i++)
 
 dbPath ??= Path.Combine(AppContext.BaseDirectory, "Resources", "Data", "chirp_cli_db.csv");
 
-IDatabaseRepository<Cheep> db = new CsvDatabase<Cheep>(dbPath);
+IDatabaseRepository<Cheep> db; 
+if(dbPath.EndsWith(".csv")) 
+{
+    db = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.CSV, dbPath);
+}
+else 
+{
+    db = DatabaseSessionRegistry<Cheep>.OpenFile(DatabaseType.SQL, dbPath);
+}
 
 APICore core = new APICore(db);
 
