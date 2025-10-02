@@ -341,5 +341,27 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Timestamp, timestamp);
     }
 
+    [Fact]
+    public void GetRootEndpoint_ReturnsExpected()
+    {
+        // Given
+
+        // When
+
+        // Then
+    }
+
+    [Fact]
+    public void GetUserEndpoint_ReturnsExpected()
+    {
+        // Given
+    
+        // When
+    
+        // Then
+    }
+    
+
+
     
 }
