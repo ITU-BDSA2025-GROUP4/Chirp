@@ -7,6 +7,9 @@ using APICore;
 using Utils;
 using Chirp.Types;
 
+using System.Threading.Tasks;
+using System.Net.Http;
+
 public class APICoreUnitTest
 {
     private static Dictionary<string, string> EmptyQuery()
@@ -341,7 +344,7 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Timestamp, timestamp);
     }
     [Fact]
-    public void GetRootEndpoint_ReturnsExpected()
+    public async Task GetRootEndpoint_ReturnsExpected()
     {
     
         var client = new HttpClient();
@@ -355,7 +358,7 @@ public class APICoreUnitTest
     }
 
     [Fact]
-    public void GetUserEndpoint_ReturnsExpected()
+    public async Task GetUserEndpoint_ReturnsExpected()
     {
         var client = new HttpClient();
         var response = await client.GetAsync("/api/private/username");
