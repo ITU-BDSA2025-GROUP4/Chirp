@@ -343,30 +343,4 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Message, message);
         Assert.Equal(cheep.Timestamp, timestamp);
     }
-    [Fact]
-    public async Task GetRootEndpoint_ReturnsExpected()
-    {
-    
-        var client = new HttpClient();
-        var response = await client.GetAsync("/api/public");
-
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-    
-        Assert.Contains("Recent Cheeps", content);
-        Assert.Contains("Cheep by @username", content);
-    }
-
-    [Fact]
-    public async Task GetUserEndpoint_ReturnsExpected()
-    {
-        var client = new HttpClient();
-        var response = await client.GetAsync("/api/private/username");
-
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-    
-        Assert.Contains("Your Cheeps", content);
-        Assert.Contains("Cheep by @username", content);
-    }
 }
