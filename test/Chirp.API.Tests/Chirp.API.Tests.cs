@@ -7,9 +7,6 @@ using APICore;
 using Utils;
 using Chirp.Types;
 
-using System.Threading.Tasks;
-using System.Net.Http;
-
 public class APICoreUnitTest
 {
     private static Dictionary<string, string> EmptyQuery()
@@ -343,4 +340,5 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Message, message);
         Assert.Equal(cheep.Timestamp, timestamp);
     }
+
 }
