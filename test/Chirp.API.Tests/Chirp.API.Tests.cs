@@ -341,5 +341,4 @@ public class APICoreUnitTest
         Assert.Equal(cheep.Timestamp, timestamp);
     }
 
-    
 }
