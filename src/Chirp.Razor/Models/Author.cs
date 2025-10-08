@@ -1,5 +1,8 @@
 namespace Chirp.Razor.Models;
 
+using Microsoft.EntityFrameworkCore;
+
+[Index(nameof(Email), nameof(Name))]
 public class Author
 {
     public int Id { get; set; }
