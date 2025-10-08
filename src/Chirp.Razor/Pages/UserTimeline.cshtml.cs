@@ -10,7 +10,7 @@ public class UserTimelineModel : PageModel
     private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
-    public IEnumerable<CheepViewModel> Cheeps { get; set; }
+    public IEnumerable<CheepDTO> Cheeps { get; set; }
 
     public UserTimelineModel(ICheepService service)
     {

@@ -8,7 +8,7 @@ using Utils;
 
 namespace Chirp.Razor.Repositories;
 
-public class AuthorRepository : IAuthorRepostiory
+public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDbContext _context;
 
@@ -17,30 +17,43 @@ public class AuthorRepository : IAuthorRepostiory
         _context = context;
     }
 
-    public async Task<Optional<AuthorDTO>> FindAuthorByName(string name)
+    public async Task<List<AuthorDTO>> ReadAll()
     {
         return await _context.Authors
+            .Select(x => new AuthorDTO(x.Name, x.Email))
+            .ToListAsync();
+    }
+
+    public async Task<Optional<AuthorDTO>> FindAuthorByName(string name)
+    {
+        var tmp = await _context.Authors
             .Where(a => a.Name == name)
-            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Name, x.Email)))
-            .DefaultIfEmpty(Optional.Empty<AuthorDTO>())
-            .FirstOrDefaultAsync();
+            .Select(x => new AuthorDTO(x.Name, x.Email))
+            .ToListAsync();
+
+        if(tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
+        else return Optional.Of<AuthorDTO>(tmp.First());
     }
 
     public async Task<Optional<AuthorDTO>> FindAuthorByEmail(string email)
     {
-        return await _context.Authors
-            .Where(a => a.Name == email)
-            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Name, x.Email)))
-            .DefaultIfEmpty(Optional.Empty<AuthorDTO>())
-            .FirstOrDefaultAsync();
+
+        var tmp = await _context.Authors
+            .Where(a => a.Email == email)
+            .Select(x => new AuthorDTO(x.Name, x.Email))
+            .ToListAsync();
+
+        if(tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
+        else return Optional.Of<AuthorDTO>(tmp.First());
     }
 
-    public async void AddAuthor(AuthorDTO author)
+    public async Task AddAuthor(AuthorDTO author)
     {
         var newAuthor = new Author();
         newAuthor.Name = author.Name;
         newAuthor.Email = author.Email;
 
         await _context.Authors.AddAsync(newAuthor);
+        await _context.SaveChangesAsync();
     }
 }

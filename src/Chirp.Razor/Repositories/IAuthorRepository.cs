@@ -6,9 +6,9 @@ using Utils;
 
 namespace Chirp.Razor.Repositories;
 
-public interface IAuthorRepostiory
+public interface IAuthorRepository : IRepository<AuthorDTO>
 {
     public Task<Optional<AuthorDTO>> FindAuthorByName(string name);
     public Task<Optional<AuthorDTO>> FindAuthorByEmail(string email);
-    public void AddAuthor(AuthorDTO author);
+    public Task AddAuthor(AuthorDTO author);
 }
