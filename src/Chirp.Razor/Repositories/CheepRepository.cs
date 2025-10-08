@@ -21,7 +21,7 @@ public class CheepRepository : ICheepRepository
     {
         return await _context.Authors
             .Where(a => a.Name == name)
-            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Id, x.Name, x.Email)))
+            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Name, x.Email)))
             .DefaultIfEmpty(Optional.Empty<AuthorDTO>())
             .FirstOrDefaultAsync();
     }
@@ -30,7 +30,7 @@ public class CheepRepository : ICheepRepository
     {
         return await _context.Authors
             .Where(a => a.Name == email)
-            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Id, x.Name, x.Email)))
+            .Select(x => Optional.Of<AuthorDTO>(new AuthorDTO(x.Name, x.Email)))
             .DefaultIfEmpty(Optional.Empty<AuthorDTO>())
             .FirstOrDefaultAsync();
     }
