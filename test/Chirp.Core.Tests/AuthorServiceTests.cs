@@ -1,5 +1,4 @@
 using Moq;
-using System.Linq.Expressions;
 
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
@@ -7,10 +6,6 @@ using Chirp.Core.Services;
 using Chirp.Core.Utils;
 
 namespace Chirp.Core.Unit;
-
-//FindAuthorByName
-//FindAuthorByEmail
-//AddAuthor
 
 public class AuthorServiceTests
 {
