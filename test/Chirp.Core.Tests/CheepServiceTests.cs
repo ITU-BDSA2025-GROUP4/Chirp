@@ -30,7 +30,6 @@ public class CheepServiceTests
 
         Assert.Equal(expectedCheeps, result);
         mockRepository.Verify(repo => repo.Read(1, 10), Times.Once);
-
     }
 
     [Fact]
@@ -54,7 +53,6 @@ public class CheepServiceTests
 
         Assert.Equal(expectedCheeps, result);
         mockRepository.Verify(r => r.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
-
     }
 
     [Fact]
@@ -72,7 +70,6 @@ public class CheepServiceTests
 
         Assert.Empty(result);
         mockRepository.Verify(repo => repo.Read(1, 10), Times.Once);
-
     }
 
     [Fact]
@@ -90,6 +87,5 @@ public class CheepServiceTests
 
         Assert.Empty(result);
         mockRepository.Verify(r => r.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
-
     }
 }

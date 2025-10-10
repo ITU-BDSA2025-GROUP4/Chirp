@@ -30,7 +30,6 @@ public class AuthorServiceTests
 
         Assert.Equal(expectedAuthors, result);
         mockRepository.Verify(repo => repo.ReadAll(), Times.Once);
-
     }
 
     [Fact]
@@ -48,13 +47,11 @@ public class AuthorServiceTests
 
         Assert.Empty(result);
         mockRepository.Verify(repo => repo.ReadAll(), Times.Once);
-
     }
 
     [Fact]
     public async Task FindAuthorByName_ShouldReturnAuthor()
     {
-
         var expectedAuthor = new AuthorDTO("Alice", "alice@chirp.dk");
         var mockRepository = new Mock<IAuthorRepository>();
 
@@ -93,7 +90,6 @@ public class AuthorServiceTests
     [Fact]
     public async Task FindAuthorByEmail_ShouldReturnAuthor()
     {
-
         var expectedAuthor = new AuthorDTO("Alice", "alice@chirp.dk");
         var mockRepository = new Mock<IAuthorRepository>();
 
