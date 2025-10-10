@@ -19,6 +19,9 @@ builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Dat
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+
 
 var app = builder.Build();
 

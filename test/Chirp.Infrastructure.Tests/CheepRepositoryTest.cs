@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Chirp.Razor.Repositories;
-using Chirp.Razor.Data;
-using Chirp.Razor.Models;
-using Utils;
+
+using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Data;
+using Chirp.Core.Interfaces;
+using Chirp.Core.Utils;
+using Chirp.Core.Entities;
 
 namespace Chirp.Razor.Tests;
 
@@ -48,7 +50,7 @@ public class CheepRepostioryTest
     {
         var result = await repo.Query(x => x.Author.Name.Equals(name), 1, expectedNumberOfCheeps);
 
-        foreach(CheepViewModel c in result)
+        foreach(CheepDTO c in result)
         {
             Assert.Equal(c.Author, name);
         }
@@ -64,7 +66,7 @@ public class CheepRepostioryTest
         var result = await repo.Query(x => x.Text.ToLower().Contains(word), 1, expectedNumberOfCheeps);
 
         Assert.Equal(result.Count(), count);
-        foreach(CheepViewModel x in result)
+        foreach(CheepDTO x in result)
         {
             Assert.True(x.Text.ToLower().Contains(word));
         }
@@ -80,7 +82,7 @@ public class CheepRepostioryTest
         var result = await repo.Query(x => x.Timestamp.CompareTo(dt) >= 0, 1, expectedNumberOfCheeps);
 
 
-        foreach(CheepViewModel cheep in result)
+        foreach(CheepDTO cheep in result)
         {
             var cheepDt = TimestampUtils.DateTimeStringToDateTimeTimeStamp(cheep.Timestamp);
             Assert.True(cheepDt.CompareTo(dt) >= 0);
@@ -112,7 +114,7 @@ public class CheepRepostioryTest
         var cheeps1 = await repo.Read(1, 32);
         var cheeps2 = await repo.Read(2, 32);
 
-        foreach(CheepViewModel ch in cheeps1)
+        foreach(CheepDTO ch in cheeps1)
         {
             Assert.False(cheeps2.Contains(ch));
         }

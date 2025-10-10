@@ -1,5 +1,7 @@
 ﻿namespace Utils.Tests;
 
+using Chirp.Core.Utils;
+
 public class LoggerUnitTest
 {
     private bool logIsCorrectlyFormatted(string log, string label, string message)

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace Chirp.Infrastructure.Utils;
+namespace Chirp.Core.Utils;
 
 public class StringUtils
 {

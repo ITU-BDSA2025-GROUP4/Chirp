@@ -1,6 +1,6 @@
 ﻿namespace Utils.Tests;
 
-using static StringUtils;
+using Chirp.Core.Utils;
 
 public class GetFileNameUnitTest
 {
@@ -13,7 +13,7 @@ public class GetFileNameUnitTest
     [InlineData("\\example.txt", "example.txt")]
     public void GeneralUseCase(string input, string expectedOutput)
     {
-        Assert.Equal(GetFileName(input), expectedOutput);
+        Assert.Equal(StringUtils.GetFileName(input), expectedOutput);
     }
 
     [Theory]
@@ -25,6 +25,6 @@ public class GetFileNameUnitTest
     [InlineData("foo/.txt", ".txt")]
     public void EdgeUseCase(string input, string expectedOutput)
     {
-        Assert.Equal(GetFileName(input), expectedOutput);
+        Assert.Equal(StringUtils.GetFileName(input), expectedOutput);
     }
 }

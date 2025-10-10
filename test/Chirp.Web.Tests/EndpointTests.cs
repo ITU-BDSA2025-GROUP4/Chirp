@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Chirp.Razor.Tests
+namespace Chirp.Infrastructure.Tests
 {
     public class EndpointTestsTest : IClassFixture<WebApplicationFactory<Program>>
     {

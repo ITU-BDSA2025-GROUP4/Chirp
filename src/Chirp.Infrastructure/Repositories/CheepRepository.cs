@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Utils;
+using Chirp.Core.Utils;
 
 namespace Chirp.Infrastructure.Repositories;
 

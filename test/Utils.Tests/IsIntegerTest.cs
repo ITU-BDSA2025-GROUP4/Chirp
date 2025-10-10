@@ -1,6 +1,6 @@
 ﻿namespace Utils.Tests;
 
-using static StringUtils;
+using Chirp.Core.Utils;
 
 public class IsIntegerUnitTest
 {
@@ -11,7 +11,7 @@ public class IsIntegerUnitTest
     [InlineData("0")]
     public void GeneralUseTrue(string x)
     {
-        Assert.True(IsInteger(x));
+        Assert.True(StringUtils.IsInteger(x));
     }
 
     [Theory]
@@ -21,7 +21,7 @@ public class IsIntegerUnitTest
     [InlineData("3-")]
     public void GeneralUseFalse(string x)
     {
-        Assert.False(IsInteger(x));
+        Assert.False(StringUtils.IsInteger(x));
     }
 
     [Theory]
@@ -30,13 +30,13 @@ public class IsIntegerUnitTest
     [InlineData("- 5")]
     public void EdgeCasesFalse(string x)
     {
-        Assert.False(IsInteger(x));
+        Assert.False(StringUtils.IsInteger(x));
     }
 
     [Theory]
     [InlineData("-0")]
     public void EdgeCasesTrue(string x)
     {
-        Assert.True(IsInteger(x));
+        Assert.True(StringUtils.IsInteger(x));
     }
 }

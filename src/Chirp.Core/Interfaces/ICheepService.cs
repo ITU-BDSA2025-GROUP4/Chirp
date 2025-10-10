@@ -1,6 +1,6 @@
-using Chirp.Core.Entities;
-
 namespace Chirp.Core.Interfaces;
+
+using Chirp.Core.Entities;
 
 public interface ICheepService
 {

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Chirp.Infrastructure.Utils;
+namespace Chirp.Core.Utils;
 
 // Possible improvement:
 // Add queue with mutex which receives the messages.

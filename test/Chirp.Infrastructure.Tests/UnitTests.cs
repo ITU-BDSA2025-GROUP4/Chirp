@@ -1,6 +1,6 @@
-﻿using Utils;
+﻿namespace Chirp.Infrastructure.Tests;
 
-namespace Chirp.Razor.Tests;
+using Chirp.Core.Utils;
 
 public class UnitTests
 {
@@ -11,6 +11,6 @@ public class UnitTests
     [InlineData(1690895308, "01/08/2023 13:08:28")]
     public void TestUnixTimeStampToDateTimeString(long timestamp, string expected)
     {
-        Assert.Equal(expected, Utils.TimestampUtils.UnixTimeStampToDateTimeString(timestamp));
+        Assert.Equal(expected, TimestampUtils.UnixTimeStampToDateTimeString(timestamp));
     }
 }

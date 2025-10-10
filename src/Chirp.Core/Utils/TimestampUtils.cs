@@ -1,4 +1,4 @@
-namespace Chirp.Infrastructure.Utils;
+namespace Chirp.Core.Utils;
 
 using System.Globalization;
 

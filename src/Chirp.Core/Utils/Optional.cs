@@ -1,4 +1,4 @@
-namespace Chirp.Infrastructure.Utils;
+namespace Chirp.Core.Utils;
 
 public readonly struct Optional<T> {
     private readonly T value;
