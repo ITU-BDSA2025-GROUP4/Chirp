@@ -33,16 +33,20 @@ jobs:
     - name: Build
       working-directory: src/Chirp.Web
       run: dotnet build --configuration Release --no-restore
-    
-    - name: Chirp infrastructure unit test
+
+    - name: Chirp.Core tests
+      working-directory: test/Chirp.Core.Tests
+      run: dotnet test --no-restore --verbosity normal
+      
+    - name: Chirp.Infrastructure tests
       working-directory: test/Chirp.Infrastructure.Tests
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Chirp web unit test
+    - name: Chirp.Web tests
       working-directory: test/Chirp.Web.Tests
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Utils unit test
+    - name: Chirp.Core.Utils test
       working-directory: test/Chirp.Utils.Tests
       run: dotnet test --no-restore --verbosity normal
 
