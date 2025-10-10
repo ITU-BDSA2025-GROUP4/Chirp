@@ -4,6 +4,8 @@ using Chirp.Razor.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
+using Utils;
+
 namespace Chirp.Razor.Repositories;
 
 public class CheepRepository : ICheepRepository
@@ -46,4 +48,44 @@ public class CheepRepository : ICheepRepository
             .Select(c => new CheepViewModel(c.Author.Name, c.Text, Utils.TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
+
+    public async Task<CheepViewModel> Create(Cheep cheep)
+    {
+        _context.Add(cheep);
+        await _context.SaveChangesAsync();
+
+        return new CheepViewModel(cheep.Author.Name, cheep.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(cheep.Timestamp));
+    }
+
+    public Task<CheepViewModel> Update(Cheep cheep)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<CheepViewModel> UpdateAsync(CheepUpdateDto dto)
+    {
+        var now = TimestampUtils.DateTimeTimeStampToDateTimeString(DateTime.UtcNow);
+
+        var rows = await _context.Cheeps
+            .Where(c => c.Id == dto.Id && c.Version == dto.Version) 
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(c => c.Text, _ => dto.Text)
+                .SetProperty(c => c.Timestamp, _ => DateTime.UtcNow)
+                .SetProperty(c => c.Version,  c => c.Version + 1));
+
+        if (rows == 0) throw new KeyNotFoundException();
+        
+        return new CheepViewModel(dto.Author, dto.Text, now);
+    }
+
+    public async Task<CheepViewModel> Delete(Cheep cheep)
+    {
+        _context.Remove(cheep);
+        await _context.SaveChangesAsync();
+        
+        return new CheepViewModel(cheep.Author.Name, cheep.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(cheep.Timestamp));
+
+    }
+    
+
 }

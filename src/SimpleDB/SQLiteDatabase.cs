@@ -32,6 +32,17 @@ internal sealed class SQLTable<T> : DbContext where T : class
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.SharedTypeEntity<T>(DefaultTable).ToTable(TableName);
+        
+        // foreach (var et in modelBuilder.Model.GetEntityTypes())
+        // {
+        //     if (typeof(IVersioned).IsAssignableFrom(et.ClrType))
+        //     {
+        //         modelBuilder.Entity(et.ClrType)
+        //             .Property<int>(nameof(IVersioned.Version))
+        //             .IsConcurrencyToken()
+        //             .HasDefaultValue(0);
+        //     }
+        // }
     }
 
     internal DbSet<T> Get()
