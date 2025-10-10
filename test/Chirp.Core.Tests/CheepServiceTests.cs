@@ -5,7 +5,7 @@ using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Services;
 
-namespace Chirp.Core.Unit;
+namespace Chirp.Core.Tests.Unit;
 
 public class CheepServiceTests
 {

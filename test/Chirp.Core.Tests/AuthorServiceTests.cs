@@ -5,7 +5,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Services;
 using Chirp.Core.Utils;
 
-namespace Chirp.Core.Unit;
+namespace Chirp.Core.Tests.Unit;
 
 public class AuthorServiceTests
 {
