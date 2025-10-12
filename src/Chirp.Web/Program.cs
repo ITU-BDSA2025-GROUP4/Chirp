@@ -29,13 +29,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChirpDbContext>();
 
-    if (app.Environment.IsDevelopment())
-    {
-        context.Database.Migrate();
-    } else {
-        context.Database.EnsureCreated();
-    }
-    
+    context.Database.Migrate();
     DbInitializer.SeedDatabase(context);
 }
 
