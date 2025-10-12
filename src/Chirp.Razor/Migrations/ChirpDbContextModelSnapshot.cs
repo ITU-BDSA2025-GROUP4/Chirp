@@ -23,6 +23,11 @@ namespace Chirp.Razor.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte[]>("ETag")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -43,11 +48,19 @@ namespace Chirp.Razor.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte[]>("ETag")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

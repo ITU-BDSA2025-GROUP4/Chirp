@@ -15,6 +15,13 @@ builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Dat
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
+builder.Services.AddSingleton<ETagConcurrencyInterceptor>();
+
+builder.Services.AddDbContext<ChirpDbContext>((sp, options) =>
+{
+    options.UseSqlite("Data Source=chirp_sql.db");
+    options.AddInterceptors(sp.GetRequiredService<ETagConcurrencyInterceptor>());
+});
 
 var app = builder.Build();
 

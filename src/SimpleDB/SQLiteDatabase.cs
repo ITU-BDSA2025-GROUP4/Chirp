@@ -1,11 +1,12 @@
 namespace SimpleDB;
 
 // NOTE: THE NAME OF THE TYPE BEING PUT INTO THE DB IS USED AT THE TABLE NAME
-
 using Utils;
+
 using System;
 using System.Data;
 using System.Data.SQLite;
+
 using Microsoft.EntityFrameworkCore;
 
 internal sealed class SQLTable<T> : DbContext where T : class
@@ -29,21 +30,6 @@ internal sealed class SQLTable<T> : DbContext where T : class
         options.UseSqlite($"Data Source={DbPath}");
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.SharedTypeEntity<T>(DefaultTable).ToTable(TableName);
-        
-        // foreach (var et in modelBuilder.Model.GetEntityTypes())
-        // {
-        //     if (typeof(IVersioned).IsAssignableFrom(et.ClrType))
-        //     {
-        //         modelBuilder.Entity(et.ClrType)
-        //             .Property<int>(nameof(IVersioned.Version))
-        //             .IsConcurrencyToken()
-        //             .HasDefaultValue(0);
-        //     }
-        // }
-    }
 
     internal DbSet<T> Get()
     {
@@ -59,23 +45,24 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
 
     internal SQLiteDatabase(string filepath)
     {
-        if(!Path.Exists(filepath))
+        if (!Path.Exists(filepath))
         {
             Directory.CreateDirectory(StringUtils.GetDirectoryPath(filepath));
             SQLiteConnection.CreateFile(filepath);
         }
 
-        
+
         filepath = Path.GetFullPath(filepath);
         _table = new SQLTable<T>(filepath, typeof(T).Name);
         _table.Database.OpenConnection();
 
-        _buffer = new List<T>(); 
-        _unsavedEntries = new List<T>(); 
+        _buffer = new List<T>();
+        _unsavedEntries = new List<T>();
     }
 
     internal SQLiteDatabase() : this(StringUtils.UniqueFilePath("./logs/", "sql"))
-    {}
+    {
+    }
 
     ~SQLiteDatabase()
     {
@@ -90,7 +77,7 @@ public sealed class SQLiteDatabase<T> : IDatabaseRepository<T> where T : class
     {
         _buffer.Clear();
 
-        if(limit <= 0) 
+        if (limit <= 0)
         {
             _buffer.AddRange(_table.Get());
             _buffer.AddRange(_unsavedEntries);

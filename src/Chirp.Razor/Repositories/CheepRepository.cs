@@ -4,6 +4,8 @@ using Chirp.Razor.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
+using Chirp.Razor.Application.Contracts;
+
 using Utils;
 
 namespace Chirp.Razor.Repositories;
@@ -62,21 +64,42 @@ public class CheepRepository : ICheepRepository
         throw new NotImplementedException();
     }
 
-    public async Task<CheepViewModel> UpdateAsync(CheepUpdateDto dto)
-    {
-        var now = TimestampUtils.DateTimeTimeStampToDateTimeString(DateTime.UtcNow);
-
-        var rows = await _context.Cheeps
-            .Where(c => c.Id == dto.Id && c.Version == dto.Version) 
-            .ExecuteUpdateAsync(s => s
-                .SetProperty(c => c.Text, _ => dto.Text)
-                .SetProperty(c => c.Timestamp, _ => DateTime.UtcNow)
-                .SetProperty(c => c.Version,  c => c.Version + 1));
-
-        if (rows == 0) throw new KeyNotFoundException();
-        
-        return new CheepViewModel(dto.Author, dto.Text, now);
-    }
+    // public async Task<CheepViewModel> UpdateAsync(CheepUpdateDto update, CancellationToken ct = default)
+    // {
+    //     // Stub to avoid multi db accesses
+    //     var entity = new Cheep { Id = update.Id, Text = update.Text };
+    //
+    //     _context.Attach(entity);
+    //     _context.Entry(entity).State = EntityState.Modified;
+    //
+    //     // Communicate the original token to ef, so it goes into WHERE
+    //     var original = Convert.FromBase64String(update.ETagBase64);
+    //     _context.Entry(entity).Property("ETag").OriginalValue = original;
+    //
+    //     try
+    //     {
+    //         await _context.SaveChangesAsync(ct);
+    //
+    //         // Interceptor (or your SaveChanges override) has set the new token
+    //         var newToken = (byte[])_context.Entry(entity).Property("ETag").CurrentValue!;
+    //         return new CheepViewModel(
+    //             Outcome: UpdateOutcome.Success,
+    //             Entity: entity,
+    //             NewETagBase64: Convert.ToBase64String(newToken)
+    //         );
+    //     }
+    //     catch (DbUpdateConcurrencyException)
+    //     {
+    //         // Distinguish “deleted” vs “updated by someone else”
+    //         var stillExists = await _context.Set<Cheep>()
+    //             .AsNoTracking()
+    //             .AnyAsync(c => c.Id == update.Id, ct);
+    //
+    //         return stillExists
+    //             ? new CheepViewModel(UpdateOutcome.Conflict)
+    //             : new CheepViewModel(UpdateOutcome.NotFound);
+    //     }
+    // }
 
     public async Task<CheepViewModel> Delete(Cheep cheep)
     {
