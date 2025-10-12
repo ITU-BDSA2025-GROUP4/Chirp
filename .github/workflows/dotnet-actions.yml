@@ -27,51 +27,27 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      working-directory: src/Chirp.Razor
+      working-directory: src/Chirp.Web
       run: dotnet restore
 
-    - name: Install dependencies for utils unit test
-      working-directory: test/Utils.Tests
-      run: dotnet restore
-
-
-    - name: Install dependencies for API unit test
-      working-directory: test/Chirp.API.Tests
-      run: dotnet restore
-
-    - name: Install dependencies for razor tests
-      working-directory: test/Chirp.Razor.Tests
-
-    - name: Install dependencies for SQL database unit test
-      working-directory: test/SQLiteDatabase.Tests
-      run: dotnet restore
-
-    - name: Install dependencies for CSV database unit test
-      working-directory: test/CSVDatabase.Tests
-      run: dotnet restore
-      
     - name: Build
-      working-directory: src/Chirp.Razor
+      working-directory: src/Chirp.Web
       run: dotnet build --configuration Release --no-restore
-    
-    - name: Utils Unit test
-      working-directory: test/Utils.Tests
+
+    - name: Chirp.Core tests
+      working-directory: test/Chirp.Core.Tests
+      run: dotnet test --no-restore --verbosity normal
+      
+    - name: Chirp.Infrastructure tests
+      working-directory: test/Chirp.Infrastructure.Tests
       run: dotnet test --no-restore --verbosity normal
 
-    - name: API Unit test
-      working-directory: test/Chirp.API.Tests
+    - name: Chirp.Web tests
+      working-directory: test/Chirp.Web.Tests
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Chirp.Razor Unit test
-      working-directory: test/Chirp.Razor.Tests
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: SQL database Unit test
-      working-directory: test/SQLiteDatabase.Tests
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: CSV database unit test
-      working-directory: test/CSVDatabase.Tests
+    - name: Chirp.Core.Utils test
+      working-directory: test/Chirp.Utils.Tests
       run: dotnet test --no-restore --verbosity normal
 
 
