@@ -33,6 +33,7 @@ using (var scope = app.Services.CreateScope())
     {
         context.Database.Migrate();
     } else {
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
 
