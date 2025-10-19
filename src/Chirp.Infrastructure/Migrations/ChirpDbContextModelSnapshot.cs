@@ -47,6 +47,11 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte[]>("ETag")
+                        .IsConcurrencyToken()
+                        .HasColumnType("BLOB")
+                        .HasColumnName("ETag");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");

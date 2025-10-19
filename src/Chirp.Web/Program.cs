@@ -14,7 +14,11 @@ var dbPath = !string.IsNullOrWhiteSpace(envPath)
     : Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddDbContext<ChirpDbContext>(options =>
+{
+    options.UseSqlite($"Data Source={dbPath}");
+    options.AddInterceptors(new ETagInterceptor());
+});
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();

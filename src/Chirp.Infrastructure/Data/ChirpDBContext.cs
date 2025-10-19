@@ -21,6 +21,11 @@ public class ChirpDbContext : DbContext
 //            builder.Entity<Author>()
 //                .Property(e => e.Id).IsRequired();
         }
+        
+        builder.Entity<Cheep>()
+            .Property<byte[]>("ETag")
+            .HasColumnName("ETag")
+            .IsConcurrencyToken();
 
         { // Cheep
 //            builder.Entity<Cheep>()
@@ -29,6 +34,8 @@ public class ChirpDbContext : DbContext
 //                .Property(e => e.Text).IsRequired();
 //            builder.Entity<Cheep>()
 //                .Property(e => e.Timestamp).IsRequired();
+
+
         }
     }
 }
