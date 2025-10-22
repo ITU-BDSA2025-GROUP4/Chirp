@@ -12,6 +12,10 @@ public class CheepService : ICheepService
         _repository = repository;
     }
 
+    public async Task<bool> AddCheep(CheepDTO cheep) {
+        return await _repository.Add(cheep);
+    }
+
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page, int pageSize)
     {
         return await _repository.Read(page, pageSize);
