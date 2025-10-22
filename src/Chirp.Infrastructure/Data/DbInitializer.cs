@@ -697,7 +697,16 @@ public static class DbInitializer
 
             chirpContext.Authors.AddRange(authors);
             chirpContext.Cheeps.AddRange(cheeps);
-            chirpContext.SaveChanges();
+
+            // While this shouldn't happen since
+            // the first thing this seeder does is check
+            // if the DB is empty or not, it still happens
+            try {
+                chirpContext.SaveChanges();
+            }catch(Exception e) {
+                Console.WriteLine("Attempted to re-seed database error: " + e.ToString());
+            }
+
         }
     }
 }

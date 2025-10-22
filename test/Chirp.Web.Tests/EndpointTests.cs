@@ -1,22 +1,34 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Hosting;
 using Xunit;
 
 namespace Chirp.Infrastructure.Tests
 {
     public class EndpointTestsTest : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private WebApplicationFactory<Program> _factory;
 
         public EndpointTestsTest(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
         }
 
+        public void ensureNewDB() {
+
+            Environment.SetEnvironmentVariable("CHIRPDBPATH", Path.GetTempFileName());
+
+            _factory = _factory.WithWebHostBuilder(builder => {
+                    builder.UseEnvironment("test");
+            });
+
+        }
+
         [Fact]
         public async Task PublicTimeline_ReturnsContent()
         {
+            ensureNewDB(); 
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync("/");
@@ -33,9 +45,10 @@ namespace Chirp.Infrastructure.Tests
         [InlineData("carl")]
         public async Task PrivateTimeline_ReturnsContent(string username)
         {
+            ensureNewDB(); 
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync($"/{username}");
+            var response = await client.GetAsync($"/author/{username}");
 
             response.EnsureSuccessStatusCode();
             var html = await response.Content.ReadAsStringAsync();
@@ -46,10 +59,11 @@ namespace Chirp.Infrastructure.Tests
         [Fact]
         public async Task InvalidUserTimeline_ReturnsContent()
         {
+            ensureNewDB(); 
             var client = _factory.CreateClient();
             var invalidUser = "nonexistentuser";
 
-            var response = await client.GetAsync($"/{invalidUser}");
+            var response = await client.GetAsync($"/author/{invalidUser}");
 
             response.EnsureSuccessStatusCode();
             var html = await response.Content.ReadAsStringAsync();
@@ -60,6 +74,7 @@ namespace Chirp.Infrastructure.Tests
         [Fact]
         public async Task RootEndpoint_ReturnsContent()
         {
+            ensureNewDB(); 
             var client = _factory.CreateClient();
             var response = await client.GetAsync("/");
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType.ToString());

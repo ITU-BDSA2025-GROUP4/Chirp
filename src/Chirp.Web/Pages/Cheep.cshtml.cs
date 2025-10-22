@@ -16,6 +16,7 @@ public class CheepSubmitForm
     public string Cheep { get; set; }
 }
 
+[IgnoreAntiforgeryToken]
 public class CheepModel : PageModel
 {
     private readonly ICheepService _service;
@@ -27,11 +28,12 @@ public class CheepModel : PageModel
 
     public void OnGet() {}
 
-    public void OnPostSubmit(CheepSubmitForm form) {
+
+    public IActionResult OnPostSubmit(CheepSubmitForm form) {
 
         if(form.Name == null || form.Cheep == null) {
  //           Console.WriteLine("NULL FORM");
-            return;
+            return BadRequest();
         }
 
 //        Console.WriteLine("GOT: " + form.Name + " - " + form.Cheep);
@@ -42,9 +44,11 @@ public class CheepModel : PageModel
 
         var cheepDTO = new CheepDTO(form.Name, form.Cheep, time);
 
-        bool result = _service.AddCheep(cheepDTO).Result;
-
+        bool wasAdded = _service.AddCheep(cheepDTO).Result;
 //        Console.WriteLine("RESULT: " + result);
 
+        if(wasAdded)
+        return new OkResult();
+        else return BadRequest();
     }
 }
