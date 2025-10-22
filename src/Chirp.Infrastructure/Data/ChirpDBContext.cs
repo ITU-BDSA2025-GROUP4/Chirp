@@ -25,8 +25,8 @@ public class ChirpDbContext : DbContext
         { // Cheep
 //            builder.Entity<Cheep>()
 //                .Property(e => e.Author).IsRequired();
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Text).IsRequired();
+            builder.Entity<Cheep>()
+                .Property(e => e.Text).IsRequired().HasMaxLength(160);
 //            builder.Entity<Cheep>()
 //                .Property(e => e.Timestamp).IsRequired();
         }
