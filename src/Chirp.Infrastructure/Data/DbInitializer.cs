@@ -697,7 +697,12 @@ public static class DbInitializer
 
             chirpContext.Authors.AddRange(authors);
             chirpContext.Cheeps.AddRange(cheeps);
-            chirpContext.SaveChanges();
+
+            try {
+                chirpContext.SaveChanges();
+            } catch(Exception e) {
+                Console.WriteLine("Attemted to re-seed already seeded DB: " + e.ToString());
+            }
         }
     }
 }
