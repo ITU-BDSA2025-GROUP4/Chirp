@@ -7,18 +7,17 @@ using Chirp.Core.Utils;
 
 namespace Chirp.Razor.Pages;
 
-public class CheepSubmitForm
-{
-    [BindProperty]
-    public string? Name { get; set; }
-
-    [BindProperty]
-    public string? Cheep { get; set; }
-}
-
 [IgnoreAntiforgeryToken]
 public class CheepModel : PageModel
 {
+    public class CheepSubmitForm
+    {
+        [BindProperty]
+        public string? Name { get; set; }
+
+        [BindProperty]
+        public string? Cheep { get; set; }
+    }
 
     private readonly ICheepService _service;
 
@@ -29,11 +28,9 @@ public class CheepModel : PageModel
 
     public void OnGet() {}
 
-
     public IActionResult OnPostSubmit(CheepSubmitForm form)
     {
         if(form.Name == null || form.Cheep == null) {
- //           Console.WriteLine("NULL FORM");
             return BadRequest("Username and Cheep must be provided");
         }
 
