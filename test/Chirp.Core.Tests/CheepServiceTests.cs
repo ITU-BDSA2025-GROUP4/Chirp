@@ -9,7 +9,6 @@ namespace Chirp.Core.Tests.Unit;
 
 public class CheepServiceTests
 {
-
     [Fact]
     public async Task GetCheeps_ShouldReturnAllCheeps()
     {

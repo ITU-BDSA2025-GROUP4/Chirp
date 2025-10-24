@@ -23,7 +23,6 @@ namespace Chirp.Infrastructure.Tests
             _factory = _factory.WithWebHostBuilder(builder => {
                     builder.UseEnvironment("test");
             });
-
         }
 
         [Fact]

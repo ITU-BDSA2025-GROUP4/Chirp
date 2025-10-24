@@ -18,13 +18,11 @@ namespace Chirp.Infrastructure.Tests
 
         private void ensureNewDB()
         {
-
             Environment.SetEnvironmentVariable("CHIRPDBPATH", Path.GetTempFileName());
 
             _factory = _factory.WithWebHostBuilder(builder => {
                     builder.UseEnvironment("test");
             });
-
         }
 
         [Fact]
@@ -126,6 +124,5 @@ namespace Chirp.Infrastructure.Tests
             Assert.DoesNotContain(authorName, html, System.StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain(cheepContent, html, System.StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

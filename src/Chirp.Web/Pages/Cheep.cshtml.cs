@@ -29,7 +29,8 @@ public class CheepModel : PageModel
     public void OnGet() {}
 
 
-    public IActionResult OnPostSubmit(CheepSubmitForm form) {
+    public IActionResult OnPostSubmit(CheepSubmitForm form)
+    {
 
         if(form.Name == null || form.Cheep == null) {
  //           Console.WriteLine("NULL FORM");
