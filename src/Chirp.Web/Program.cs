@@ -49,4 +49,6 @@ app.MapRazorPages();
 
 app.Run();
 
-//public partial class Program { } // only for endpoint tests
+
+public partial class Program { } // only for endpoint tests
+
