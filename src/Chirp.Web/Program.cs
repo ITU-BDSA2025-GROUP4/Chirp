@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 //todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
-using Chirp.Core.Services;
+using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 

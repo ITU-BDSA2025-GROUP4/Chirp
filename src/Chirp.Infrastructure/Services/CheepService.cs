@@ -1,7 +1,7 @@
+namespace Chirp.Infrastructure.Services;
+
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
-
-namespace Chirp.Core.Services;
 
 public class CheepService : ICheepService
 {
