@@ -19,6 +19,7 @@ public class CheepSubmitForm
 [IgnoreAntiforgeryToken]
 public class CheepModel : PageModel
 {
+
     private readonly ICheepService _service;
 
     public CheepModel(ICheepService service)
@@ -31,10 +32,9 @@ public class CheepModel : PageModel
 
     public IActionResult OnPostSubmit(CheepSubmitForm form)
     {
-
         if(form.Name == null || form.Cheep == null) {
  //           Console.WriteLine("NULL FORM");
-            return BadRequest();
+            return BadRequest("Username and Cheep must be provided");
         }
 
 //        Console.WriteLine("GOT: " + form.Name + " - " + form.Cheep);
@@ -49,7 +49,7 @@ public class CheepModel : PageModel
 //        Console.WriteLine("RESULT: " + result);
 
         if(wasAdded)
-        return new OkResult();
-        else return BadRequest();
+        return Redirect("/cheep");
+        else return BadRequest("Username: '" + form.Name + "' not found");
     }
 }

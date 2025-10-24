@@ -17,7 +17,6 @@ namespace Chirp.Infrastructure.Tests
 
         private void ensureNewDB()
         {
-
             Environment.SetEnvironmentVariable("CHIRPDBPATH", Path.GetTempFileName());
 
             _factory = _factory.WithWebHostBuilder(builder => {
