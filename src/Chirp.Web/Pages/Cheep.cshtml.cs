@@ -10,10 +10,10 @@ namespace Chirp.Razor.Pages;
 public class CheepSubmitForm
 {
     [BindProperty]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [BindProperty]
-    public string Cheep { get; set; }
+    public string? Cheep { get; set; }
 }
 
 [IgnoreAntiforgeryToken]

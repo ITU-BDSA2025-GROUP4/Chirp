@@ -15,7 +15,8 @@ namespace Chirp.Infrastructure.Tests
             _factory = factory;
         }
 
-        public void ensureNewDB() {
+        private void ensureNewDB()
+        {
 
             Environment.SetEnvironmentVariable("CHIRPDBPATH", Path.GetTempFileName());
 
@@ -77,6 +78,7 @@ namespace Chirp.Infrastructure.Tests
             ensureNewDB(); 
             var client = _factory.CreateClient();
             var response = await client.GetAsync("/");
+            Assert.NotNull(response.Content.Headers.ContentType);
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
     }

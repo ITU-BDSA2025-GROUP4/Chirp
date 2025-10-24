@@ -16,7 +16,8 @@ namespace Chirp.Infrastructure.Tests
             ensureNewDB(); 
         }
 
-        public void ensureNewDB() {
+        private void ensureNewDB()
+        {
 
             Environment.SetEnvironmentVariable("CHIRPDBPATH", Path.GetTempFileName());
 
@@ -73,7 +74,9 @@ namespace Chirp.Infrastructure.Tests
 
             Console.WriteLine("\n\nRESP TEXT: " + responseText + "\n\n");
 
-            Assert.Equal((int)response.StatusCode, 200);
+            var expectedResponseCode = 200;
+
+            Assert.Equal((int)response.StatusCode, expectedResponseCode);
 
             // Cheep should now be on the author's timeline
             authorTimeline = await client.GetAsync($"/author/{authorName}");
@@ -124,5 +127,5 @@ namespace Chirp.Infrastructure.Tests
             Assert.DoesNotContain(cheepContent, html, System.StringComparison.OrdinalIgnoreCase);
         }
 
-}
+    }
 }
