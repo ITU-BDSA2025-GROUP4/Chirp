@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 string? envPath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
 var dbPath = !string.IsNullOrWhiteSpace(envPath)
     ? envPath
-    : Path.Combine(Path.GetTempPath(), "chirp.db");
+    : "./chirp.db";
 
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
@@ -49,4 +49,6 @@ app.MapRazorPages();
 
 app.Run();
 
+
 public partial class Program { } // only for endpoint tests
+
