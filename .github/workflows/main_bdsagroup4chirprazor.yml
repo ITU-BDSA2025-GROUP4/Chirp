@@ -21,7 +21,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.x'
+          dotnet-version: '8.x'
 
       - name: Build with dotnet
         run: dotnet build src/Chirp.Web --configuration Release
@@ -64,3 +64,4 @@ jobs:
           package: .
 
           
+
