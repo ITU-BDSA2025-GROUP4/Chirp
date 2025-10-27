@@ -1,10 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-
 //todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,14 +14,18 @@ var dbPath = !string.IsNullOrWhiteSpace(envPath)
     : Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddDbContext<ChirpDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}")
+);
+builder
+    .Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ChirpDbContext>();
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
-
 
 var app = builder.Build();
 
@@ -48,6 +52,5 @@ app.UseRouting();
 app.MapRazorPages();
 
 app.Run();
-
 
 public partial class Program { } // only for endpoint tests
