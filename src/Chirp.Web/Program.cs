@@ -21,6 +21,18 @@ builder
     .Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ChirpDbContext>();
 
+// Register ASP.NET Core Identity Service using AddIdentityCore
+builder
+    .Services.AddIdentityCore<IdentityUser>(options =>
+    {
+        // Configure the options for users
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<IdentityRole>() // Optional: add roles support if needed
+    .AddEntityFrameworkStores<ChirpDbContext>();
+
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 

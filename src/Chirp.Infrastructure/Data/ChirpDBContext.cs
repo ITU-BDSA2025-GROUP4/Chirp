@@ -12,9 +12,10 @@ public class ChirpDbContext : IdentityDbContext
     public DbSet<Author> Authors => Set<Author>();
 
     protected override void OnModelCreating(ModelBuilder builder) {
+        base.OnModelCreating(builder);
         { // Author
             builder.Entity<Author>()
-                .HasIndex(e => new {e.Name, e.Email});
+                .HasIndex(e => new {e.UserName, e.Email});
 //            builder.Entity<Author>()
 //                .Property(e => e.Email).IsRequired();
 //            builder.Entity<Author>()
