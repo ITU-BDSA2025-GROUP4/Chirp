@@ -14,11 +14,11 @@ public class CheepService : ICheepService
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page, int pageSize)
     {
-        return await _repository.Read(page, pageSize);
+        return await _repository.ReadAsync(page, pageSize);
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string author, int page, int pageSize)
     {
-        return await _repository.Query(c => c.Author.Name == author, page, pageSize);
+        return await _repository.QueryAsync(c => c.Author.Name == author, page, pageSize);
     }
 }

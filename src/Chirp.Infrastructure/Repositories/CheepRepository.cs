@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using System.Linq.Expressions;
 
 using Chirp.Core.Application;
@@ -25,22 +26,26 @@ public class CheepRepository : ICheepRepository
         return await _context.Cheeps
             .Include(c => c.Author)
             .OrderByDescending(c => c.Timestamp)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+                TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
 
-    public async Task<List<CheepDTO>> Read(int pageNumber, int pageSize)
+    public async Task<List<CheepDTO>> ReadAsync(int pageNumber, int pageSize)
     {
         return await _context.Cheeps
             .Include(c => c.Author)
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+                TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
 
-    public async Task<List<CheepDTO>> Query(Expression<Func<Cheep, bool>> condition, int pageNumber, int pageSize)
+    public async Task<List<CheepDTO>> QueryAsync(Expression<Func<Cheep, bool>> condition,
+        int pageNumber,
+        int pageSize)
     {
         return await _context.Cheeps
             .Include(c => c.Author)
@@ -48,18 +53,16 @@ public class CheepRepository : ICheepRepository
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+                TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
-    
-    public async Task<AppResult<CheepDTO>> Create(CheepCreateDto dto)
+
+    public async Task<AppResult<CheepDTO>> CreateAsync(CreateCheepRequest dto)
     {
- 
         var cheep = new Cheep
         {
-            Text = dto.Text,
-            Author = new Author{Name = dto.Author},
-            Timestamp = DateTime.UtcNow
+            Text = dto.Text, AuthorId = dto.AuthorId, Timestamp = DateTime.UtcNow
         };
 
         _context.Cheeps.Add(cheep);
@@ -67,51 +70,92 @@ public class CheepRepository : ICheepRepository
 
         await _context.SaveChangesAsync();
 
+        var dtoOut = await ProjectCheepDtoAsync(cheep.Id);
+
         var etagBytes = (byte[])_context.Entry(cheep).Property("ETag").CurrentValue!;
         var etag = ETagUtils.ToBase64(etagBytes);
-
-      
-        var dtoOut = new CheepDTO(
-            Author: cheep.Author.Name,
-            Text: cheep.Text,
-            Timestamp: cheep.Timestamp.ToString("u")
-        );
 
         return AppResult<CheepDTO>.Created(dtoOut, etag);
     }
 
-    public async Task<AppResult<CheepDTO>> Update(CheepUpdateDTO dto)
+    public async Task<AppResult<CheepDTO>> UpdateAsync(UpdateCheepRequest dto)
     {
-        var cheep = await _context.Cheeps.FindAsync(dto.Id);
-        if (cheep == null) return AppResult<CheepDTO>.NotFound("Cheep not found");
+        var e = new Cheep { Id = dto.CheepId };
+        _context.Attach(e);
 
-       
-        _context.Entry(cheep).Property<byte[]>("ETag").OriginalValue =
-            Convert.FromBase64String(dto.ETag);
+        _context.Entry(e).Property(x => x.Text).CurrentValue = dto.Text;
+        _context.Entry(e).Property(x => x.Text).IsModified = true;
 
-        
-        cheep.Text = dto.Text;
-        cheep.Timestamp = DateTime.UtcNow;
-        
+        _context.Entry(e).Property("ETag").OriginalValue = Convert.FromBase64String(dto.ETag);
+
         try
         {
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            return AppResult<CheepDTO>.Conflict("ETag mismatch");
+            return AppResult<CheepDTO>.Conflict("Cheep was modified by someone else.");
         }
-        
-        var resultDto = new CheepDTO(
-            cheep.Author.Name,
-            cheep.Text,
-            TimestampUtils.DateTimeTimeStampToDateTimeString(cheep.Timestamp));
 
+        var newEtag = Convert.ToBase64String(
+            (byte[])_context.Entry(e).Property("ETag").CurrentValue!);
 
-        var newETag = Convert.ToBase64String(
-            _context.Entry(cheep).Property<byte[]>("ETag").CurrentValue!);
+        var dtoOut = await ProjectCheepDtoAsync(dto.CheepId);
 
-        return AppResult<CheepDTO>.Ok(resultDto, newETag);
-
+        return AppResult<CheepDTO>.Ok(dtoOut, newEtag);
     }
+
+// Should perhaps include cascading deletion down the line for likes and such
+    public async Task<AppResult> DeleteAsync(DeleteCheepRequest dto)
+    {
+        var cheep = await _context.Cheeps.FindAsync(dto.CheepId);
+        if (cheep is null)
+            return AppResult.NotFound("Cheep not found.");
+
+        // TODO: authorization (compare dto.RequesterId with cheep.AuthorId)
+
+        var etagResult = TryStampDeleteEtag(cheep, dto.ETag);
+        if (etagResult is not null)
+            return etagResult;
+
+        _context.Cheeps.Remove(cheep);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return AppResult.Conflict("Cheep was modified or removed by someone else.");
+        }
+
+        return AppResult.NoContent();
+    }
+
+private AppResult? TryStampDeleteEtag(Cheep cheep, string? etag)
+{
+    if (string.IsNullOrWhiteSpace(etag))
+        return null;
+
+    var entry = _context.Entry(cheep);
+    var currentEtag = Convert.ToBase64String((byte[])entry.Property("ETag").CurrentValue!);
+
+    if (!ETagUtils.Equals(currentEtag, etag))
+        return AppResult.Conflict("Cheep was modified by someone else.");
+
+    entry.Property("ETag").OriginalValue = Convert.FromBase64String(etag);
+    return null;
+}
+
+
+
+    private Task<CheepDTO> ProjectCheepDtoAsync(int id) =>
+        _context.Cheeps
+            .AsNoTracking()
+            .Where(c => c.Id == id)
+            .Select(c => new CheepDTO(
+                c.Author.Name,
+                c.Text,
+                TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+            .SingleAsync();
 }

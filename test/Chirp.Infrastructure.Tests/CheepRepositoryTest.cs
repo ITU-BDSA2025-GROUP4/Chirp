@@ -48,7 +48,7 @@ public class CheepRepostioryTest
     [InlineData("Adrian")]
     async Task FiltersByAuthor(string name)
     {
-        var result = await repo.Query(x => x.Author.Name.Equals(name), 1, expectedNumberOfCheeps);
+        var result = await repo.QueryAsync(x => x.Author.Name.Equals(name), 1, expectedNumberOfCheeps);
 
         foreach(CheepDTO c in result)
         {
@@ -63,7 +63,7 @@ public class CheepRepostioryTest
     [InlineData("broke", 1)]
     async Task FiltersByMessage(string word, int count)
     {
-        var result = await repo.Query(x => x.Text.ToLower().Contains(word), 1, expectedNumberOfCheeps);
+        var result = await repo.QueryAsync(x => x.Text.ToLower().Contains(word), 1, expectedNumberOfCheeps);
 
         Assert.Equal(result.Count(), count);
         foreach(CheepDTO x in result)
@@ -79,7 +79,7 @@ public class CheepRepostioryTest
     async Task FilterAfterTimestamp(string date)
     {
         DateTime dt = DateTime.Parse(date);
-        var result = await repo.Query(x => x.Timestamp.CompareTo(dt) >= 0, 1, expectedNumberOfCheeps);
+        var result = await repo.QueryAsync(x => x.Timestamp.CompareTo(dt) >= 0, 1, expectedNumberOfCheeps);
 
 
         foreach(CheepDTO cheep in result)
@@ -103,7 +103,7 @@ public class CheepRepostioryTest
     [InlineData(512)]
     async Task ReadsCorrectNumberOfCheepsPerPage(int pageSize)
     {
-        var result = await repo.Read(1, pageSize);
+        var result = await repo.ReadAsync(1, pageSize);
 
         Assert.Equal(result.Count(), pageSize);
     }
@@ -111,8 +111,8 @@ public class CheepRepostioryTest
     [Fact]
     async Task TwoPagesGiveDifferentCheeps()
     {
-        var cheeps1 = await repo.Read(1, 32);
-        var cheeps2 = await repo.Read(2, 32);
+        var cheeps1 = await repo.ReadAsync(1, 32);
+        var cheeps2 = await repo.ReadAsync(2, 32);
 
         foreach(CheepDTO ch in cheeps1)
         {
