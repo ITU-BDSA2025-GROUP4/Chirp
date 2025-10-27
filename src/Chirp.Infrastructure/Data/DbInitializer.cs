@@ -1,4 +1,5 @@
 using Chirp.Core.Entities;
+//using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure.Data;
 
@@ -20,6 +21,20 @@ public static class DbInitializer
             var a10 = new Author() { Id = "10", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
             var a11 = new Author() { Id = "11", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { Id = "12", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
+            
+            //userManager.CreateAsync(a1, "123456" );
+            //userManager.CreateAsync(a2, "123456789" );
+            //userManager.CreateAsync(a3, "12345678" );
+            //userManager.CreateAsync(a4, "password" );
+            //userManager.CreateAsync(a5, "qwerty123" );
+            //userManager.CreateAsync(a6, "qwerty1" );
+            //userManager.CreateAsync(a7, "111111" );
+            //userManager.CreateAsync(a8, "12345" );
+            //userManager.CreateAsync(a9, "secret" );
+            //userManager.CreateAsync(a10, "123123" );
+            //userManager.CreateAsync(a11, "1234567890 ");
+            //userManager.CreateAsync(a12, "1234567" );
+            // Passwords are taken from https://en.wikipedia.org/wiki/List_of_the_most_common_passwords
 
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 
