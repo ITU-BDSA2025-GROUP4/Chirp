@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Core.Entities;
 
 public class RegisterViewModel
 {
