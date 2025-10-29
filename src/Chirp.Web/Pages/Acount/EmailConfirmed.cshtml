@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Email Confirmed";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<!--TODO: add better HTML-->
+<!--HTML and css by Dot Net Totorials-->
+<!--https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/-->
+
+<div class="Container">
+    <div class="mb-3">
+                <i class="bi bi-patch-check-fill text-success" style="font-size: 3rem;"></i>
+            </div>
+            <h4 class="fw-bold mb-3 text-success">Email Verified Successfully</h4>
+
+            <div class="alert alert-success fw-semibold mb-4" style="font-size:1.08rem;">
+                Your email address has been verified and your account is now active.
+            </div>
+
+            <p class="mb-4" style="font-size:1.06rem;">
+                You can now log in and explore all the features of <span class="fw-semibold text-primary">Dot Net Tutorials</span>.
+            </p>
+            <a asp-action="Login" class="btn btn-primary px-4 fw-semibold">Login to Your Account</a>
+        </div>
+</div>

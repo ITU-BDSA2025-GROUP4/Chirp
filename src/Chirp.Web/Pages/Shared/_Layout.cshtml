@@ -8,6 +8,22 @@
 <body>
 <div class=page>
     <h1><a href="/" style="color: inherit; text-decoration: inherit;"><img src="/images/icon1.png" alt="Icon1"/>Chirp!</a></h1>
+    <header>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <form method="post" asp-controller="Account" asp-action="Logout">
+                <button type="submit">
+                    <i></i> Logout
+                </button>
+            </form>
+            <a href="/cheep">Cheep</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Login","Account")">Login</a>
+            <a href="@Url.Action("Register","Account")">Register</a>
+        }
+    </header>
 
     <a href="/cheep">Cheep<a/>
 

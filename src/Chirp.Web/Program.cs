@@ -19,7 +19,16 @@ builder.Services.AddDbContext<ChirpDbContext>(options =>
 );
 builder
     .Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ChirpDbContext>();
+    .AddEntityFrameworkStores<ChirpDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(30);
+});
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Register ASP.NET Core Identity Service using AddIdentityCore
 builder
@@ -64,6 +73,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
