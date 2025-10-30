@@ -45,17 +45,4 @@ public class LoginPageModel : PageModel
         TempData["message"] = $"Error during login for email: {login.Email}";
         return Redirect("/Account/Login");
     }
-
-//    [HttpGet]
-//    [Route("/Account/Logout")]
-//    public IActionResult OnGet()
-//    {
-//        if(Request.Path.ToString().EndsWith("Logout")) {
-//            Console.WriteLine("LOGOUT FIRED");
-//            _authorService.LogoutAuthorAsync();
-//            return Redirect("/");
-//        }
-//        return new OkResult();
-//    }
-
 }

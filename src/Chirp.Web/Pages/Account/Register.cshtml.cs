@@ -33,5 +33,4 @@ public class RegisterPageModel : PageModel
 
         return Redirect("/");
     }
-
 }

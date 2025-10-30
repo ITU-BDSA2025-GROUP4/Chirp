@@ -19,5 +19,4 @@ public class LogoutPageModel : PageModel
         _authorService.LogoutAuthorAsync();
         return Redirect("/");
     }
-
 }
