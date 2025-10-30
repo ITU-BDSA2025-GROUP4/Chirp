@@ -1,5 +1,6 @@
 //todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
+using Chirp.Core.Entities;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
@@ -27,26 +28,33 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     options.TokenLifespan = TimeSpan.FromMinutes(30);
 });
 
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddIdentityCore<Author>()
+    .AddEntityFrameworkStores<ChirpDbContext>()
+    .AddApiEndpoints();
 
-// Register ASP.NET Core Identity Service using AddIdentityCore
-builder
-    .Services.AddIdentityCore<IdentityUser>(options =>
-    {
-        // Configure the options for users
+builder.Services.Configure<IdentityOptions>(options => {
         options.Password.RequireDigit = true;
-        options.Password.RequiredLength = 6;
+        options.Password.RequireDigit = true;
         options.User.RequireUniqueEmail = true;
-    })
-    .AddRoles<IdentityRole>() // Optional: add roles support if needed
-    .AddEntityFrameworkStores<ChirpDbContext>();
+});
+
+builder.Services.ConfigureApplicationCookie(options => {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/";
+        options.SlidingExpiration = true;
+});
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+//builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
@@ -74,9 +82,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.MapControllerRoute(name: "default");
 
 app.MapRazorPages();
+app.MapIdentityApi<Author>();
 
 app.Run();
 

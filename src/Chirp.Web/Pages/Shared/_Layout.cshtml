@@ -11,7 +11,7 @@
     <header>
         @if (User.Identity?.IsAuthenticated == true)
         {
-            <form method="post" asp-controller="Account" asp-action="Logout">
+            <form action="/Account/Logout">
                 <button type="submit">
                     <i></i> Logout
                 </button>
@@ -20,8 +20,8 @@
         }
         else
         {
-            <a href="@Url.Action("Login","Account")">Login</a>
-            <a href="@Url.Action("Register","Account")">Register</a>
+            <a href="/Account/Login">Login</a>
+            <a href="/Account/Register">Register</a>
         }
     </header>
 

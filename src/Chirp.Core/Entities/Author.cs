@@ -17,5 +17,5 @@ public class Author : IdentityUser
         get { return UserName; }
         set { UserName = value; }
     }
-    public required List<Cheep> Cheeps { get; set; }
+    public List<Cheep> Cheeps { get; set; }
 }

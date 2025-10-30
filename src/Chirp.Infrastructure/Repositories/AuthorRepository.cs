@@ -62,4 +62,9 @@ public class AuthorRepository : IAuthorRepository
         await _context.Authors.AddAsync(newAuthor);
         await _context.SaveChangesAsync();
     }
+
+    public async Task Write()
+    {
+        await _context.SaveChangesAsync();
+    }
 }
