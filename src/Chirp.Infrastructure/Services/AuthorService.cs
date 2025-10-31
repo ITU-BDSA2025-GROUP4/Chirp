@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Chirp.Core.Utils;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 public class AuthorService : IAuthorService
 {
@@ -101,6 +102,23 @@ public class AuthorService : IAuthorService
         );
 
         return result;
+    }
+
+    public async Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal)
+    {
+        bool isSignedIn = _signInManager.IsSignedIn(principal);
+        if(!isSignedIn)
+        {
+            return Optional.Empty<AuthorDTO>();
+        }
+        else if(principal.Identity == null || principal.Identity.Name == null)
+        {
+            return Optional.Empty<AuthorDTO>();
+        }
+
+        string name = principal.Identity.Name;
+
+        return await GetAuthorByName(name);
     }
 
     public async Task LogoutAuthorAsync()

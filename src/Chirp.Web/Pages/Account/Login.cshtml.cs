@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Services;
 using Chirp.Core.Entities;
+using Chirp.Core.Utils;
 
 namespace Chirp.Razor.Pages;
 
@@ -18,12 +19,29 @@ public class LoginPageModel : PageModel
         _authorService = authorService;
     }
 
+    [HttpGet]
+    public IActionResult OnGet()
+    {
+        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
+        tmp.Wait();
+
+        if(tmp.Result.HasValue)
+        {
+            return Redirect("/");
+        }
+
+        return Page();
+    }
+
     [HttpPost]
     public IActionResult OnPostLogin(LoginViewModel login)
     {
+        // This case occurs when the password or email don't fit the requirements
+        // set by the annotations on the password and email field.
+        // I.e. the password is considered unsafe or the email is not valid.
         if (!ModelState.IsValid)
         {
-            TempData["message"] = "Invalid model state";
+            TempData["message"] = "Incorrect password or email";
             return Redirect("/Account/Login");
         }
 
@@ -42,7 +60,7 @@ public class LoginPageModel : PageModel
             TempData["message"] = "Invalid login attampt.";
 
         //_logger.LogError(e, "Error during login for email: {Email}", model.Email);
-        TempData["message"] = $"Error during login for email: {login.Email}";
+        TempData["message"] = $"Incorrect password or email";
         return Redirect("/Account/Login");
     }
 }

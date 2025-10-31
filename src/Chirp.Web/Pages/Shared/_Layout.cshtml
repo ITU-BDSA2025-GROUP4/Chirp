@@ -9,23 +9,23 @@
 <div class=page>
     <h1><a href="/" style="color: inherit; text-decoration: inherit;"><img src="/images/icon1.png" alt="Icon1"/>Chirp!</a></h1>
     <header>
+        <br>
         @if (User.Identity?.IsAuthenticated == true)
         {
-            <form action="/Account/Logout">
-                <button type="submit">
-                    <i></i> Logout
-                </button>
-            </form>
-            <a href="/cheep">Cheep</a>
+            <button onclick="window.location.href='/Account/Logout';">
+                    Logout
+            </button>
         }
         else
         {
-            <a href="/Account/Login">Login</a>
-            <a href="/Account/Register">Register</a>
+            <button onclick="window.location.href='/Account/Login';">
+                    Login
+            </button>
+            <button onclick="window.location.href='/Account/Register';">
+                    Register
+            </button>
         }
     </header>
-
-    <a href="/cheep">Cheep<a/>
 
     <div class=body>
             @RenderBody()
