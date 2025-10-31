@@ -27,5 +27,4 @@ public class UserTimelineModel : PageModel
         page = page > 1 ? page : 1;
         Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
     }
-
 }

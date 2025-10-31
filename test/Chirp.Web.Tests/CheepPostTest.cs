@@ -8,7 +8,6 @@ namespace Chirp.Infrastructure.Tests
 {
     public class CheepPostTest : IClassFixture<WebApplicationFactory<Program>>
     {
-
         private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
         private WebApplicationFactory<Program> _factory;
 
