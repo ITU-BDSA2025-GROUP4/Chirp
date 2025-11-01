@@ -28,7 +28,9 @@ public class RegisterPageModel : PageModel
         if(!success)
         {
             TempData["message"] = msg;
-            return Redirect("/Account/Register");
+            TempData["username"] = registerModel.Username;
+            TempData["email"] = registerModel.Email;
+            return Page();
         }
 
         return Redirect("/");
