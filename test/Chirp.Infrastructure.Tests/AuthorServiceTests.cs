@@ -5,6 +5,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Core.Tests.Unit;
 
@@ -25,7 +26,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.ReadAll())
             .ReturnsAsync(expectedAuthors);
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthors();
 
@@ -42,7 +43,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.ReadAll())
             .ReturnsAsync(new List<AuthorDTO>());
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthors();
 
@@ -60,7 +61,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindAuthorByName("Alice"))
             .ReturnsAsync(Optional.Of<AuthorDTO>(expectedAuthor));
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthorByName("Alice");
 
@@ -79,7 +80,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindAuthorByName(It.IsAny<string>()))
             .ReturnsAsync(Optional.Empty<AuthorDTO>());
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthorByName("Alice");
 
@@ -98,7 +99,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindAuthorByEmail("alice@chirp.dk"))
             .ReturnsAsync(Optional.Of<AuthorDTO>(expectedAuthor));
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthorByEmail("alice@chirp.dk");
 
@@ -117,7 +118,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindAuthorByEmail(It.IsAny<string>()))
             .ReturnsAsync(Optional.Empty<AuthorDTO>());
 
-        var service = new AuthorService(mockRepository.Object);
+        var service = new AuthorService(null, null, mockRepository.Object, null, null);
 
         var result = await service.GetAuthorByEmail("alice@chirp.dk");
 

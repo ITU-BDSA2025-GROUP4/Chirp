@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Data;
 
-public class ChirpDbContext : DbContext
+public class ChirpDbContext : IdentityDbContext
 {
     public ChirpDbContext(DbContextOptions<ChirpDbContext> options) : base(options) {}
 
@@ -11,9 +12,10 @@ public class ChirpDbContext : DbContext
     public DbSet<Author> Authors => Set<Author>();
 
     protected override void OnModelCreating(ModelBuilder builder) {
+        base.OnModelCreating(builder);
         { // Author
             builder.Entity<Author>()
-                .HasIndex(e => new {e.Name, e.Email});
+                .HasIndex(e => new {e.UserName, e.Email});
 //            builder.Entity<Author>()
 //                .Property(e => e.Email).IsRequired();
 //            builder.Entity<Author>()

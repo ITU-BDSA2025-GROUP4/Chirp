@@ -1,0 +1,56 @@
+
+@model Chirp.Core.Entities.ResendConfirmationEmailViewModel
+@{
+    ViewData["Title"] = "Resend Email Confirmation";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<!--TODO: add better HTML-->
+<!--HTML and css by Dot Net Totorials-->
+<!--https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/-->
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center mb-1">
+                <i class="bi bi-envelope-arrow-up-fill text-primary" style="font-size: 2.7rem;"></i>
+            </div>
+            <h3 class="card-title text-center mb-3 fw-bold text-primary">Resend Email Confirmation</h3>
+            <div class="alert alert-info mb-4 py-2 px-3 text-center" style="font-size:1.05rem;">
+                Please enter your <span class="fw-semibold">registered email address</span> below.<br>
+                We’ll send you a new confirmation link right away.
+            </div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mb-3 small text-center" role="alert">
+                    @ViewBag.Message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mb-3 small text-center" role="alert">
+                    Please fix the errors below and try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <form asp-action="ResendEmailConfirmation" method="post" novalidate>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold text-primary"></label>
+                    <input asp-for="Email" class="form-control shadow-sm" placeholder="Enter your registered email" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                    Send Confirmation Email
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <span class="text-secondary small">Remembered your password?</span>
+                <a asp-action="Login" class="ms-1 text-primary text-decoration-none fw-semibold small">Login here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

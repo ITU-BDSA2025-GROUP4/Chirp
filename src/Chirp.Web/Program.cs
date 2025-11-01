@@ -1,10 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-
 //todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure.Services;
+using Chirp.Core.Entities;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,36 @@ var dbPath = !string.IsNullOrWhiteSpace(envPath)
     : Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddDbContext<ChirpDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}")
+);
+builder
+    .Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ChirpDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(30);
+});
+
+builder.Services.AddIdentityCore<Author>()
+    .AddEntityFrameworkStores<ChirpDbContext>()
+    .AddApiEndpoints();
+
+builder.Services.Configure<IdentityOptions>(options => {
+        options.Password.RequireDigit = true;
+        options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.ConfigureApplicationCookie(options => {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/";
+        options.SlidingExpiration = true;
+});
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
@@ -22,6 +52,8 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+//builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
@@ -45,9 +77,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+//app.MapControllerRoute(name: "default");
+
 app.MapRazorPages();
+app.MapIdentityApi<Author>();
 
 app.Run();
-
 
 public partial class Program { } // only for endpoint tests

@@ -6,5 +6,5 @@ public class Cheep
     public required string Text { get; set; }
     public DateTime Timestamp { get; set; }
     public required Author Author { get; set; }
-    public int AuthorId { get; set; }
+    public required string AuthorId { get; set; }
 }

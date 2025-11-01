@@ -1,0 +1,34 @@
+@page "/Account/Login"
+
+@addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
+@model Chirp.Razor.Pages.LoginPageModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<!--TODO: add better HTML-->
+<!--HTML and css by Dot Net Totorials-->
+<!--https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/-->
+<div class="container">
+    <!-- Login Section -->
+    <h3 class="mb-2 text-center fw-bold text-primary">Sign in to <span class="text-dark">Chirp</span></h3>
+    <p class="text-center text-muted mb-4 small">
+        <span class="fw-semibold text-secondary">Welcome back!</span>
+        Please enter your credentials below to access your account.
+    </p>
+    <!-- Messages Section -->
+    <b class="warning">@TempData["message"]</b>
+
+    <form method="post">
+        <label for="Email">Email:</label><br>
+        <input type="text" id="Email" name="Email"><br>
+        <label for="Password">Password:</label><br>
+        <input type="password" id="Password" name="Password"><br>
+        <label for="RememberMe">Remember me:</label>
+        <input type="checkbox" id="RememberMe" name="RememberMe"><br>
+        <input type="submit" value="Login" asp-page-handler="Login"/>
+    </form>
+</div>
+
