@@ -42,7 +42,7 @@ public class LoginPageModel : PageModel
         if (!ModelState.IsValid)
         {
             TempData["message"] = "Incorrect password or email";
-            return Redirect("/Account/Login");
+            return Page();
         }
 
         var result = _authorService.LoginUserAsync(login);
@@ -61,6 +61,6 @@ public class LoginPageModel : PageModel
 
         //_logger.LogError(e, "Error during login for email: {Email}", model.Email);
         TempData["message"] = $"Incorrect password or email";
-        return Redirect("/Account/Login");
+        return Page();
     }
 }
