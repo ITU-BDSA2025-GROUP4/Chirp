@@ -34,7 +34,6 @@ builder.Services.AddIdentityCore<Author>()
 
 builder.Services.Configure<IdentityOptions>(options => {
         options.Password.RequireDigit = true;
-        options.Password.RequireDigit = true;
         options.User.RequireUniqueEmail = true;
 });
 
