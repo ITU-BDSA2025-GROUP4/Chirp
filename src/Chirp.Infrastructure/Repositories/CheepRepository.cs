@@ -87,6 +87,7 @@ public class CheepRepository : ICheepRepository
         _context.Entry(e).Property(x => x.Text).IsModified = true;
 
         _context.Entry(e).Property("ETag").OriginalValue = Convert.FromBase64String(dto.ETag);
+        _context.Entry(e).Property("ETag").CurrentValue = ETagUtils.NewValue(); 
 
         try
         {
@@ -97,13 +98,14 @@ public class CheepRepository : ICheepRepository
             return AppResult<CheepDTO>.Conflict("Cheep was modified by someone else.");
         }
 
-        var newEtag = Convert.ToBase64String(
+        var newEtag = ETagUtils.ToBase64(
             (byte[])_context.Entry(e).Property("ETag").CurrentValue!);
 
         var dtoOut = await ProjectCheepDtoAsync(dto.CheepId);
 
         return AppResult<CheepDTO>.Ok(dtoOut, newEtag);
     }
+
 
 // Should perhaps include cascading deletion down the line for likes and such
     public async Task<AppResult> DeleteAsync(DeleteCheepRequest dto)
