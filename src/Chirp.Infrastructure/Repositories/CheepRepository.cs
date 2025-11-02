@@ -21,6 +21,29 @@ public class CheepRepository : ICheepRepository
         _context = context;
     }
 
+    public async Task<bool> Add(CheepDTO cheep) {
+        // TODO: Use FirstOrDefaultAsync() instead of ToListAsync()
+        // But remember to correctly set the default value, otherwise this will blow up
+        var authors = await _context.Authors.Where(x => x.Name == cheep.Author).ToListAsync();
+
+        if(authors.Count() == 0) {
+            return false;
+        }
+
+        var author = authors.First();
+
+        var newCheep = new Cheep() {
+            Author = author,
+            AuthorId = author.Id,
+            Text = cheep.Text,
+            Timestamp = TimestampUtils.DateTimeStringToDateTimeTimeStamp(cheep.Timestamp),
+        };
+
+        await _context.Cheeps.AddAsync(newCheep);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<List<CheepDTO>> ReadAll()
     {
         return await _context.Cheeps

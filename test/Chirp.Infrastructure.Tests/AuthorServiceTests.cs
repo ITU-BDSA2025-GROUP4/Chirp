@@ -2,8 +2,9 @@ using Moq;
 
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
-using Chirp.Core.Services;
 using Chirp.Core.Utils;
+using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Services;
 
 namespace Chirp.Core.Tests.Unit;
 

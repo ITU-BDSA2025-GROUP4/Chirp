@@ -31,7 +31,7 @@ public class AuthorRepository : IAuthorRepository
             .Select(x => new AuthorDTO(x.Name, x.Email))
             .ToListAsync();
 
-        if(tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
+        if (tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
         else return Optional.Of<AuthorDTO>(tmp.First());
     }
 
@@ -43,13 +43,19 @@ public class AuthorRepository : IAuthorRepository
             .Select(x => new AuthorDTO(x.Name, x.Email))
             .ToListAsync();
 
-        if(tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
+        if (tmp.Count() == 0) return Optional.Empty<AuthorDTO>();
         else return Optional.Of<AuthorDTO>(tmp.First());
     }
 
     public async Task AddAuthor(AuthorDTO author)
     {
-        var newAuthor = new Author();
+        var newAuthor = new Author
+        {
+            Name = author.Name,
+            Email = author.Email,
+            Cheeps = new List<Cheep>()
+        };
+
         newAuthor.Name = author.Name;
         newAuthor.Email = author.Email;
 

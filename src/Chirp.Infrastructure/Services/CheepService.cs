@@ -1,7 +1,7 @@
+namespace Chirp.Infrastructure.Services;
+
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
-
-namespace Chirp.Core.Services;
 
 public class CheepService : ICheepService
 {
@@ -10,6 +10,10 @@ public class CheepService : ICheepService
     public CheepService(ICheepRepository repository)
     {
         _repository = repository;
+    }
+
+    public async Task<bool> AddCheep(CheepDTO cheep) {
+        return await _repository.Add(cheep);
     }
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page, int pageSize)

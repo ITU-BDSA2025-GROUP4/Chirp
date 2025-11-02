@@ -1,0 +1,24 @@
+﻿@page "/cheep"
+@addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
+@model Chirp.Razor.Pages.CheepModel
+@{
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
+}
+
+
+<div>
+    <h2> Cheep </h2>
+
+    <p>Name must already exist</p>
+
+    <form method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="Name"><br>
+        <label for="cheep">Cheep:</label><br>
+        <input type="text" id="cheep" name="Cheep"><br>
+
+        <input type="submit" value="Submit" asp-page-handler="Submit"/>
+    </form>
+
+</div>

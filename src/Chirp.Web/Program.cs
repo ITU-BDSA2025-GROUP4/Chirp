@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 //todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
-using Chirp.Core.Services;
+using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 
@@ -34,7 +34,6 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<ChirpDbContext>();
 
     context.Database.Migrate();
-
     DbInitializer.SeedDatabase(context);
 }
 
@@ -53,5 +52,6 @@ app.UseRouting();
 app.MapRazorPages();
 
 app.Run();
+
 
 public partial class Program { } // only for endpoint tests
