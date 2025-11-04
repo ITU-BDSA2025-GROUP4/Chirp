@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <ItemGroup>
         <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
@@ -6,6 +6,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="8.3.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
@@ -21,6 +22,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>2931d483-379f-4a24-8a6c-a29e79e83924</UserSecretsId>
+  </PropertyGroup>
 
 </Project>
