@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Chirp.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 public class AuthorService : IAuthorService
 {
@@ -32,24 +34,104 @@ public class AuthorService : IAuthorService
         _configuration = configuration;
     }
 
+    //todo: should prob fix this / make it better
+    // i use to generate a unique username if the username of the user when logging in with oauth is already in use
+    public async Task<String> GenerateUniqueUsername(string baseUsername)
+    {
+        string username;
+        int attempts = 0;
+        do
+        {
+            var suffix = Guid.NewGuid().ToString("N")[..6]; // random 6-char hex
+            username = $"{baseUsername}_{suffix}";
+        } while (await _userManager.FindByNameAsync(username) != null && attempts < 10);
+
+        return await _userManager.FindByNameAsync(username) == null ? username : throw new Exception("Unable to generate unique username");
+    }
+
+
+    // this is used for logging in a user or giving them feedback on what they can do
+    // i.e. for example, if the it is possible to create a new author with the external information, we do it and log them in
+    // if the email is taken, we return a enum member indicating that
+    public async Task<ExternalLoginStatus> LoginOrGetOptionsAsync()
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info == null) return ExternalLoginStatus.FailedToRetrieveLoginInfo;
+
+
+        var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+        if (user != null)
+        {
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return ExternalLoginStatus.LoggedIn;
+        }
+
+        var email = info.Principal.FindFirstValue(ClaimTypes.Email)!;
+        var findEmail = await GetAuthorByEmail(email);
+
+        if (findEmail.HasValue)
+        {
+            return ExternalLoginStatus.EmailAlreadyInUseAccountMustBeLinked;
+        }
+
+        var username = info.Principal.FindFirstValue(ClaimTypes.Name) ?? info.ProviderKey;
+        if ((await GetAuthorByName(username)).HasValue)
+        {
+            try
+            {
+                username = await GenerateUniqueUsername(username);
+            }
+            catch (Exception)
+            {
+                return ExternalLoginStatus.FailedToGenerateUniqueUsername;
+            }
+        }
+
+        user = new Author
+        {
+            UserName = username,
+            Email = email,
+        };
+
+        var createResult = await _userManager.CreateAsync(user);
+        if (!createResult.Succeeded) return ExternalLoginStatus.FailedToCreateUser;
+
+        await _userManager.AddLoginAsync(user, info);
+        await _signInManager.SignInAsync(user, isPersistent: false);
+        return ExternalLoginStatus.Success;
+    }
+    // this is unused at the moment
+    // my plan is to allow users to link accounts to extenral stuff in their account settings
+    // why? because it would be nice if a user could login in traditionally or thru github :)
+    public async Task<ExternalLoginStatus> LinkExternal(Author user)
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info == null) return ExternalLoginStatus.FailedToRetrieveLoginInfo;
+
+        await _userManager.AddLoginAsync(user, info);
+        await _signInManager.SignInAsync(user, isPersistent: false);
+
+        return ExternalLoginStatus.LinkedSuccessfully;
+    }
+
     public async Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model)
     {
-        if(model.HasNull())
+        if (model.HasNull())
         {
             return (false, "All fields must be filled");
         }
 
         var findEmail = await GetAuthorByEmail(model.Email);
         var findName = await GetAuthorByName(model.Username);
-        if(findEmail.HasValue)
+        if (findEmail.HasValue)
         {
             return (false, $"Email '{model.Email}' is already in use");
         }
-        if(findName.HasValue)
+        if (findName.HasValue)
         {
             return (false, $"Username '{model.Username}' is already in use");
         }
-        if(model.Password != model.ConfirmPassword)
+        if (model.Password != model.ConfirmPassword)
         {
             return (false, "Passwords do not match");
         }
@@ -67,32 +149,33 @@ public class AuthorService : IAuthorService
             return (false, "Password is too weak");
 
         // If email confirmation is setup, we can re-enable this
-//        var token = await GenerateEmailConfirmationTokenAsync(user);
-//
-//        var baseUrl =
-//            _configuration["AppSettings:BaseUrl"]
-//            ?? throw new InvalidOperationException("BaseUrl is not configured.");
-//        var confirmationLink = $"{baseUrl}/Account/confirmEmail?userId={user.Id}&token={token}";
-//
-//        await _emailService.SendRegistrationConfirmationEmailAsync(
-//            user.Email,
-//            user.UserName,
-//            confirmationLink
-//        );
+        //        var token = await GenerateEmailConfirmationTokenAsync(user);
+        //
+        //        var baseUrl =
+        //            _configuration["AppSettings:BaseUrl"]
+        //            ?? throw new InvalidOperationException("BaseUrl is not configured.");
+        //        var confirmationLink = $"{baseUrl}/Account/confirmEmail?userId={user.Id}&token={token}";
+        //
+        //        await _emailService.SendRegistrationConfirmationEmailAsync(
+        //            user.Email,
+        //            user.UserName,
+        //            confirmationLink
+        //        );
 
         return (true, null);
     }
 
-    public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
+
+    public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginUserAsync(LoginViewModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user == null)
-            return SignInResult.Failed;
+            return Microsoft.AspNetCore.Identity.SignInResult.Failed;
 
         // Not supported yet
-//        if (!await _userManager.IsEmailConfirmedAsync(user))
-//            return SignInResult.NotAllowed;
+        //        if (!await _userManager.IsEmailConfirmedAsync(user))
+        //            return Microsoft.AspNetCore.Identity.SignInResult.NotAllowed;
 
         var result = await _signInManager.PasswordSignInAsync(
             user.UserName!,
@@ -107,11 +190,11 @@ public class AuthorService : IAuthorService
     public async Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal)
     {
         bool isSignedIn = _signInManager.IsSignedIn(principal);
-        if(!isSignedIn)
+        if (!isSignedIn)
         {
             return Optional.Empty<AuthorDTO>();
         }
-        else if(principal.Identity == null || principal.Identity.Name == null)
+        else if (principal.Identity == null || principal.Identity.Name == null)
         {
             return Optional.Empty<AuthorDTO>();
         }
@@ -141,7 +224,8 @@ public class AuthorService : IAuthorService
         return await _repository.FindAuthorByName(name);
     }
 
-    public async Task Write() {
+    public async Task Write()
+    {
         await _repository.Write();
         return;
     }
@@ -210,12 +294,16 @@ public class AuthorService : IAuthorService
 
     private async Task<String> GenerateEmailConfirmationTokenAsync(Author user)
     {
-        if (user == null)
-            throw new ArgumentNullException(nameof(user));
+        ArgumentNullException.ThrowIfNull(user);
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
         return encodedToken;
     }
 
+    AuthenticationProperties IAuthorService.ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
+    {
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return properties;
+    }
 }
