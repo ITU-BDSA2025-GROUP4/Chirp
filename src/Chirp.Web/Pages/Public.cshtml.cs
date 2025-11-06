@@ -33,10 +33,15 @@ public class PublicModel : PageModel
         _authorService = authorService;
     }
 
-    public async Task OnGetAsync([FromQuery] int page = 1)
+    public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
     {
         page = page > 1 ? page : 1;
+        TempData["currentPage"] = page;
+
+        if(author == "")
         Cheeps = await _service.GetCheeps(page, _pageSize);
+        else
+        Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
     }
 
     [HttpPost]
@@ -80,4 +85,36 @@ public class PublicModel : PageModel
 
         return Redirect("/");
     }
+
+    private IActionResult GoToPage(int page)
+    {
+        return Redirect("/?page="+page.ToString());
+    }
+
+    [HttpPost]
+    public IActionResult OnPostGoToPage(string Page)
+    {
+        int pageNumber = 1;
+        int.TryParse(Page, out pageNumber);
+        return GoToPage(pageNumber);
+    }
+
+    [HttpPost]
+    public IActionResult OnPostNext(string Page)
+    {
+        int pageNumber = 1;
+        int.TryParse(Page, out pageNumber);
+        pageNumber += 1;
+        return GoToPage(pageNumber);
+    }
+
+    [HttpPost]
+    public IActionResult OnPostPrevious(string Page)
+    {
+        int pageNumber = 1;
+        int.TryParse(Page, out pageNumber);
+        pageNumber -= 1;
+        return GoToPage(pageNumber);
+    }
+        
 }

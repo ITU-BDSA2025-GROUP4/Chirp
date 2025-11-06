@@ -42,3 +42,16 @@
         <em>There are no cheeps so far.</em>
     }
 </div>
+
+<center>
+<div class="pagingButtons">
+    <form method="post">
+        <!-- When return key is pressed on the page number input field  -->
+        <input type="submit" asp-page-handler="GoToPage" style="display:none"/>
+
+        <input type="submit" value="Previous" asp-page-handler="Previous">
+        <input type="text" name="Page" id="Page" value="@TempData["currentPage"]">
+        <input type="submit" value="Next" asp-page-handler="Next">
+    </form>
+</div>
+</center>
