@@ -83,12 +83,20 @@ public class CheepRepository : ICheepRepository
 
     public async Task<AppResult<CheepDTO>> CreateAsync(CreateCheepRequest dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.Text))
+            return AppResult<CheepDTO>.Invalid("text must be provided");
+
+        if (dto.AuthorId <= 0)
+            return AppResult<CheepDTO>.Invalid("invalid author id");
+
         var cheep = new Cheep
         {
-            Text = dto.Text, AuthorId = dto.AuthorId, Timestamp = DateTime.UtcNow
+            Text = dto.Text.Trim(),
+            AuthorId = dto.AuthorId,
+            Timestamp = DateTime.UtcNow
         };
 
-        _context.Cheeps.Add(cheep);
+        await _context.Cheeps.AddAsync(cheep);
         _context.Entry(cheep).Property("ETag").CurrentValue = ETagUtils.NewValue();
 
         await _context.SaveChangesAsync();
@@ -100,6 +108,7 @@ public class CheepRepository : ICheepRepository
 
         return AppResult<CheepDTO>.Created(dtoOut, etag);
     }
+
 
     public async Task<AppResult<CheepDTO>> UpdateAsync(UpdateCheepRequest dto)
     {

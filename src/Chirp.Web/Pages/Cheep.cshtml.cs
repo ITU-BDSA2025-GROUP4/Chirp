@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chirp.Core.Application.Contracts;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Chirp.Core.Entities;
@@ -12,41 +14,50 @@ public class CheepModel : PageModel
 {
     public class CheepSubmitForm
     {
-        [BindProperty]
-        public string? Name { get; set; }
-
-        [BindProperty]
-        public string? Cheep { get; set; }
+        [BindProperty] public string? Name { get; set; }
+        [BindProperty] public string? Cheep { get; set; }
+        [BindProperty] public int? AuthorId { get; set; }
     }
 
-    private readonly ICheepService _service;
-
-    public CheepModel(ICheepService service)
+    private readonly ICheepService _cheeps;
+    private readonly IAuthorService _authors;
+      public CheepModel(ICheepService cheeps, IAuthorService authors)
     {
-        _service = service;
+        _cheeps = cheeps;
+        _authors = authors;
     }
 
     public void OnGet() {}
 
-    public IActionResult OnPostSubmit(CheepSubmitForm form)
+    public async Task<IActionResult> OnPostSubmitAsync(CheepSubmitForm form)
     {
-        if(form.Name == null || form.Cheep == null) {
-            return BadRequest("Username and Cheep must be provided");
+        if (string.IsNullOrWhiteSpace(form.Cheep))
+            return BadRequest("Cheep must be provided");
+
+        int authorId;
+        if (form.AuthorId is { } postedId)
+        {
+            authorId = postedId;
+        }
+        else
+        {
+            if (string.IsNullOrWhiteSpace(form.Name))
+                return BadRequest("Username must be provided");
+
+            var author = await _authors.GetAuthorByName(form.Name);
+            if (!author.HasValue)
+                return BadRequest($"Username: '{form.Name}' not found");
+
+            authorId = author.Value().Id; //should carry Id as well?
         }
 
-//        Console.WriteLine("GOT: " + form.Name + " - " + form.Cheep);
+        var request = new CreateCheepRequest(Text: form.Cheep!, AuthorId: authorId);
 
-        string time = TimestampUtils.DateTimeTimeStampToDateTimeString(
-                DateTime.Now
-        );
+        var result = await _cheeps.PostCheepAsync(request); // returns AppResult<CheepDTO>
+        if (result.IsError)
+            return BadRequest(result.Message ?? "failed to create cheep");
 
-        var cheepDTO = new CheepDTO(form.Name, form.Cheep, time);
-
-        bool wasAdded = _service.AddCheep(cheepDTO).Result;
-//        Console.WriteLine("RESULT: " + result);
-
-        if(wasAdded)
         return Redirect("/cheep");
-        else return BadRequest("Username: '" + form.Name + "' not found");
     }
+    
 }

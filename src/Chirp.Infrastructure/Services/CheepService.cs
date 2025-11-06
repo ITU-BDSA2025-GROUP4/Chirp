@@ -1,3 +1,5 @@
+using Chirp.Core.Application.Contracts;
+
 namespace Chirp.Infrastructure.Services;
 
 using Chirp.Core.Interfaces;
@@ -12,9 +14,9 @@ public class CheepService : ICheepService
         _repository = repository;
     }
 
-    public async Task<bool> AddCheep(CheepDTO cheep) {
-        return await _repository.Add(cheep);
-    }
+    //todo: support id?
+    public async Task<AppResult> PostCheepAsync(CheepDTO cheep)
+        => await _repository.CreateAsync(cheep);
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page, int pageSize)
     {
