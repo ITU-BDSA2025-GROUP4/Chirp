@@ -96,36 +96,4 @@ public class PublicModel : PageModel
         else
         return Redirect("/?page="+page+"&author="+Author.Trim());
     }
-
-    private IActionResult GoToPage(int page)
-    {
-        return Redirect("/?page="+page.ToString());
-    }
-
-    [HttpPost]
-    public IActionResult OnPostGoToPage(string Page)
-    {
-        int pageNumber = 1;
-        int.TryParse(Page, out pageNumber);
-        return GoToPage(pageNumber);
-    }
-
-    [HttpPost]
-    public IActionResult OnPostNext(string Page)
-    {
-        int pageNumber = 1;
-        int.TryParse(Page, out pageNumber);
-        pageNumber += 1;
-        return GoToPage(pageNumber);
-    }
-
-    [HttpPost]
-    public IActionResult OnPostPrevious(string Page)
-    {
-        int pageNumber = 1;
-        int.TryParse(Page, out pageNumber);
-        pageNumber -= 1;
-        return GoToPage(pageNumber);
-    }
-        
 }
