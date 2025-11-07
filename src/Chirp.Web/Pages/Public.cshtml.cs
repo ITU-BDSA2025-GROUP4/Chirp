@@ -86,6 +86,17 @@ public class PublicModel : PageModel
         return Redirect("/");
     }
 
+    [HttpPost]
+    public IActionResult OnPostPageHandle(string Page, string Author)
+    {
+        int page = 1;
+        int.TryParse(Page, out page);
+        if(Author == null || Author.Trim() == "")
+        return Redirect("/?page="+page);
+        else
+        return Redirect("/?page="+page+"&author="+Author.Trim());
+    }
+
     private IActionResult GoToPage(int page)
     {
         return Redirect("/?page="+page.ToString());

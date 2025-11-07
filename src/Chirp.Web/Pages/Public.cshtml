@@ -28,7 +28,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/author/@cheep.Author">@cheep.Author</a>
+                            <a href="/?author=@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Text
                         <small>&mdash; @cheep.Timestamp</small>
@@ -45,13 +45,11 @@
 
 <center>
 <div class="pagingButtons">
-    <form method="post">
-        <!-- When return key is pressed on the page number input field  -->
-        <input type="submit" asp-page-handler="GoToPage" style="display:none"/>
-
-        <input type="submit" value="Previous" asp-page-handler="Previous">
-        <input type="text" name="Page" id="Page" value="@TempData["currentPage"]">
-        <input type="submit" value="Next" asp-page-handler="Next">
-    </form>
+    <!-- When return key is pressed on the page number input field  -->
+    <button onclick="prev_page();">Previous</button>
+    <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]"/>
+    <button onclick="next_page();">Next</button>
 </div>
 </center>
+
+<script src="/js/pagination.js"></script>
