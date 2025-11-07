@@ -49,7 +49,7 @@ public class LoginPageModel : PageModel
             case ExternalLoginStatus.FailedToRetrieveLoginInfo:
             case ExternalLoginStatus.FailedToGenerateUniqueUsername:
             case ExternalLoginStatus.FailedToCreateUser:
-                TempData["message"] = "An error occured while signing in with OAuth. Please try again." + idk.ToString();
+                TempData["message"] = "An error occured while signing in with OAuth. Please try again.");
                 break;
 
             case ExternalLoginStatus.EmailAlreadyInUseAccountMustBeLinked:
