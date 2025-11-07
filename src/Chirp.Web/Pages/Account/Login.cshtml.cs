@@ -42,10 +42,10 @@ public class LoginPageModel : PageModel
 
     public async Task<IActionResult> OnGetExternalLoginCallback()
     {
-        var idk = _authorService.LoginOrGetOptionsAsync();
-        idk.Wait();
+        var loginStatus = await _authorService.LoginOrGetOptionsAsync();
 
-        switch (idk.Result)
+
+        switch (loginStatus)
         {
             case ExternalLoginStatus.FailedToRetrieveLoginInfo:
             case ExternalLoginStatus.FailedToGenerateUniqueUsername:
