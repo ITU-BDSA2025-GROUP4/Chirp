@@ -18,12 +18,11 @@ public class LoginPageModel : PageModel
     }
 
     [HttpGet]
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
-        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
-        tmp.Wait();
+       Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
 
-        if (tmp.Result.HasValue)
+        if (tmp.HasValue)
         {
             return Redirect("/");
         }
