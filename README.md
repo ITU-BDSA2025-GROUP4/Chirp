@@ -11,6 +11,8 @@
 ## INSTALLATION
 ### Prerequisites
 
+Please make sure to have the following:
+
 - `dotnet 8.0` installed
 - `Git` installed
 
@@ -61,6 +63,7 @@ Now you are free to post anything on your mind for the world to see!
 
 Remember, you can log out at any time. Feel free to navigate the many posts on `Chirp!`. And remember, by clicking on a `username`, you can see that person's post `Timeline`.
 
+---
 
 ## AUTHORS AND CONTRIBUTORS
 
@@ -76,6 +79,7 @@ With further contributions from
 
 - `oshelITU`
 
-and special thanks to the `ITU BDSA course team` 
+Special thanks to the `ITU BDSA course team` and to all contributors of the project
+ 
 ## LICENSE
 This program uses the MIT License - For further reading consult [LICENSE.md](LICENSE.md)
