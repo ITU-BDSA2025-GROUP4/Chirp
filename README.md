@@ -59,22 +59,22 @@ Now you are free to post anything on your mind for the world to see!
 
 ![](README-resources\Post.png)
 
-Remember, you can log out at any time. Feel free to navigate the many posts on `Chirp!`
+Remember, you can log out at any time. Feel free to navigate the many posts on `Chirp!`. And remember, by clicking on a `username`, you can see that person's post `Timeline`.
 
 
 ## AUTHORS AND CONTRIBUTORS
 
 Authors of this project are
 
--  sdfvb
-- 
-- 
-- 
-- 
+-  `augustlh`
+-  `KumaSC`
+-  `Mojjedrengen`
+-  `RockRottenSalad`
+-  `V0idshock`
 
 With further contributions from
 
--
+- `oshelITU`
 
 and special thanks to the `ITU BDSA course team` 
 ## LICENSE
