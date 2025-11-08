@@ -14,8 +14,7 @@ public class CheepService : ICheepService
         _repository = repository;
     }
 
-    //todo: support id?
-    public async Task<AppResult> PostCheepAsync(CheepDTO cheep)
+    public async Task<AppResult<CheepDTO>> PostCheepAsync(CreateCheepRequest cheep)
         => await _repository.CreateAsync(cheep);
 
     public async Task<IEnumerable<CheepDTO>> GetCheeps(int page, int pageSize)

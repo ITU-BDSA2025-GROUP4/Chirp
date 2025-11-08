@@ -44,11 +44,11 @@ public class CheepModel : PageModel
             if (string.IsNullOrWhiteSpace(form.Name))
                 return BadRequest("Username must be provided");
 
-            var author = await _authors.GetAuthorByName(form.Name);
+            var author = await _authors.FindByNameAsync(form.Name);
             if (!author.HasValue)
                 return BadRequest($"Username: '{form.Name}' not found");
 
-            authorId = author.Value().Id; //should carry Id as well?
+            authorId = author.Value().Id;
         }
 
         var request = new CreateCheepRequest(Text: form.Cheep!, AuthorId: authorId);
