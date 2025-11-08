@@ -4,7 +4,7 @@
 
 ## Welcome to Chirp!
 
-VISUAL ELEMENTS
+![chirp banner](README-resources\Chirp.png")
 
 Chirp! is a lightweight social media-like platform for sending and receiving `Cheeps`, Short messages for other Chirp users to read and respond to.
 
