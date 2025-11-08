@@ -4,7 +4,7 @@
 
 ## Welcome to Chirp!
 
-![chirp banner](README-resources\Chirp.png")
+![chirp banner](README-resources\Chirp.png)
 
 Chirp! is a lightweight social media-like platform for sending and receiving `Cheeps`, Short messages for other Chirp users to read and respond to.
 
@@ -27,15 +27,16 @@ For launching Chirp, navigate to `Chirp/src/Chirp.Web` and run
 
 `bash: dotnet run`
 
-or run the directory as an argument
+or run the subdirectory as an argument from the main directory
 
 `bash: dotnet run --project src/Chirp.Web/`
 
-If done correctly, this will open a localhost port at port `localhost:5273` . Copy the localhost printed to you in the console, and paste it in your browser of choise.
+If done correctly, this will open a localhost at port `localhost:5273` . Copy the localhost and paste it in your browser of choice.
 
 ## USAGE
 
-Having launched Chirp! you should now be able to navigate the UI from your browser. 
+Having launched Chirp! you should now be able to navigate the UI from your browser. You will first be met with the `Public Timeline`. Here you can either `register` as a new user, or `login` with an existing profile.
+
 
 ## AUTHORS AND CONTRIBUTORS
 
