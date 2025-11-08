@@ -11,33 +11,42 @@
 ## INSTALLATION
 ### Prerequisites
 
-Please make sure to have the following:
+Please make sure to have the following dependencies installed:
 
-- `dotnet 8.0` installed
-- `Git` installed
+- `dotnet 8.0`
+- `aspnet-runtime 8.0`
+- `git`
 
 ### Clone the repository
-Clone the project from the `github.com` repository, or by running bash command from your prefered location:  
+Clone the project directly from the `github.com` repository page, via `Code->Download ZIP`.
+Or clone the repo via git.
 
-`bash: git clone https://github.com/ITU-BDSA2025-GROUP4/Chirp`
-
-If necessary, install required dependencies. 
+```
+git clone https://github.com/ITU-BDSA2025-GROUP4/Chirp
+```
 
 ### Launch
 
 For launching `Chirp!`, navigate to `Chirp/src/Chirp.Web` and run
 
-`bash: dotnet run`
+```
+dotnet run
+```
 
-or run the subdirectory as an argument from the main directory
+or run the subdirectory as an argument from the root directory
 
-`bash: dotnet run --project src/Chirp.Web/`
+```
+dotnet run --project src/Chirp.Web
+```
 
-If done correctly, this will open a localhost at port `localhost:5273` . Copy the localhost and paste it in your browser of choice.
+If done correctly, the application will be served on localhost at port 5273. Copy the URL and paste it into your browser of choice.
+```
+localhost:5273
+```
 
 ## USAGE
 
-Having launched Chirp! you should now be able to navigate the UI from your browser. You will first be met with the `Public Timeline`, showing all posts sorted by recensy. Here you can either `register` as a new user, or `login` with an existing profile.
+Having launched Chirp! you should now be able to navigate the UI from your browser. You will first be met with the `Public Timeline`, showing all posts sorted by recency. Here you can either `register` as a new user, or `login` with an existing profile.
 
 ![Public timeline with register and login buttons](README-resources\publicTimeline.png)
 
@@ -61,7 +70,7 @@ Now you are free to post anything on your mind for the world to see!
 
 ![](README-resources\Post.png)
 
-Remember, you can log out at any time. Feel free to navigate the many posts on `Chirp!`. And remember, by clicking on a `username`, you can see that person's post `Timeline`.
+Remember, you can log out at any time. Feel free to navigate the many posts on `Chirp!`. And remember, by clicking on a `username`, you can see that person's `Timeline`.
 
 ---
 
