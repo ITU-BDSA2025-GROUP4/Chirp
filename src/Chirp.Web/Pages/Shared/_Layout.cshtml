@@ -8,11 +8,27 @@
 <body>
 <div class=page>
     <h1><a href="/" style="color: inherit; text-decoration: inherit;"><img src="/images/icon1.png" alt="Icon1"/>Chirp!</a></h1>
-
-    <a> href="/cheep">Cheep</a>
+    <header>
+        <br>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <button onclick="window.location.href='/Account/Logout';">
+                    Logout
+            </button>
+        }
+        else
+        {
+            <button onclick="window.location.href='/Account/Login';">
+                    Login
+            </button>
+            <button onclick="window.location.href='/Account/Register';">
+                    Register
+            </button>
+        }
+    </header>
 
     <div class=body>
-        @RenderBody()
+            @RenderBody()
     </div>
     <div class=footer>
         Chirp &mdash; An ASP.NET Application

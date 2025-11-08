@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Email Confirmation Sent";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<!--TODO: add better HTML-->
+<!--HTML and css by Dot Net Totorials-->
+<!--https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/-->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 65vh;">
+    <div class="card shadow-lg rounded-4 border-0 p-4" style="max-width: 600px; width: 100%;">
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <i class="bi bi-envelope-check-fill text-primary" style="font-size: 2.5rem;"></i>
+            </div>
+            <h3 class="fw-bold mb-2 text-primary">Email Confirmation Sent</h3>
+            <div class="alert alert-info mb-4 py-2 px-3 text-center" style="font-size:1.06rem;">
+                If the email address you entered is registered, a confirmation link has been sent.<br>
+                <span class="fw-semibold">
+                    Please check your inbox and also your Spam or Junk  folder.
+                </span>
+            </div>
+            <a asp-action="Login" class="btn btn-primary px-4 fw-semibold mt-2">Back to Login</a>
+        </div>
+    </div>
+</div>

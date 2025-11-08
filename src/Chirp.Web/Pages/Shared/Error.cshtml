@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Error";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<!--TODO: add better HTML-->
+<!--HTML and css by Dot Net Totorials-->
+<!--https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/-->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 65vh;">
+    <div class="card shadow-lg rounded-4 border-0 p-4" style="max-width: 540px; width: 100%; background: linear-gradient(120deg, #fff3f4 70%, #ffeaea 100%);">
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <i class="bi bi-x-octagon-fill text-danger" style="font-size: 2.8rem;"></i>
+            </div>
+            <h2 class="fw-bold mb-2 text-danger">Something Went Wrong</h2>
+            <div class="alert alert-danger mb-4 py-2 px-3 text-center" style="font-size:1.08rem;">
+                We’re sorry, but an unexpected error has occurred.<br>
+                Please try again later. If the problem persists, contact our support team.
+            </div>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-danger px-4 fw-semibold mt-2">
+                <i class="bi bi-arrow-left me-1"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>

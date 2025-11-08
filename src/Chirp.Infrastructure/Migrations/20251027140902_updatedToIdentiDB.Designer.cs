@@ -3,6 +3,7 @@ using System;
 using Chirp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDbContext))]
-    partial class ChirpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027140902_updatedToIdentiDB")]
+    partial class updatedToIdentiDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -26,11 +29,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("ETag")
-                        .IsConcurrencyToken()
-                        .HasColumnType("BLOB")
-                        .HasColumnName("ETag");
 
                     b.Property<string>("Text")
                         .IsRequired()

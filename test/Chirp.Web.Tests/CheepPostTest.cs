@@ -8,6 +8,7 @@ namespace Chirp.Infrastructure.Tests
 {
     public class CheepPostTest : IClassFixture<WebApplicationFactory<Program>>
     {
+        private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
         private WebApplicationFactory<Program> _factory;
 
         public CheepPostTest(WebApplicationFactory<Program> factory)
@@ -26,20 +27,6 @@ namespace Chirp.Infrastructure.Tests
         }
 
         [Fact]
-        public async Task EnsureCheepPageExists()
-        {
-            ensureNewDB();
-
-            var client = _factory.CreateClient();
-
-            var response = await client.GetAsync("/cheep");
-
-            response.EnsureSuccessStatusCode();
-            var html = await response.Content.ReadAsStringAsync();
-            Assert.Contains("Cheep", html, System.StringComparison.OrdinalIgnoreCase);
-        }
-
-        [Fact]
         public async Task AddSingleCheepFromValidAuthor()
         {
             ensureNewDB();
@@ -50,7 +37,7 @@ namespace Chirp.Infrastructure.Tests
             var cheepContent = "THIS IS A TEST 3";
 
             var content = new StringContent(
-                    $"Name={authorName}&Cheep={cheepContent}",
+                    $"Cheep={cheepContent}&APItoken={APItoken}",
                     System.Text.Encoding.UTF8,
                     "application/x-www-form-urlencoded"
                 );
@@ -66,7 +53,7 @@ namespace Chirp.Infrastructure.Tests
             Assert.DoesNotContain(cheepContent, html, System.StringComparison.OrdinalIgnoreCase);
 
             // Post the cheep
-            var response = await client.PostAsync("/cheep?handler=Submit", content);
+            var response = await client.PostAsync("/?handler=Submit", content);
 
             var responseText = await response.Content.ReadAsStringAsync();
 
@@ -101,28 +88,40 @@ namespace Chirp.Infrastructure.Tests
             ensureNewDB();
             var client = _factory.CreateClient();
 
-            var authorName = "INVALID NAME";
+            var invalidToken = "ijdoifjd";
             var cheepContent = "THIS IS A TEST 2";
 
             var content = new StringContent(
-                    $"Name={authorName.Replace(" ", "%20")}&Cheep={cheepContent.Replace(" ", "%20")}",
+                    $"Cheep={cheepContent.Replace(" ", "%20")}&APItoken={invalidToken}",
                     System.Text.Encoding.UTF8,
                     "application/x-www-form-urlencoded"
                 );
 
 
-            var response = await client.PostAsync("/cheep?handler=Submit", content);
-
-            // status code 400 = Bad Request
-            Assert.Equal(400, (int)response.StatusCode);
+            var response = await client.PostAsync("/?handler=Submit", content);
 
             var timeline = await client.GetAsync("/");
             timeline.EnsureSuccessStatusCode();
 
             var html = await timeline.Content.ReadAsStringAsync();
 
-            Assert.DoesNotContain(authorName, html, System.StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain(cheepContent, html, System.StringComparison.OrdinalIgnoreCase);
         }
+
+        // Cheep page has been deprecated
+        // Cheep bar has been moved to the public timelines page
+//        [Fact]
+//        public async Task EnsureCheepPageExists()
+//        {
+//            ensureNewDB();
+//
+//            var client = _factory.CreateClient();
+//
+//            var response = await client.GetAsync("/cheep");
+//
+//            response.EnsureSuccessStatusCode();
+//            var html = await response.Content.ReadAsStringAsync();
+//            Assert.Contains("Cheep", html, System.StringComparison.OrdinalIgnoreCase);
+//        }
     }
 }
