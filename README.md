@@ -11,7 +11,7 @@ Chirp! is a lightweight social media-like platform for sending and receiving `Ch
 ## INSTALLATION
 ### Prerequisites
 
-- `dotnet 8.0` or above installed
+- `dotnet 8.0` installed
 - `Git` installed
 
 ### Clone the repository
@@ -23,21 +23,34 @@ If necessary, install required dependencies.
 
 ### Launch
 
+For launching Chirp, navigate to `Chirp/src/Chirp.Web` and run
+
+`bash: dotnet run`
+
+or run the directory as an argument
+
+`bash: dotnet run --project src/Chirp.Web/`
+
+If done correctly, this will open a localhost port at port `localhost:5273` . Copy the localhost printed to you in the console, and paste it in your browser of choise.
 
 ## USAGE
 
-To launch Chirp! 
+Having launched Chirp! you should now be able to navigate the UI from your browser. 
 
 ## AUTHORS AND CONTRIBUTORS
 
 Authors of this project are
+
 -  sdfvb
 - 
 - 
 - 
 - 
 
-With special thanks to
+With further contributions from
 
+-
+
+and special thanks to the `ITU BDSA course team` 
 ## LICENSE
 This program uses the MIT License - For further reading consult [LICENSE.md](LICENSE.md)
