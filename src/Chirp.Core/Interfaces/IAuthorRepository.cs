@@ -10,5 +10,4 @@ public interface IAuthorRepository : IRepository<AuthorDTO>
     Task<Optional<AuthorDTO>> FindByIdAsync(int id);
     public Task AddAuthorAsync(AuthorDTO author);
     public Task Write();
-
 }

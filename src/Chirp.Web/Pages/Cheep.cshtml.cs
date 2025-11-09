@@ -1,4 +1,4 @@
-﻿using Chirp.Core.Application.Contracts;
+using Chirp.Core.Application.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -59,5 +59,4 @@ public class CheepModel : PageModel
 
         return Redirect("/cheep");
     }
-    
 }

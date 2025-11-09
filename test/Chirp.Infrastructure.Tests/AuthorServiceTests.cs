@@ -177,7 +177,4 @@ public class AuthorServiceTests
         Assert.True(byName.HasValue && byEmail.HasValue);
         Assert.Equal(byName.Value().Id, byEmail.Value().Id);
     }
-
-
-
 }

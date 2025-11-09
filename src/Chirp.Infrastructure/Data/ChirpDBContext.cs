@@ -37,7 +37,6 @@ public class ChirpDbContext
                 .Property<byte[]>("ETag")
                 .HasColumnName("ETag")
                 .IsConcurrencyToken();
-
             {
                 // Cheep
 //            builder.Entity<Cheep>()
@@ -46,8 +45,6 @@ public class ChirpDbContext
 //                .Property(e => e.Text).IsRequired();
 //            builder.Entity<Cheep>()
 //                .Property(e => e.Timestamp).IsRequired();
-
-
             }
         }
     }

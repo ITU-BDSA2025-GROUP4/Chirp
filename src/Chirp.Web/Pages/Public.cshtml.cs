@@ -1,4 +1,4 @@
-﻿using Chirp.Core.Application.Contracts;
+using Chirp.Core.Application.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -44,7 +44,6 @@ public class PublicModel : PageModel
     [HttpPost]
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
-  
         if (string.IsNullOrWhiteSpace(form.Cheep))
         {
             TempData["message"] = "Cheep cannot be empty";
