@@ -18,8 +18,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}")
 );
-builder
-    .Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services
+    .AddIdentity<Author, IdentityRole<int>>()
     .AddEntityFrameworkStores<ChirpDbContext>()
     .AddDefaultTokenProviders();
 

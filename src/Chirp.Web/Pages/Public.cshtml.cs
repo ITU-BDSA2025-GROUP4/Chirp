@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chirp.Core.Application.Contracts;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Chirp.Core.Entities;
@@ -40,44 +42,52 @@ public class PublicModel : PageModel
     }
 
     [HttpPost]
-    public IActionResult OnPostSubmit(CheepSubmitForm form)
+    public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
+  
+        if (string.IsNullOrWhiteSpace(form.Cheep))
+        {
+            TempData["message"] = "Cheep cannot be empty";
+            return Redirect("/");
+        }
+
         string name;
-        if(form.APItoken != null && form.APItoken == APItoken)
+        if (form.APItoken != null && form.APItoken == APItoken)
         {
             name = "Jacqualine Gilcoine";
         }
         else
         {
-            Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
-            tmp.Wait();
-
-            if(!tmp.Result.HasValue)
+            var logged = await _authorService.GetLoggedInAuthor(User);
+            if (!logged.HasValue)
             {
                 TempData["message"] = "Must be logged in to cheep";
                 return Redirect("/");
             }
-
-            name = tmp.Result.Value().Name;
+            name = logged.Value().Name;
         }
 
-        if(form.Cheep == null || form.Cheep.Trim() == "")
+        var authorOpt = await _authorService.FindByNameAsync(name);
+        if (!authorOpt.HasValue)
         {
-            TempData["message"] = "Cheep cannot be empty";
+            TempData["message"] = $"Username '{name}' not found";
             return Redirect("/");
         }
-        string time = TimestampUtils.DateTimeTimeStampToDateTimeString(
-                DateTime.Now
+        var authorId = authorOpt.Value().Id;
+
+        var request = new CreateCheepRequest(
+            Text: form.Cheep!.Trim(),
+            AuthorId: authorId
         );
 
-        var cheepDTO = new CheepDTO(name, form.Cheep, time);
+        var result = await _service.PostCheepAsync(request); // AppResult<CheepDTO>
 
-        bool wasAdded = _service.AddCheep(cheepDTO).Result;
+        if (!result.IsSuccess)
+        {
+            TempData["message"] = result.Message ?? "failed to create cheep";
+            return Redirect("/");
+        }
 
-        // This should never happen.
-        // Unless if the database is on fire, then it will definitely happen
-        if(!wasAdded) TempData["message"] = "Invalid user";
-
-        return Redirect("/");
+        return Redirect("/cheep");
     }
 }

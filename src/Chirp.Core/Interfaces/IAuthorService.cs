@@ -7,9 +7,12 @@ using Chirp.Core.Entities;
 
 public interface IAuthorService
 {
-    public Task<IEnumerable<AuthorDTO>> GetAuthors();
-    public Task<Optional<AuthorDTO>> GetAuthorByName(string name);
-    public Task<Optional<AuthorDTO>> GetAuthorByEmail(string email);
+    public Task<IEnumerable<AuthorDTO>> GetAuthorsAsync();
+    public Task<Optional<AuthorDTO>> FindByNameAsync(string name);
+    public Task<Optional<AuthorDTO>> FindByEmailAsync(string email);
+    
+    public Task<Optional<AuthorDTO>> FindByIdAsync(int id);
+
 
     Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal);
     Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
