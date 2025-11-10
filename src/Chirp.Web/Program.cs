@@ -44,8 +44,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     });
 
 
-if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTIDx"]) ||
-    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRETx"])
+if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
+    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
 ) {
     Console.WriteLine("OAuth client id or client secret missing, Github OAuth will not function");
     OAuthEnabledStatus.IsOAuthEnabled = false;
