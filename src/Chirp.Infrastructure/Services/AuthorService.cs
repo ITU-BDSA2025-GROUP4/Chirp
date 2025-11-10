@@ -11,6 +11,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
+public static class OAuthEnabledStatus
+{
+    public static bool IsOAuthEnabled { get; set; }
+}
+
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _repository;
