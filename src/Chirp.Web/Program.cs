@@ -44,13 +44,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     });
 
 
-if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
-    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
+if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTIDx"]) ||
+    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRETx"])
 ) {
     Console.WriteLine("OAuth client id or client secret missing, Github OAuth will not function");
     OAuthEnabledStatus.IsOAuthEnabled = false;
 } else {
-
     OAuthEnabledStatus.IsOAuthEnabled = true;
     builder.Services
         .AddAuthentication()
@@ -61,7 +60,6 @@ if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
             options.CallbackPath = "/signin-github";
             options.Scope.Add("user:email");
         });
-
 }
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
