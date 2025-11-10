@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Core.Utils;
+using Chirp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Razor.Pages;
@@ -33,6 +34,10 @@ public class LoginPageModel : PageModel
     [HttpPost]
     public IActionResult OnPostExternalLogin(string provider)
     {
+        if(!OAuthEnabledStatus.IsOAuthEnabled) {
+            TempData["message"] = "OAuth is not configured, missing Client ID and/or Client secret";
+            return Page();
+        }
         var redirectUrl = Url.Page("/Account/Login", pageHandler: "ExternalLoginCallback")!;
         var properties = _authorService.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
