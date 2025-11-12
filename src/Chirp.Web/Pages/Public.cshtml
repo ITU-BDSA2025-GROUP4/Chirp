@@ -13,7 +13,7 @@
     {
         <b class="warning">@TempData["message"]</b>
         <form method="post">
-            <input required type="text" id="cheep" name="Cheep" placeholder="What's on your mind?">
+            <input required type="text" id="cheep" name="Cheep" placeholder="What's on your mind?" maxlenght="160" />
             <input type="submit" value="Cheep" asp-page-handler="Submit"/>
         </form>
     }
