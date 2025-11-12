@@ -33,10 +33,15 @@ public class PublicModel : PageModel
         _authorService = authorService;
     }
 
-    public async Task OnGetAsync([FromQuery] int page = 1)
+    public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
     {
         page = page > 1 ? page : 1;
+        TempData["currentPage"] = page;
+
+        if(author == "")
         Cheeps = await _service.GetCheeps(page, _pageSize);
+        else
+        Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
     }
 
     [HttpPost]
@@ -79,5 +84,16 @@ public class PublicModel : PageModel
         if(!wasAdded) TempData["message"] = "Invalid user";
 
         return Redirect("/");
+    }
+
+    [HttpPost]
+    public IActionResult OnPostPageHandle(string Page, string Author)
+    {
+        int page = 1;
+        int.TryParse(Page, out page);
+        if(Author == null || Author.Trim() == "")
+        return Redirect("/?page="+page);
+        else
+        return Redirect("/?page="+page+"&author="+Author.Trim());
     }
 }
