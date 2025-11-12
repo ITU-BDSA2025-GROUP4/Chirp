@@ -28,7 +28,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/author/@cheep.Author">@cheep.Author</a>
+                            <a href="/?author=@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Text
                         <small>&mdash; @cheep.Timestamp</small>
@@ -42,3 +42,14 @@
         <em>There are no cheeps so far.</em>
     }
 </div>
+
+<center>
+<div class="pagingButtons">
+    <!-- When return key is pressed on the page number input field  -->
+    <button onclick="prev_page();">Previous</button>
+    <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]"/>
+    <button onclick="next_page();">Next</button>
+</div>
+</center>
+
+<script src="/js/pagination.js"></script>

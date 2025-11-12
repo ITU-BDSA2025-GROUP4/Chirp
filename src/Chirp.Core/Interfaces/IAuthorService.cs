@@ -4,6 +4,20 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Chirp.Core.Utils;
 using Chirp.Core.Entities;
+using Microsoft.AspNetCore.Authentication;
+
+public enum ExternalLoginStatus
+{
+    FailedToRetrieveLoginInfo,
+    EmailAlreadyInUseAccountMustBeLinked,
+    CanLinkOrCreate,
+    UserNameAlreadyInUse,
+    LoggedIn,
+    FailedToGenerateUniqueUsername,
+    FailedToCreateUser,
+    LinkedSuccessfully,
+    Success,
+}
 
 public interface IAuthorService
 {
@@ -20,4 +34,8 @@ public interface IAuthorService
     Task<SignInResult> LoginUserAsync(LoginViewModel model);
     Task LogoutAuthorAsync();
     Task SendEmailConfirmationAsync(string email);
+
+    Task<ExternalLoginStatus> LoginOrGetOptionsAsync();
+    Task<ExternalLoginStatus> LinkExternal(Author user);
+    public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
 }

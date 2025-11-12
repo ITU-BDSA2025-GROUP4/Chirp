@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Microsoft.AspNetCore.Identity;
-
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure.Services;
 using Chirp.Core.Entities;
 using Chirp.Core.Utils;
+using Chirp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Razor.Pages;
 
@@ -20,14 +19,54 @@ public class LoginPageModel : PageModel
     }
 
     [HttpGet]
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
-        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
-        tmp.Wait();
+       Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
 
-        if(tmp.Result.HasValue)
+        if (tmp.HasValue)
         {
             return Redirect("/");
+        }
+
+        return Page();
+    }
+
+    [HttpPost]
+    public IActionResult OnPostExternalLogin(string provider)
+    {
+        if(!OAuthEnabledStatus.IsOAuthEnabled) {
+            TempData["message"] = "OAuth is not configured, missing Client ID and/or Client secret";
+            return Page();
+        }
+        var redirectUrl = Url.Page("/Account/Login", pageHandler: "ExternalLoginCallback")!;
+        var properties = _authorService.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+        return new ChallengeResult(provider, properties);
+    }
+
+    public async Task<IActionResult> OnGetExternalLoginCallback()
+    {
+        var loginStatus = await _authorService.LoginOrGetOptionsAsync();
+
+
+        switch (loginStatus)
+        {
+            case ExternalLoginStatus.FailedToRetrieveLoginInfo:
+            case ExternalLoginStatus.FailedToGenerateUniqueUsername:
+            case ExternalLoginStatus.FailedToCreateUser:
+                TempData["message"] = "An error occured while signing in with OAuth. Please try again.";
+                break;
+
+            case ExternalLoginStatus.EmailAlreadyInUseAccountMustBeLinked:
+                TempData["message"] = "Email already in use. Please sign into your account and link it with the external provider.";
+                break;
+
+            case ExternalLoginStatus.LoggedIn:
+                Console.WriteLine("Login success");
+                return Redirect("/");
+
+            default:
+                break;
         }
 
         return Page();
