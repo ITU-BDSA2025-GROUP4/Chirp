@@ -28,7 +28,7 @@ function redirect_to_page(num, authorName) {
 function parse_page_number_or_default(def) {
     if(params.get("page") != null) {
         let tmp = parseInt(params.get("page"));
-        if(tmp != NaN) return tmp;
+        if(!isNaN(tmp)) return tmp;
     }
     return def;
 }
@@ -37,7 +37,7 @@ function next_page() {
     let page = 2;
     if(params.get("page") != null) {
         let tmp = parseInt(params.get("page"));
-        if(tmp != NaN) page = tmp + 1;
+        if(!isNaN(tmp)) page = tmp + 1;
     }
 
     redirect_to_page(page, params.get("author"));
@@ -47,7 +47,7 @@ function prev_page() {
     let page = 1;
     if(params.get("page") != null) {
         let tmp = parseInt(params.get("page"));
-        if(tmp != NaN) page = tmp - 1;
+        if(!isNaN(tmp)) page = tmp - 1;
     }
 
     redirect_to_page(page, params.get("author"));
@@ -57,7 +57,7 @@ function goto_page(pageInput) {
     let page = 1;
     if(pageInput) {
         let tmp = parseInt(pageInput);
-        if(tmp != NaN) page = tmp;
+        if(!isNaN(tmp)) page = tmp;
     }
 
     redirect_to_page(page, params.get("author"));
