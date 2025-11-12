@@ -9,7 +9,6 @@ using Chirp.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
 
 public class AuthorService : IAuthorService
 {
@@ -67,7 +66,7 @@ public class AuthorService : IAuthorService
         }
 
         var email = info.Principal.FindFirstValue(ClaimTypes.Email)!;
-        var findEmail = await GetAuthorByEmail(email);
+        var findEmail = await FindByEmailAsync(email);
 
         if (findEmail.HasValue)
         {
@@ -75,7 +74,7 @@ public class AuthorService : IAuthorService
         }
 
         var username = info.Principal.FindFirstValue(ClaimTypes.Name) ?? info.ProviderKey;
-        if ((await GetAuthorByName(username)).HasValue)
+        if ((await FindByNameAsync(username)).HasValue)
         {
             try
             {
@@ -123,7 +122,7 @@ public class AuthorService : IAuthorService
 
         var findEmail = await FindByEmailAsync(model.Email);
         var findName = await FindByNameAsync(model.Username);
-        if(findEmail.HasValue)
+        if (findEmail.HasValue)
         {
             return (false, $"Email '{model.Email}' is already in use");
         }
@@ -223,7 +222,7 @@ public class AuthorService : IAuthorService
     {
         return await _repository.FindByNameAsync(name);
     }
-    
+
     public async Task<Optional<AuthorDTO>> FindByIdAsync(int id)
     {
         return await _repository.FindByIdAsync(id);

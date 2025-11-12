@@ -24,7 +24,6 @@ public interface IAuthorService
     public Task<IEnumerable<AuthorDTO>> GetAuthorsAsync();
     public Task<Optional<AuthorDTO>> FindByNameAsync(string name);
     public Task<Optional<AuthorDTO>> FindByEmailAsync(string email);
-    
     public Task<Optional<AuthorDTO>> FindByIdAsync(int id);
 
 
