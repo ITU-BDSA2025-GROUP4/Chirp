@@ -19,7 +19,7 @@
         Please enter your credentials below to access your account.
     </p>
     <!-- Messages Section -->
-    <b class="warning">@TempData["message"]</b>
+    <b class="warning" id="WarningMessage">@TempData["message"]</b>
 
     <form method="post">
         <label for="Email">Email:</label><br>
@@ -28,7 +28,7 @@
         <input type="password" id="Password" name="Password"><br>
         <label for="RememberMe">Remember me:</label>
         <input type="checkbox" id="RememberMe" name="RememberMe"><br>
-        <input type="submit" value="Login" asp-page-handler="Login"/>
+        <input type="submit" id="LoginSubmit" value="Login" asp-page-handler="Login"/>
     </form>
 </div>
 
