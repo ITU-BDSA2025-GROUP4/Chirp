@@ -30,5 +30,12 @@
         <input type="checkbox" id="RememberMe" name="RememberMe"><br>
         <input type="submit" value="Login" asp-page-handler="Login"/>
     </form>
+
+    <p class="lead text-left">Or sign in using GitHub:</p>
+
+    <form method="post" asp-page-handler="ExternalLogin">
+        <input type="hidden" name="Provider" value="GitHub" />
+        <button class="btn btn-lg btn-success m-1" type="submit">Login using GitHub</button>
+    </form>
 </div>
 
