@@ -78,9 +78,5 @@ public class AuthorRepository : IAuthorRepository
         return true;
     }
 
-    public async Task Write()
-    {
-        await _context.SaveChangesAsync();
-    }
     public async Task Write() => await _context.SaveChangesAsync();
 }

@@ -25,19 +25,18 @@ public class PublicModel : PageModel
     public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
-    public class CheepSubmitForm : IValidatableObject
+    public class CheepSubmitForm 
     {
         [BindProperty]
         [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-        public string? APItoken { get; set; } = null!;
         
-        public IEnumerable<ValidationResult> Validate(ValidationContext context)
-        {
-            Cheep = Cheep?.Trim();
-            if (string.IsNullOrWhiteSpace(Cheep))
-                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
-        }
+//        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+//        {
+//            Cheep = Cheep?.Trim();
+//            if (string.IsNullOrWhiteSpace(Cheep))
+//                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+//        }
     }
 
     public PublicModel(ICheepService service, IAuthorService authorService)
@@ -60,10 +59,14 @@ public class PublicModel : PageModel
         }
     }
     
+    // BE AWARE OF BUG!
+    // For an unknown reason, returning Page() causes this.Cheeps to be null,
+    // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
+    // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
         if (!ModelState.IsValid)
-            return Page();
+            return Redirect("/");
 
         string name;
         Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
@@ -98,7 +101,7 @@ public class PublicModel : PageModel
             return Redirect("/");
         }
 
-        return Redirect("/cheep");
+        return Redirect("/");
     }
 
     public IActionResult OnPostPageHandle(string Page, string Author)
