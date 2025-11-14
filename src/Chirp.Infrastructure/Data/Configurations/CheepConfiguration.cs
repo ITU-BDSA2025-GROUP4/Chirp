@@ -1,4 +1,4 @@
-﻿using Chirp.Core.Entities;
+using Chirp.Core.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -28,7 +28,5 @@ public class CheepConfiguration : IEntityTypeConfiguration<Cheep>
         e.Property<byte[]>("ETag")
             .HasColumnName("ETag")
             .IsConcurrencyToken();
-        
-        
     }
 }
