@@ -37,7 +37,6 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<Optional<AuthorDTO>> FindAuthorByEmail(string email)
     {
-
         var tmp = await _context.Authors
             .Where(a => a.Email == email)
             .Select(x => new AuthorDTO(x.Name, x.Email))

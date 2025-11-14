@@ -44,5 +44,4 @@ public class SettingsPageModel : PageModel
 
         return Redirect("/");
     }
-
 }
