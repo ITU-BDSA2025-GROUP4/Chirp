@@ -2,10 +2,10 @@
 
 PROJECT_ROOT=$(dirname $( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd ))
 
-TEST="test/Chirp.Web.PlayWrightTests"
-COMPONENT="src/Chirp.Web"
-DB="playwright_test_db.db"
-DB_PATH=$PROJECT_ROOT"/"$COMPONENT"/"$DB
+TEST=test/Chirp.Web.PlayWrightTests
+COMPONENT=src/Chirp.Web
+DB=playwright_test_db.db
+DB_PATH=$PROJECT_ROOT/$COMPONENT/$DB
 
 
 if [ -e $DB_PATH ]; then
