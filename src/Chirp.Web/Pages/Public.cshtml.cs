@@ -25,18 +25,18 @@ public class PublicModel : PageModel
     public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
-    public class CheepSubmitForm 
+    public class CheepSubmitForm : IValidatableObject
     {
         [BindProperty]
         [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
         
-//        public IEnumerable<ValidationResult> Validate(ValidationContext context)
-//        {
-//            Cheep = Cheep?.Trim();
-//            if (string.IsNullOrWhiteSpace(Cheep))
-//                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
-//        }
+        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+        {
+            Cheep = Cheep?.Trim();
+            if (string.IsNullOrWhiteSpace(Cheep))
+                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+        }
     }
 
     public PublicModel(ICheepService service, IAuthorService authorService)
