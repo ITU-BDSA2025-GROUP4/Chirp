@@ -18,7 +18,6 @@ public class LoginPageModel : PageModel
         _authorService = authorService;
     }
 
-    [HttpGet]
     public async Task<IActionResult> OnGet()
     {
        Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
@@ -31,7 +30,6 @@ public class LoginPageModel : PageModel
         return Page();
     }
 
-    [HttpPost]
     public IActionResult OnPostExternalLogin(string provider)
     {
         if(!OAuthEnabledStatus.IsOAuthEnabled) {
@@ -72,7 +70,6 @@ public class LoginPageModel : PageModel
         return Page();
     }
 
-    [HttpPost]
     public IActionResult OnPostLogin(LoginViewModel login)
     {
         // This case occurs when the password or email don't fit the requirements

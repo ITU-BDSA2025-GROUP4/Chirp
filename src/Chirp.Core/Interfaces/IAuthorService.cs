@@ -29,6 +29,7 @@ public interface IAuthorService
 
     Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal);
     Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
+    public Task<bool> DeleteAuthorAsync(AuthorDTO author);
     Task<IdentityResult> ConfirmEmailAsync(Guid userId, string token);
     Task<SignInResult> LoginUserAsync(LoginViewModel model);
     Task LogoutAuthorAsync();
