@@ -165,6 +165,11 @@ public class AuthorService : IAuthorService
         return (true, null);
     }
 
+    public async Task<bool> DeleteAuthorAsync(AuthorDTO author) {
+        await _repository.DeleteAuthor(author);
+        return true;
+    }
+
 
     public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginUserAsync(LoginViewModel model)
     {

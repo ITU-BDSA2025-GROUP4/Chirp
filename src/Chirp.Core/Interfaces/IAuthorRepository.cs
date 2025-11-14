@@ -8,5 +8,6 @@ public interface IAuthorRepository : IRepository<AuthorDTO>
     public Task<Optional<AuthorDTO>> FindAuthorByName(string name);
     public Task<Optional<AuthorDTO>> FindAuthorByEmail(string email);
     public Task AddAuthor(AuthorDTO author);
+    public Task<bool> DeleteAuthor(AuthorDTO author);
     public Task Write();
 }

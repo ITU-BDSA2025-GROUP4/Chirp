@@ -11,7 +11,8 @@ namespace Chirp.Razor.Pages;
 public class PublicModel : PageModel
 {
     // Here for testing only, should be stored as secret in the future;
-    private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
+    // Deprecated
+    //private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
 
     private static readonly int _pageSize = 32;
 
@@ -41,30 +42,25 @@ public class PublicModel : PageModel
         if(author == "")
         Cheeps = await _service.GetCheeps(page, _pageSize);
         else
-        Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+        {
+            TempData["timeline"] = author;
+            Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+        }
     }
 
-    [HttpPost]
     public IActionResult OnPostSubmit(CheepSubmitForm form)
     {
         string name;
-        if(form.APItoken != null && form.APItoken == APItoken)
-        {
-            name = "Jacqualine Gilcoine";
-        }
-        else
-        {
-            Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
-            tmp.Wait();
+        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
+        tmp.Wait();
 
-            if(!tmp.Result.HasValue)
-            {
-                TempData["message"] = "Must be logged in to cheep";
-                return Redirect("/");
-            }
-
-            name = tmp.Result.Value().Name;
+        if(!tmp.Result.HasValue)
+        {
+            TempData["message"] = "Must be logged in to cheep";
+            return Redirect("/");
         }
+
+        name = tmp.Result.Value().Name;
 
         if(form.Cheep == null || form.Cheep.Trim() == "")
         {
@@ -86,7 +82,6 @@ public class PublicModel : PageModel
         return Redirect("/");
     }
 
-    [HttpPost]
     public IActionResult OnPostPageHandle(string Page, string Author)
     {
         int page = 1;

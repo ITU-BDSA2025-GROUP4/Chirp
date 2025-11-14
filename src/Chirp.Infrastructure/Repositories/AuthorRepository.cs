@@ -63,6 +63,26 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<bool> DeleteAuthor(AuthorDTO author)
+    {
+        List<Author> result =
+            await _context.Authors.Where(a => a.Email == author.Email).ToListAsync();
+
+        // TODO - report error
+        if(result.Count() != 1) {
+            return false;
+        }
+
+        List<Cheep> cheeps = 
+            await _context.Cheeps.Where(c => c.Author.Email == author.Email).ToListAsync();
+
+        _context.RemoveRange(cheeps);
+        _context.Remove(result[0]);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task Write()
     {
         await _context.SaveChangesAsync();

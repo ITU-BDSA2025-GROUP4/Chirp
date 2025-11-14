@@ -17,7 +17,6 @@ public class RegisterPageModel : PageModel
         _authorService = authorService;
     }
 
-    [HttpPost]
     public IActionResult OnPostRegister(RegisterViewModel registerModel)
     {
         var task = _authorService.RegisterAuthorAsync(registerModel);

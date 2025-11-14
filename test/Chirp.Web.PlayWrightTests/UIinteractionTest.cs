@@ -42,6 +42,7 @@ public class ExampleTest : PageTest
 
         await Page.GotoAsync("http://localhost:5273");
 
+        // REGISTER ACCOUNT
         await Page.GetByText("Register").ClickAsync();
 
         await Page.Locator("#Username").FillAsync(username);
@@ -51,17 +52,19 @@ public class ExampleTest : PageTest
 
         await Page.Locator("#RegisterSubmit").ClickAsync();
 
-        await Page.GetByText("Login").ClickAsync();
+        // LOGIN INTO ACCOUNT
+        await Page.Locator("#LoginPageButton").ClickAsync();
 
         await Page.Locator("#Email").FillAsync(email);
         await Page.Locator("#Password").FillAsync(password);
 
         await Page.Locator("#LoginSubmit").ClickAsync();
 
+        // CHEEP
         string html = await Page.ContentAsync();
 
         Assert.True(html.Contains("What's on your mind?"));
-        Assert.True(!html.Contains(cheep));
+        Assert.False(html.Contains(cheep));
         
         await Page.Locator("#cheep").FillAsync(cheep);
         await Page.Locator("#CheepSubmit").ClickAsync();
@@ -69,5 +72,30 @@ public class ExampleTest : PageTest
         string htmlAfterSubmit = await Page.ContentAsync();
 
         Assert.True(htmlAfterSubmit.Contains(cheep));
+
+        // DELETE ACCOUNT
+        await Page.GotoAsync("http://localhost:5273/Account/Settings");
+        await Page.Locator("#DeleteAccountButton").ClickAsync();
     } 
+
+    // KEEP THIS HERE FOR DEBUGGGING
+    // If a test failed and you aren't sure why, uncomment this code and PlayWright will record a video showing it interacting with the UI,
+    // feel free to add sleep calls between calls as PlayWright will perform these tests at inhuman speeds.
+//    public override BrowserNewContextOptions ContextOptions()
+//    {
+//        return new BrowserNewContextOptions()
+//        {
+//            RecordVideoDir = "videos/",
+//            ViewportSize = new ViewportSize
+//            {
+//                Height = 720, 
+//                Width = 1280
+//            },
+//            RecordVideoSize = new RecordVideoSize
+//            {
+//                Height = 720, 
+//                Width = 1280
+//            }
+//        };
+//    }
 }

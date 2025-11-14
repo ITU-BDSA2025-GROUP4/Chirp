@@ -17,7 +17,15 @@
             <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit"/>
         </form>
     }
-    <h2> Public Timeline </h2>
+
+    @if( TempData.ContainsKey("timeline") )
+    {
+        <h2> @TempData["timeline"]'s Timeline </h2>
+    }
+    else 
+    {
+        <h2> Public Timeline </h2>
+    }
 
 
     @if (Model.Cheeps.Any())
