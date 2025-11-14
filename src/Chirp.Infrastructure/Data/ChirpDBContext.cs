@@ -33,19 +33,7 @@ public class ChirpDbContext
                 b.HasIndex(a => a.NormalizedEmail).IsUnique();
             });
 
-            builder.Entity<Cheep>()
-                .Property<byte[]>("ETag")
-                .HasColumnName("ETag")
-                .IsConcurrencyToken();
-            {
-                // Cheep
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Author).IsRequired();
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Text).IsRequired();
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Timestamp).IsRequired();
-            }
+           builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
         }
     }
 }

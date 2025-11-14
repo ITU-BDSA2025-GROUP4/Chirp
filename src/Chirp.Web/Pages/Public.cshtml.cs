@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using Chirp.Core.Application.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +22,21 @@ public class PublicModel : PageModel
     private readonly ICheepService _service;
     private readonly IAuthorService _authorService;
     public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
+    [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
-    public class CheepSubmitForm
+    public class CheepSubmitForm : IValidatableObject
     {
         [BindProperty]
+        [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-
         public string? APItoken { get; set; } = null!;
+        
+        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+        {
+            Cheep = Cheep?.Trim();
+            if (string.IsNullOrWhiteSpace(Cheep))
+                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+        }
     }
 
     public PublicModel(ICheepService service, IAuthorService authorService)
@@ -45,15 +55,13 @@ public class PublicModel : PageModel
         else
         Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
     }
+    
 
     [HttpPost]
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
-        if (string.IsNullOrWhiteSpace(form.Cheep))
-        {
-            TempData["message"] = "Cheep cannot be empty";
-            return Redirect("/");
-        }
+        if (!ModelState.IsValid)
+            return Page();
 
         string name;
         if (form.APItoken != null && form.APItoken == APItoken)
