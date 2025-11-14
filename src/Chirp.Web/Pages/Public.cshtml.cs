@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
+using Chirp.Core.Application.Contracts;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Chirp.Core.Entities;
@@ -19,13 +23,21 @@ public class PublicModel : PageModel
     private readonly ICheepService _service;
     private readonly IAuthorService _authorService;
     public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
+    [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
-    public class CheepSubmitForm
+    public class CheepSubmitForm : IValidatableObject
     {
         [BindProperty]
+        [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-
         public string? APItoken { get; set; } = null!;
+        
+        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+        {
+            Cheep = Cheep?.Trim();
+            if (string.IsNullOrWhiteSpace(Cheep))
+                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+        }
     }
 
     public PublicModel(ICheepService service, IAuthorService authorService)
@@ -47,9 +59,12 @@ public class PublicModel : PageModel
             Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
         }
     }
-
-    public IActionResult OnPostSubmit(CheepSubmitForm form)
+    
+    public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
+        if (!ModelState.IsValid)
+            return Page();
+
         string name;
         Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
         tmp.Wait();
@@ -62,24 +77,28 @@ public class PublicModel : PageModel
 
         name = tmp.Result.Value().Name;
 
-        if(form.Cheep == null || form.Cheep.Trim() == "")
+        var authorOpt = await _authorService.FindByNameAsync(name);
+        if (!authorOpt.HasValue)
         {
-            TempData["message"] = "Cheep cannot be empty";
+            TempData["message"] = $"Username '{name}' not found";
             return Redirect("/");
         }
-        string time = TimestampUtils.DateTimeTimeStampToDateTimeString(
-                DateTime.Now
+        var authorId = authorOpt.Value().Id;
+
+        var request = new CreateCheepRequest(
+            Text: form.Cheep!.Trim(),
+            AuthorId: authorId
         );
 
-        var cheepDTO = new CheepDTO(name, form.Cheep, time);
+        var result = await _service.PostCheepAsync(request); // AppResult<CheepDTO>
 
-        bool wasAdded = _service.AddCheep(cheepDTO).Result;
+        if (!result.IsSuccess)
+        {
+            TempData["message"] = result.Message ?? "failed to create cheep";
+            return Redirect("/");
+        }
 
-        // This should never happen.
-        // Unless if the database is on fire, then it will definitely happen
-        if(!wasAdded) TempData["message"] = "Invalid user";
-
-        return Redirect("/");
+        return Redirect("/cheep");
     }
 
     public IActionResult OnPostPageHandle(string Page, string Author)

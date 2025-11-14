@@ -67,7 +67,7 @@ public class AuthorService : IAuthorService
         }
 
         var email = info.Principal.FindFirstValue(ClaimTypes.Email)!;
-        var findEmail = await GetAuthorByEmail(email);
+        var findEmail = await FindByEmailAsync(email);
 
         if (findEmail.HasValue)
         {
@@ -75,7 +75,7 @@ public class AuthorService : IAuthorService
         }
 
         var username = info.Principal.FindFirstValue(ClaimTypes.Name) ?? info.ProviderKey;
-        if ((await GetAuthorByName(username)).HasValue)
+        if ((await FindByNameAsync(username)).HasValue)
         {
             try
             {
@@ -121,8 +121,8 @@ public class AuthorService : IAuthorService
             return (false, "All fields must be filled");
         }
 
-        var findEmail = await GetAuthorByEmail(model.Email);
-        var findName = await GetAuthorByName(model.Username);
+        var findEmail = await FindByEmailAsync(model.Email);
+        var findName = await FindByNameAsync(model.Username);
         if (findEmail.HasValue)
         {
             return (false, $"Email '{model.Email}' is already in use");
@@ -206,7 +206,7 @@ public class AuthorService : IAuthorService
 
         string name = principal.Identity.Name;
 
-        return await GetAuthorByName(name);
+        return await FindByNameAsync(name);
     }
 
     public async Task LogoutAuthorAsync()
@@ -214,19 +214,24 @@ public class AuthorService : IAuthorService
         await _signInManager.SignOutAsync();
     }
 
-    public async Task<IEnumerable<AuthorDTO>> GetAuthors()
+    public async Task<IEnumerable<AuthorDTO>> GetAuthorsAsync()
     {
         return await _repository.ReadAll();
     }
 
-    public async Task<Optional<AuthorDTO>> GetAuthorByEmail(string email)
+    public async Task<Optional<AuthorDTO>> FindByEmailAsync(string email)
     {
-        return await _repository.FindAuthorByEmail(email);
+        return await _repository.FindByEmailAsync(email);
     }
 
-    public async Task<Optional<AuthorDTO>> GetAuthorByName(string name)
+    public async Task<Optional<AuthorDTO>> FindByNameAsync(string name)
     {
-        return await _repository.FindAuthorByName(name);
+        return await _repository.FindByNameAsync(name);
+    }
+
+    public async Task<Optional<AuthorDTO>> FindByIdAsync(int id)
+    {
+        return await _repository.FindByIdAsync(id);
     }
 
     public async Task Write()

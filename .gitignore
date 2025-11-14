@@ -482,3 +482,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Temp simpleDB files
+/Resources/Data*.csv
+# Except original db
+!/Resources/Data/chirp_cli_db.csv

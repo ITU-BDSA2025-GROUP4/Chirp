@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Identity;
 namespace Chirp.Core.Entities;
 
 // Annotations are set inside Chirp.Infrastructure/Data/ChirpDBContext.cs
-public class Author : IdentityUser
+public class Author : IdentityUser<int>
 {
-    //public int Id { get; set; }
-    //public required string Name { get; set; }
-    //public required string Email { get; set; }
+ public override string Email { get; set; } = default!;
+
     /// <summary>
     /// Deprecated use UserName insted<br>
     /// Only Exist for backwards combability

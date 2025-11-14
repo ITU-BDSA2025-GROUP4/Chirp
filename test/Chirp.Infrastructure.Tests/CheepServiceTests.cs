@@ -21,7 +21,7 @@ public class CheepServiceTests
         var mockRepository = new Mock<ICheepRepository>();
 
         mockRepository
-            .Setup(repo => repo.Read(1, 10))
+            .Setup(repo => repo.ReadAsync(1, 10))
             .ReturnsAsync(expectedCheeps);
 
         var service = new CheepService(mockRepository.Object);
@@ -29,7 +29,7 @@ public class CheepServiceTests
         var result = await service.GetCheeps(1, 10);
 
         Assert.Equal(expectedCheeps, result);
-        mockRepository.Verify(repo => repo.Read(1, 10), Times.Once);
+        mockRepository.Verify(repo => repo.ReadAsync(1, 10), Times.Once);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class CheepServiceTests
         var mockRepository = new Mock<ICheepRepository>();
 
         mockRepository
-            .Setup(repo => repo.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10))
+            .Setup(repo => repo.QueryAsync(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10))
             .ReturnsAsync(expectedCheeps);
 
         var service = new CheepService(mockRepository.Object);
@@ -52,7 +52,7 @@ public class CheepServiceTests
         var result = await service.GetCheepsFromAuthor("Alice", 1, 10);
 
         Assert.Equal(expectedCheeps, result);
-        mockRepository.Verify(r => r.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
+        mockRepository.Verify(r => r.QueryAsync(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class CheepServiceTests
         var mockRepository = new Mock<ICheepRepository>();
 
         mockRepository
-            .Setup(r => r.Read(It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(r => r.ReadAsync(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(new List<CheepDTO>());
 
         var service = new CheepService(mockRepository.Object);
@@ -69,7 +69,7 @@ public class CheepServiceTests
         var result = await service.GetCheeps(1, 10);
 
         Assert.Empty(result);
-        mockRepository.Verify(repo => repo.Read(1, 10), Times.Once);
+        mockRepository.Verify(repo => repo.ReadAsync(1, 10), Times.Once);
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class CheepServiceTests
         var mockRepository = new Mock<ICheepRepository>();
 
         mockRepository
-            .Setup(repo => repo.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(repo => repo.QueryAsync(It.IsAny<Expression<Func<Cheep, bool>>>(), It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(new List<CheepDTO>());
 
         var service = new CheepService(mockRepository.Object);
@@ -86,6 +86,6 @@ public class CheepServiceTests
         var result = await service.GetCheepsFromAuthor("Alice", 1, 10);
 
         Assert.Empty(result);
-        mockRepository.Verify(r => r.Query(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
+        mockRepository.Verify(r => r.QueryAsync(It.IsAny<Expression<Func<Cheep, bool>>>(), 1, 10), Times.Once);
     }
 }

@@ -21,7 +21,7 @@ builder.Services.AddDbContext<ChirpDbContext>(options =>
 );
 
 builder
-    .Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+    .Services.AddIdentity<Author, IdentityRole<int>>(options =>
     {
         options.Password.RequireDigit = true;
         options.User.RequireUniqueEmail = true;

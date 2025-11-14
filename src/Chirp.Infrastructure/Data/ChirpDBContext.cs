@@ -2,35 +2,38 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core.Entities;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace Chirp.Infrastructure.Data;
 
-public class ChirpDbContext : IdentityDbContext
+public class ChirpDbContext
+    : IdentityDbContext<Author, IdentityRole<int>, int>
 {
-    public ChirpDbContext(DbContextOptions<ChirpDbContext> options) : base(options) {}
+    public ChirpDbContext(DbContextOptions<ChirpDbContext> options) : base(options) { }
 
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
 
-    protected override void OnModelCreating(ModelBuilder builder) {
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
         base.OnModelCreating(builder);
-        { // Author
-            builder.Entity<Author>()
-                .HasIndex(e => new {e.UserName, e.Email});
-//            builder.Entity<Author>()
-//                .Property(e => e.Email).IsRequired();
-//            builder.Entity<Author>()
-//                .Property(e => e.Name).IsRequired();
-//            builder.Entity<Author>()
-//                .Property(e => e.Id).IsRequired();
-        }
+        {
+            // Author
+            builder.Entity<Author>(b =>
+            {
+                b.Property(a => a.Email)
+                    .IsRequired()
+                    .HasMaxLength(256);
 
-        { // Cheep
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Author).IsRequired();
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Text).IsRequired();
-//            builder.Entity<Cheep>()
-//                .Property(e => e.Timestamp).IsRequired();
+                b.Property(a => a.UserName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                b.HasIndex(a => a.NormalizedUserName).IsUnique();
+                b.HasIndex(a => a.NormalizedEmail).IsUnique();
+            });
+
+           builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
         }
     }
 }
