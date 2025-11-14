@@ -7,7 +7,7 @@ using Chirp.Core.Utils;
 
 namespace Chirp.Razor.Pages;
 
-[IgnoreAntiforgeryToken]
+//[IgnoreAntiforgeryToken]
 public class PublicModel : PageModel
 {
     // Here for testing only, should be stored as secret in the future;
