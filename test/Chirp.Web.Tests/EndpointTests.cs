@@ -47,7 +47,7 @@ namespace Chirp.Infrastructure.Tests
             ensureNewDB(); 
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync($"/author/{username}");
+            var response = await client.GetAsync($"/?author={username}");
 
             response.EnsureSuccessStatusCode();
             var html = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace Chirp.Infrastructure.Tests
             var client = _factory.CreateClient();
             var invalidUser = "nonexistentuser";
 
-            var response = await client.GetAsync($"/author/{invalidUser}");
+            var response = await client.GetAsync($"/?author={invalidUser}");
 
             response.EnsureSuccessStatusCode();
             var html = await response.Content.ReadAsStringAsync();

@@ -1,0 +1,24 @@
+@page "/Account/Settings"
+
+@addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
+@model Chirp.Razor.Pages.SettingsPageModel
+
+@{
+    ViewData["Title"] = "Account Settings";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3 class="mb-2 text-center fw-bold text-primary">Account Settings</h3>
+    <p class="text-center text-muted mb-4 small">
+        <span class="fw-semibold text-secondary"></span>
+    </p>
+    <b class="warning" id="WarningMessage">@TempData["message"]</b>
+
+    <!-- Options to change username and password would be useful -->
+
+    <form method="post" asp-page-handler="DeleteAccount">
+        <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
+    </form>
+</div>
+

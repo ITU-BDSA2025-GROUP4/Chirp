@@ -9,6 +9,7 @@ using Chirp.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 public class AuthorService : IAuthorService
 {
@@ -162,6 +163,11 @@ public class AuthorService : IAuthorService
         //        );
 
         return (true, null);
+    }
+
+    public async Task<bool> DeleteAuthorAsync(AuthorDTO author) {
+        await _repository.DeleteAuthor(author);
+        return true;
     }
 
 

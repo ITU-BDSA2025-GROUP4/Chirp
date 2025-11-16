@@ -11,11 +11,12 @@ using Chirp.Core.Utils;
 
 namespace Chirp.Razor.Pages;
 
-[IgnoreAntiforgeryToken]
+//[IgnoreAntiforgeryToken]
 public class PublicModel : PageModel
 {
     // Here for testing only, should be stored as secret in the future;
-    private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
+    // Deprecated
+    //private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
 
     private static readonly int _pageSize = 32;
 
@@ -29,7 +30,6 @@ public class PublicModel : PageModel
         [BindProperty]
         [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-        public string? APItoken { get; set; } = null!;
         
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
         {
@@ -53,31 +53,32 @@ public class PublicModel : PageModel
         if(author == "")
         Cheeps = await _service.GetCheeps(page, _pageSize);
         else
-        Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+        {
+            TempData["timeline"] = author;
+            Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+        }
     }
     
-
-    [HttpPost]
+    // BE AWARE OF BUG!
+    // For an unknown reason, returning Page() causes this.Cheeps to be null,
+    // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
+    // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
         if (!ModelState.IsValid)
-            return Page();
+            return Redirect("/");
 
         string name;
-        if (form.APItoken != null && form.APItoken == APItoken)
+        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
+        tmp.Wait();
+
+        if(!tmp.Result.HasValue)
         {
-            name = "Jacqualine Gilcoine";
+            TempData["message"] = "Must be logged in to cheep";
+            return Redirect("/");
         }
-        else
-        {
-            var logged = await _authorService.GetLoggedInAuthor(User);
-            if (!logged.HasValue)
-            {
-                TempData["message"] = "Must be logged in to cheep";
-                return Redirect("/");
-            }
-            name = logged.Value().Name;
-        }
+
+        name = tmp.Result.Value().Name;
 
         var authorOpt = await _authorService.FindByNameAsync(name);
         if (!authorOpt.HasValue)
@@ -100,10 +101,9 @@ public class PublicModel : PageModel
             return Redirect("/");
         }
 
-        return Redirect("/cheep");
+        return Redirect("/");
     }
 
-    [HttpPost]
     public IActionResult OnPostPageHandle(string Page, string Author)
     {
         int page = 1;
