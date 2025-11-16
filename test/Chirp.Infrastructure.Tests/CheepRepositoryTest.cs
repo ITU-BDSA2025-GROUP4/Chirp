@@ -108,6 +108,19 @@ public class CheepRepostioryTest
         Assert.Equal(result.Count(), pageSize);
     }
 
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    async Task ReadsCorrectNumberOfCheepsOnDifferentPage(int page)
+    {
+        var pageSize = 32;
+        var result = await repo.ReadAsync(page, pageSize);
+
+        Assert.Equal(result.Count(), pageSize);
+    }
+
     [Fact]
     async Task TwoPagesGiveDifferentCheeps()
     {
