@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chirp.Core.Entities;
 
+// Remaining annotations are set inside Chirp.Infrastructure/Data/ChirpDBContext.cs
 public class Follow
 {
     public Author Follower { get; set; } = null!;
