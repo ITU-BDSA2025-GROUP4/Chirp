@@ -21,7 +21,7 @@ public static class DbInitializer
             var a10 = new Author() { Id = 10, UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
             var a11 = new Author() { Id = 11, UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { Id = 12, UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
-            
+
             //userManager.CreateAsync(a1, "123456" );
             //userManager.CreateAsync(a2, "123456789" );
             //userManager.CreateAsync(a3, "12345678" );
@@ -713,9 +713,12 @@ public static class DbInitializer
             chirpContext.Authors.AddRange(authors);
             chirpContext.Cheeps.AddRange(cheeps);
 
-            try {
+            try
+            {
                 chirpContext.SaveChanges();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine("Attemted to re-seed already seeded DB: " + e.ToString());
             }
         }
