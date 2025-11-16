@@ -12,14 +12,9 @@ using Chirp.Infrastructure.Utils;
 
 namespace Chirp.Infrastructure.Repositories;
 
-public class CheepRepository : ICheepRepository
+public class CheepRepository(ChirpDbContext context) : ICheepRepository
 {
-    private readonly ChirpDbContext _context;
-
-    public CheepRepository(ChirpDbContext context)
-    {
-        _context = context;
-    }
+    private readonly ChirpDbContext _context = context;
 
     public async Task<List<CheepDTO>> ReadAll()
     {
@@ -96,7 +91,7 @@ public class CheepRepository : ICheepRepository
         _context.Entry(e).Property(x => x.Text).IsModified = true;
 
         _context.Entry(e).Property("ETag").OriginalValue = Convert.FromBase64String(dto.ETag);
-        _context.Entry(e).Property("ETag").CurrentValue = ETagUtils.NewValue(); 
+        _context.Entry(e).Property("ETag").CurrentValue = ETagUtils.NewValue();
 
         try
         {
@@ -116,7 +111,7 @@ public class CheepRepository : ICheepRepository
     }
 
 
-// Should perhaps include cascading deletion down the line for likes and such
+    // Should perhaps include cascading deletion down the line for likes and such
     public async Task<AppResult> DeleteAsync(DeleteCheepRequest dto)
     {
         var cheep = await _context.Cheeps.FindAsync(dto.CheepId);
@@ -143,20 +138,20 @@ public class CheepRepository : ICheepRepository
         return AppResult.NoContent();
     }
 
-private AppResult? TryStampDeleteEtag(Cheep cheep, string? etag)
-{
-    if (string.IsNullOrWhiteSpace(etag))
+    private AppResult? TryStampDeleteEtag(Cheep cheep, string? etag)
+    {
+        if (string.IsNullOrWhiteSpace(etag))
+            return null;
+
+        var entry = _context.Entry(cheep);
+        var currentEtag = Convert.ToBase64String((byte[])entry.Property("ETag").CurrentValue!);
+
+        if (!ETagUtils.Equals(currentEtag, etag))
+            return AppResult.Conflict("Cheep was modified by someone else.");
+
+        entry.Property("ETag").OriginalValue = Convert.FromBase64String(etag);
         return null;
-
-    var entry = _context.Entry(cheep);
-    var currentEtag = Convert.ToBase64String((byte[])entry.Property("ETag").CurrentValue!);
-
-    if (!ETagUtils.Equals(currentEtag, etag))
-        return AppResult.Conflict("Cheep was modified by someone else.");
-
-    entry.Property("ETag").OriginalValue = Convert.FromBase64String(etag);
-    return null;
-}
+    }
 
 
 
