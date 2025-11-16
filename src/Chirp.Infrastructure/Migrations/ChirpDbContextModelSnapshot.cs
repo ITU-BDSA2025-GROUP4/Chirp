@@ -121,6 +121,21 @@ namespace Chirp.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Chirp.Core.Entities.Follow", b =>
+                {
+                    b.Property<int>("FollowerFK")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FolloweeFK")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("FollowerFK", "FolloweeFK");
+
+                    b.HasIndex("FolloweeFK");
+
+                    b.ToTable("Follows");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -258,6 +273,25 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("Chirp.Core.Entities.Follow", b =>
+                {
+                    b.HasOne("Chirp.Core.Entities.Author", "Followee")
+                        .WithMany("Followers")
+                        .HasForeignKey("FolloweeFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Core.Entities.Author", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Followee");
+
+                    b.Navigation("Follower");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -312,6 +346,10 @@ namespace Chirp.Infrastructure.Migrations
             modelBuilder.Entity("Chirp.Core.Entities.Author", b =>
                 {
                     b.Navigation("Cheeps");
+
+                    b.Navigation("Followers");
+
+                    b.Navigation("Following");
                 });
 #pragma warning restore 612, 618
         }
