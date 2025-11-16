@@ -59,7 +59,7 @@ namespace Chirp.Tests.Infrastructure.Repositories
             foreach (var entry in ctx.ChangeTracker.Entries<Cheep>().ToList())
                 entry.State = EntityState.Detached;
 
-            var res = await repo.UpdateAsync(new UpdateCheepRequest(cheepId, author.Id, "new", etag));
+            var res = await repo.UpdateAsync(new UpdateCheepRequest(cheepId, author.Id, "new", etag!));
 
             Assert.Equal(AppStatus.Ok, res.Status);
             Assert.NotNull(res.Value);

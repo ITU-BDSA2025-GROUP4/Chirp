@@ -2,35 +2,34 @@ using Microsoft.EntityFrameworkCore;
 
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Data;
-using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
 using Chirp.Core.Entities;
 
-namespace Chirp.Razor.Tests;
+namespace Chirp.Infrastructure.Tests;
 
 public class CheepRepostioryTest
 {
-    private const int expectedNumberOfCheeps = 657;
-    private static ICheepRepository repo;
+    private const int ExpectedNumberOfCheeps = 657;
+    private readonly CheepRepository _repo;
 
     public CheepRepostioryTest()
     {
         string DbPath = "tmp.db";
         DbContextOptionsBuilder<ChirpDbContext> optionsBuilder = new();
         optionsBuilder.UseSqlite($"Data Source={DbPath}");
-        ChirpDbContext context = new(optionsBuilder.Options); 
+        ChirpDbContext context = new(optionsBuilder.Options);
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
 
-        repo = new CheepRepository(context);
+        _repo = new CheepRepository(context);
     }
 
     [Fact]
-    async Task ReadsAllInitializerData()
+    public async Task ReadsAllInitializerData()
     {
-        var result = await repo.ReadAll();
+        var result = await _repo.ReadAll();
 
-        Assert.Equal(result.Count(), expectedNumberOfCheeps);
+        Assert.Equal(ExpectedNumberOfCheeps, result.Count);
     }
 
     [Theory]
@@ -46,11 +45,11 @@ public class CheepRepostioryTest
     [InlineData("Jacqualine Gilcoine")]
     [InlineData("Helge")]
     [InlineData("Adrian")]
-    async Task FiltersByAuthor(string name)
+    public async Task FiltersByAuthor(string name)
     {
-        var result = await repo.QueryAsync(x => x.Author.Name.Equals(name), 1, expectedNumberOfCheeps);
+        var result = await _repo.QueryAsync(x => x.Author.Name.Equals(name), 1, ExpectedNumberOfCheeps);
 
-        foreach(CheepDTO c in result)
+        foreach (CheepDTO c in result)
         {
             Assert.Equal(c.Author, name);
         }
@@ -61,14 +60,14 @@ public class CheepRepostioryTest
     [InlineData("against", 4)]
     [InlineData("small", 9)]
     [InlineData("broke", 1)]
-    async Task FiltersByMessage(string word, int count)
+    public async Task FiltersByMessage(string word, int count)
     {
-        var result = await repo.QueryAsync(x => x.Text.ToLower().Contains(word), 1, expectedNumberOfCheeps);
+        var result = await _repo.QueryAsync(x => x.Text.ToLower().Contains(word), 1, ExpectedNumberOfCheeps);
 
-        Assert.Equal(result.Count(), count);
-        foreach(CheepDTO x in result)
+        Assert.Equal(result.Count, count);
+        foreach (CheepDTO x in result)
         {
-            Assert.True(x.Text.ToLower().Contains(word));
+            Assert.True(x.Text.Contains(word, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 
@@ -76,13 +75,13 @@ public class CheepRepostioryTest
     [InlineData("2023-08-01 13:13:19")]
     [InlineData("2023-08-01 13:14:34")]
     [InlineData("2023-08-01 13:16:13")]
-    async Task FilterAfterTimestamp(string date)
+    public async Task FilterAfterTimestamp(string date)
     {
         DateTime dt = DateTime.Parse(date);
-        var result = await repo.QueryAsync(x => x.Timestamp.CompareTo(dt) >= 0, 1, expectedNumberOfCheeps);
+        var result = await _repo.QueryAsync(x => x.Timestamp.CompareTo(dt) >= 0, 1, ExpectedNumberOfCheeps);
 
 
-        foreach(CheepDTO cheep in result)
+        foreach (CheepDTO cheep in result)
         {
             var cheepDt = TimestampUtils.DateTimeStringToDateTimeTimeStamp(cheep.Timestamp);
             Assert.True(cheepDt.CompareTo(dt) >= 0);
@@ -101,22 +100,22 @@ public class CheepRepostioryTest
     [InlineData(128)]
     [InlineData(256)]
     [InlineData(512)]
-    async Task ReadsCorrectNumberOfCheepsPerPage(int pageSize)
+    public async Task ReadsCorrectNumberOfCheepsPerPage(int pageSize)
     {
-        var result = await repo.ReadAsync(1, pageSize);
+        var result = await _repo.ReadAsync(1, pageSize);
 
-        Assert.Equal(result.Count(), pageSize);
+        Assert.Equal(result.Count, pageSize);
     }
 
     [Fact]
-    async Task TwoPagesGiveDifferentCheeps()
+    public async Task TwoPagesGiveDifferentCheeps()
     {
-        var cheeps1 = await repo.ReadAsync(1, 32);
-        var cheeps2 = await repo.ReadAsync(2, 32);
+        var cheeps1 = await _repo.ReadAsync(1, 32);
+        var cheeps2 = await _repo.ReadAsync(2, 32);
 
-        foreach(CheepDTO ch in cheeps1)
+        foreach (CheepDTO ch in cheeps1)
         {
-            Assert.False(cheeps2.Contains(ch));
+            Assert.DoesNotContain(ch, cheeps2);
         }
 
     }

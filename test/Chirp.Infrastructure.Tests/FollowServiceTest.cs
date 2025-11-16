@@ -18,6 +18,30 @@ public class FollowServiceTests
     }
 
     [Fact]
+    public async Task FollowAuthorAsync_ShouldReturnFalse_WhenAuthorTriesToFollowThemselves()
+    {
+        var request = new FollowRequest(1, 1);
+        _repository.Setup(r => r.FollowAsync(request))
+            .ReturnsAsync(FollowResult.Success);
+
+        var result = await _service.FollowAuthorAsync(request);
+        Assert.False(result);
+        _repository.Verify(repo => repo.FollowAsync(request), Times.Never);
+    }
+
+    [Fact]
+    public async Task FollowAuthorAsync_ShouldReturnFalse_WhenAuthorTriesToUnfollowThemselves()
+    {
+        var request = new FollowRequest(1, 1);
+        _repository.Setup(r => r.FollowAsync(request))
+            .ReturnsAsync(FollowResult.Success);
+
+        var result = await _service.UnfollowAuthorAsync(request);
+        Assert.False(result);
+        _repository.Verify(repo => repo.FollowAsync(request), Times.Never);
+    }
+
+    [Fact]
     public async Task FollowAuthorAsync_ShouldReturnTrue_ForSuccess()
     {
         var request = new FollowRequest(1, 2);
