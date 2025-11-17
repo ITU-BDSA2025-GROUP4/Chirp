@@ -164,4 +164,14 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
                 c.Text,
                 TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .SingleAsync();
+
+    public async Task<List<CheepDTO>> GetCheepsWrittenByAuthorAndFollowedAuthors(int authorId, int pageNumber, int pageSize)
+    {
+        var followeeIds = await _context.Follows
+            .Where(f => f.FollowerFK == authorId)
+            .Select(f => f.FolloweeFK)
+            .ToListAsync();
+
+        return await QueryAsync(c => followeeIds.Contains(c.AuthorId) || c.AuthorId == authorId, pageNumber, pageSize);
+    }
 }
