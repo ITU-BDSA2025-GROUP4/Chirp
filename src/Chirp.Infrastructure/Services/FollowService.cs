@@ -11,9 +11,16 @@ public class FollowService(IFollowRepository repository) : IFollowService
     // Please note that we kind of just ignore most "errors" and say that they succeed, since the operations are idempotent
     // i.e. if you follow someone you are already following, we just say it suceeds, since the follow was not added again
     // same goes for unfollow etc
+    //
+    // Also it is not possible for an Author to follow/unfollow themselves
 
     public async Task<bool> FollowAuthorAsync(FollowRequest followRequest)
     {
+        if (followRequest.FollowerID == followRequest.FolloweeID)
+        {
+            return false;
+        }
+
         var result = await _repository.FollowAsync(followRequest);
 
         return result switch
@@ -25,6 +32,11 @@ public class FollowService(IFollowRepository repository) : IFollowService
 
     public async Task<bool> UnfollowAuthorAsync(FollowRequest followRequest)
     {
+        if (followRequest.FollowerID == followRequest.FolloweeID)
+        {
+            return false;
+        }
+
         var result = await _repository.UnfollowAsync(followRequest);
 
         return result switch
@@ -33,4 +45,5 @@ public class FollowService(IFollowRepository repository) : IFollowService
             _ => true,
         };
     }
+
 }
