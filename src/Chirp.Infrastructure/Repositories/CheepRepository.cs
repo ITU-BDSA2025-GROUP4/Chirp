@@ -49,7 +49,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(c => new CheepDTO(c.Author.Name, c.Text,
-                TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+                        TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
 
@@ -167,11 +167,12 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
 
     public async Task<List<CheepDTO>> GetCheepsWrittenByAuthorAndFollowedAuthors(int authorId, int pageNumber, int pageSize)
     {
-        var followeeIds = await _context.Follows
-            .Where(f => f.FollowerFK == authorId)
-            .Select(f => f.FolloweeFK)
+        return await _context.Cheeps
+            .Where(c => c.AuthorId == authorId || _context.Follows.Any(f => f.FollowerFK == authorId && f.FolloweeFK == c.AuthorId))
+            .OrderByDescending(c => c.Timestamp)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(c => new CheepDTO(c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
-
-        return await QueryAsync(c => followeeIds.Contains(c.AuthorId) || c.AuthorId == authorId, pageNumber, pageSize);
     }
 }

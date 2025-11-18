@@ -1,6 +1,6 @@
 ﻿@page "/"
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
-@model Chirp.Razor.Pages.PublicModel
+@model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -14,15 +14,15 @@
         <b class="warning">@TempData["message"]</b>
         <form method="post">
             <input asp-for="Form.Cheep" id="cheep" name="Cheep" placeholder="What's on your mind?" />
-            <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit"/>
+            <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit" />
         </form>
     }
 
-    @if( TempData.ContainsKey("timeline") )
+    @if (TempData.ContainsKey("timeline"))
     {
         <h2> @TempData["timeline"]'s Timeline </h2>
     }
-    else 
+    else
     {
         <h2> Public Timeline </h2>
     }
@@ -52,12 +52,12 @@
 </div>
 
 <center>
-<div class="pagingButtons">
-    <!-- When return key is pressed on the page number input field  -->
-    <button onclick="prev_page();">Previous</button>
-    <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]"/>
-    <button onclick="next_page();">Next</button>
-</div>
+    <div class="pagingButtons">
+        <!-- When return key is pressed on the page number input field  -->
+        <button onclick="prev_page();">Previous</button>
+        <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]" />
+        <button onclick="next_page();">Next</button>
+    </div>
 </center>
 
 <script src="/js/pagination.js"></script>

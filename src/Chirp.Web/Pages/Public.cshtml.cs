@@ -8,21 +8,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
+using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
-//[IgnoreAntiforgeryToken]
 public class PublicModel : PageModel
 {
-    // Here for testing only, should be stored as secret in the future;
-    // Deprecated
-    //private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
-
     private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
     private readonly IAuthorService _authorService;
-    public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
+    private readonly IFollowService _followService;
+
+    public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
+
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
@@ -30,19 +29,20 @@ public class PublicModel : PageModel
         [BindProperty]
         [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-        
+
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
         {
             Cheep = Cheep?.Trim();
             if (string.IsNullOrWhiteSpace(Cheep))
-                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+                yield return new ValidationResult("Cheep cannot be empty", [nameof(Cheep)]);
         }
     }
 
-    public PublicModel(ICheepService service, IAuthorService authorService)
+    public PublicModel(ICheepService service, IAuthorService authorService, IFollowService followService)
     {
         _service = service;
         _authorService = authorService;
+        _followService = followService;
     }
 
     public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
@@ -50,15 +50,76 @@ public class PublicModel : PageModel
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
 
-        if(author == "")
-        Cheeps = await _service.GetCheeps(page, _pageSize);
+
+        Optional<AuthorDTO> currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (author == "")
+            Cheeps = await _service.GetCheeps(page, _pageSize);
         else
         {
             TempData["timeline"] = author;
-            Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+
+            if (currentAuthor.HasValue && currentAuthor.Value().Name == author)
+            {
+                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Value().Id, page, _pageSize);
+            }
+            else
+            {
+                Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+            }
         }
+
     }
-    
+
+    public async Task<IActionResult> OnPostFollow(string author)
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            // todo: actually redirect properly at somepoint
+            return Page();
+        }
+
+        var followee = await _authorService.FindByNameAsync(author);
+
+        if (followee.HasValue)
+        {
+            var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
+            await _followService.FollowAuthorAsync(request);
+            // todo: actually redirect properly at somepoint
+            return Page();
+        }
+
+        // todo: actually redirect properly at somepoint
+        return Page();
+        return Redirect(Request.GetDisplayUrl());
+    }
+
+    public async Task<IActionResult> OnPostUnfollow(string author)
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            // todo: actually redirect properly at somepoint
+            return Page();
+        }
+
+        var followee = await _authorService.FindByNameAsync(author);
+
+        if (followee.HasValue)
+        {
+            var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
+            await _followService.UnfollowAuthorAsync(request);
+            // todo: actually redirect properly at somepoint
+            return Page();
+        }
+
+        // todo: actually redirect properly at somepoint
+        return Page();
+    }
+
     // BE AWARE OF BUG!
     // For an unknown reason, returning Page() causes this.Cheeps to be null,
     // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
@@ -72,7 +133,7 @@ public class PublicModel : PageModel
         Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
         tmp.Wait();
 
-        if(!tmp.Result.HasValue)
+        if (!tmp.Result.HasValue)
         {
             TempData["message"] = "Must be logged in to cheep";
             return Redirect("/");
@@ -108,9 +169,9 @@ public class PublicModel : PageModel
     {
         int page = 1;
         int.TryParse(Page, out page);
-        if(Author == null || Author.Trim() == "")
-        return Redirect("/?page="+page);
+        if (Author == null || Author.Trim() == "")
+            return Redirect("/?page=" + page);
         else
-        return Redirect("/?page="+page+"&author="+Author.Trim());
+            return Redirect("/?page=" + page + "&author=" + Author.Trim());
     }
 }
