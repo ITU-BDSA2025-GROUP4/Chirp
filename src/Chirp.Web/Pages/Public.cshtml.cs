@@ -77,7 +77,7 @@ public class PublicModel : PageModel
         }
     }
 
-    public async Task<IActionResult> OnPostFollow(string author, string returnUrl)
+    public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
 
@@ -92,6 +92,7 @@ public class PublicModel : PageModel
         {
             var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
             await _followService.FollowAuthorAsync(request);
+            // todo: actually redirect properly at somepoint
             return Redirect(returnUrl);
         }
 
