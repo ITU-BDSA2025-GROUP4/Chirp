@@ -14,9 +14,9 @@ public class LogoutPageModel : PageModel
         _authorService = authorService;
     }
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
-        _authorService.LogoutAuthorAsync();
+        await _authorService.LogoutAuthorAsync();
         return Redirect("/");
     }
 }
