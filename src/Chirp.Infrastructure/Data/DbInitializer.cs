@@ -34,7 +34,6 @@ public static class DbInitializer
             {
                 Follower = a1,
                 Followee = a3,
-
             };
 
             var f2 = new Follow

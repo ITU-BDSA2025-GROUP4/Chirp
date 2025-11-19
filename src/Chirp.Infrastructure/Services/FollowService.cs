@@ -51,5 +51,4 @@ public class FollowService(IFollowRepository repository) : IFollowService
             _ => true,
         };
     }
-
 }

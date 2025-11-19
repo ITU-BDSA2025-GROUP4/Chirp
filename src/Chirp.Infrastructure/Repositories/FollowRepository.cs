@@ -9,7 +9,6 @@ namespace Chirp.Infrastructure.Repositories;
 
 public class FollowRepository(ChirpDbContext context) : IFollowRepository
 {
-
     private readonly ChirpDbContext _context = context;
 
     public async Task<List<FollowDTO>> ReadAll()

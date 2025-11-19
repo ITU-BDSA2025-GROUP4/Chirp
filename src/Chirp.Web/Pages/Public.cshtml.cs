@@ -75,7 +75,6 @@ public class PublicModel : PageModel
                 Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
             }
         }
-
     }
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl)
