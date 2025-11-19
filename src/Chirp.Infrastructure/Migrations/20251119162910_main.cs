@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class newID : Migration
+    public partial class main : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -27,12 +27,15 @@ public class SettingsPageModel : PageModel
             return Redirect("/Account/Login");
         }
 
+        TempData["username"] = tmp.Value().Name;
+        TempData["email"] = tmp.Value().Email;
+
         return Page();
     }
 
     public async Task<IActionResult> OnPostDeleteAccount()
     {
-       Optional<AuthorDTO> user = await _authorService.GetLoggedInAuthor(User);
+        Optional<AuthorDTO> user = await _authorService.GetLoggedInAuthor(User);
         if (!user.HasValue)
         {
             return Redirect("/Account/Login");

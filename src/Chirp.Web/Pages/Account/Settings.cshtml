@@ -15,8 +15,18 @@
     </p>
     <b class="warning" id="WarningMessage">@TempData["message"]</b>
 
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <h4>Username</h4>
+        @TempData["username"]
+
+        <h4>Email</h4>
+        @TempData["email"]
+    }
+
     <!-- Options to change username and password would be useful -->
 
+    <br>
     <form method="post" asp-page-handler="DeleteAccount">
         <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
     </form>
