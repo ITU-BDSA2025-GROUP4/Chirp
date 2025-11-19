@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Account Settings";
-    Layout = "../Shared/_Layout.cshtml";
+    Layout = "../../Shared/_Layout.cshtml";
 }
 
 <div class="container">
@@ -27,6 +27,10 @@
     <!-- Options to change username and password would be useful -->
 
     <br>
+    <button id="ChangePasswordPageButton" onclick="window.location.href='/Account/Settings/ChangePassword';">
+        Change password
+    </button>
+
     <form method="post" asp-page-handler="DeleteAccount">
         <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
     </form>
