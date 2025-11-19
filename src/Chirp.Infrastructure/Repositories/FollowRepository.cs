@@ -75,4 +75,12 @@ public class FollowRepository(ChirpDbContext context) : IFollowRepository
 
         return FollowResult.Success;
     }
+
+    public async Task<HashSet<string>> GetFollowedAuthorNames(int authorId)
+    {
+        return await _context.Follows
+            .Where(f => f.FollowerFK == authorId)
+            .Select(f => f.Followee.Name)
+            .ToHashSetAsync();
+    }
 }

@@ -17,4 +17,5 @@ public interface IFollowRepository : IRepository<FollowDTO>
 {
     public Task<FollowResult> FollowAsync(FollowRequest followRequest);
     public Task<FollowResult> UnfollowAsync(FollowRequest followRequest);
+    public Task<HashSet<string>> GetFollowedAuthorNames(int authorId);
 }

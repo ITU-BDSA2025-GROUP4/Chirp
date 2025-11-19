@@ -1,4 +1,5 @@
 
+
 using Chirp.Core.Application.Contracts;
 using Chirp.Core.Interfaces;
 
@@ -28,6 +29,11 @@ public class FollowService(IFollowRepository repository) : IFollowService
             FollowResult.FollowerNotFound or FollowResult.FolloweeNotFound or FollowResult.UnexpectedError => false,
             _ => true,
         };
+    }
+
+    public async Task<HashSet<string>> GetFollowedAuthorNames(int authorId)
+    {
+        return await _repository.GetFollowedAuthorNames(authorId);
     }
 
     public async Task<bool> UnfollowAuthorAsync(FollowRequest followRequest)
