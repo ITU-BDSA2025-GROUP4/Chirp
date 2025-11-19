@@ -18,6 +18,32 @@ public class FollowServiceTests
     }
 
     [Fact]
+    public async Task GetFollowedAuthorNames_ShouldReturnEmptySet_WhenAuthorDoesntFollowAnyone()
+    {
+        _repository.Setup(r => r.GetFollowedAuthorNames(42069))
+            .ReturnsAsync([]);
+
+        var result = await _service.GetFollowedAuthorNames(42069);
+
+        Assert.Empty(result);
+        _repository.Verify(repo => repo.GetFollowedAuthorNames(42069), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetFollowedAuthorNames_ShouldReturnAllFollowedAuthors_WhenAuthorFollowsMultiple()
+    {
+        var followedAuthors = new HashSet<string> { "Alice", "Bob", "Charlie", "Diana" };
+        _repository
+            .Setup(repo => repo.GetFollowedAuthorNames(200))
+            .ReturnsAsync(followedAuthors);
+
+        var result = await _service.GetFollowedAuthorNames(200);
+
+        Assert.Equivalent(result, followedAuthors);
+        _repository.Verify(repo => repo.GetFollowedAuthorNames(200), Times.Once);
+    }
+
+    [Fact]
     public async Task FollowAuthorAsync_ShouldReturnFalse_WhenAuthorTriesToFollowThemselves()
     {
         var request = new FollowRequest(1, 1);

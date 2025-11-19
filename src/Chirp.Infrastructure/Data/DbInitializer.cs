@@ -22,21 +22,28 @@ public static class DbInitializer
             var a11 = new Author() { Id = 11, UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { Id = 12, UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
 
-            //userManager.CreateAsync(a1, "123456" );
-            //userManager.CreateAsync(a2, "123456789" );
-            //userManager.CreateAsync(a3, "12345678" );
-            //userManager.CreateAsync(a4, "password" );
-            //userManager.CreateAsync(a5, "qwerty123" );
-            //userManager.CreateAsync(a6, "qwerty1" );
-            //userManager.CreateAsync(a7, "111111" );
-            //userManager.CreateAsync(a8, "12345" );
-            //userManager.CreateAsync(a9, "secret" );
-            //userManager.CreateAsync(a10, "123123" );
-            //userManager.CreateAsync(a11, "1234567890 ");
-            //userManager.CreateAsync(a12, "1234567" );
-            // Passwords are taken from https://en.wikipedia.org/wiki/List_of_the_most_common_passwords
-
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+
+            var f0 = new Follow
+            {
+                Follower = a1,
+                Followee = a2,
+            };
+
+            var f1 = new Follow
+            {
+                Follower = a1,
+                Followee = a3,
+
+            };
+
+            var f2 = new Follow
+            {
+                Follower = a3,
+                Followee = a1,
+            };
+
+            var follows = new List<Follow>() { f0, f1, f2 };
 
             var c1 = new Cheep() { Id = 1, AuthorId = a10.Id, Author = a10, Text = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", Timestamp = DateTime.Parse("2023-08-01 13:14:37") };
             var c2 = new Cheep() { Id = 2, AuthorId = a10.Id, Author = a10, Text = "And then, as he listened to all that''s left o'' twenty-one people.", Timestamp = DateTime.Parse("2023-08-01 13:15:21") };
@@ -712,6 +719,7 @@ public static class DbInitializer
 
             chirpContext.Authors.AddRange(authors);
             chirpContext.Cheeps.AddRange(cheeps);
+            chirpContext.Follows.AddRange(follows);
 
             try
             {

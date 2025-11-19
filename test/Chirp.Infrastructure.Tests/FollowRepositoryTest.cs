@@ -9,7 +9,6 @@ namespace Chirp.Infrastructure.Tests;
 
 public class FollowRepositoryTest
 {
-
     private static ChirpDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<ChirpDbContext>()
@@ -21,6 +20,35 @@ public class FollowRepositoryTest
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
         return context;
+    }
+
+    [Fact]
+    public async Task GetFollowedAuthorNames_ShouldReturnEmptySet_WhenAuthorDoesNotExist()
+    {
+        var repo = new FollowRepository(CreateInMemoryContext());
+        var result = await repo.GetFollowedAuthorNames(42069);
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async Task GetFollowedAuthorNames_ShouldReturnEmptySet_WhenAuthorFollowsNone()
+    {
+        var repo = new FollowRepository(CreateInMemoryContext());
+        var result = await repo.GetFollowedAuthorNames(2);
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async Task GetFollowedAuthorNames_ShouldWork_WhenAuthorExistAndFollows()
+    {
+        var repo = new FollowRepository(CreateInMemoryContext());
+        var result = await repo.GetFollowedAuthorNames(1);
+
+        Assert.Equal(2, result.Count);
+        Assert.Contains("Wendell Ballan", result);
+        Assert.Contains("Luanna Muro", result);
     }
 
     [Fact]
@@ -47,14 +75,14 @@ public class FollowRepositoryTest
     public async Task FollowAsync_ShouldFunctionAndReturnSuccess_WhenFollowerAndFolloweeExist()
     {
         var repo = new FollowRepository(CreateInMemoryContext());
-        var followRequest = new FollowRequest(1, 2);
+        var followRequest = new FollowRequest(5, 6);
         var result = await repo.FollowAsync(followRequest);
 
         Assert.Equal(FollowResult.Success, result);
 
         var follows = await repo.ReadAll();
 
-        Assert.Contains(follows, f => f.FollowerID == 1 && f.FolloweeID == 2);
+        Assert.Contains(follows, f => f.FollowerID == 5 && f.FolloweeID == 6);
     }
 
     [Fact]
@@ -63,7 +91,6 @@ public class FollowRepositoryTest
         var repo = new FollowRepository(CreateInMemoryContext());
         var followRequest = new FollowRequest(1, 2);
 
-        await repo.FollowAsync(followRequest);
         var result = await repo.FollowAsync(followRequest);
         Assert.Equal(FollowResult.AlreadyFollowing, result);
     }
@@ -93,7 +120,6 @@ public class FollowRepositoryTest
     {
         var repo = new FollowRepository(CreateInMemoryContext());
         var followRequest = new FollowRequest(1, 2);
-        await repo.FollowAsync(followRequest);
 
         var result = await repo.UnfollowAsync(followRequest);
 
@@ -107,7 +133,7 @@ public class FollowRepositoryTest
     public async Task UnfollowAsync_ShouldReturnNotFollowing_WhenFollowerDoesNotFollowFollowee()
     {
         var repo = new FollowRepository(CreateInMemoryContext());
-        var followRequest = new FollowRequest(1, 2);
+        var followRequest = new FollowRequest(2, 1);
 
         var result = await repo.UnfollowAsync(followRequest);
         Assert.Equal(FollowResult.NotFollowing, result);
@@ -117,13 +143,12 @@ public class FollowRepositoryTest
     public async Task GetAllAsync_ShouldReturnAllFollows()
     {
         var repo = new FollowRepository(CreateInMemoryContext());
-        await repo.FollowAsync(new FollowRequest(1, 2));
-        await repo.FollowAsync(new FollowRequest(2, 3));
 
         var allFollows = await repo.ReadAll();
 
-        Assert.Equal(2, allFollows.Count);
+        Assert.Equal(3, allFollows.Count);
         Assert.Contains(allFollows, f => f.FollowerID == 1 && f.FolloweeID == 2);
-        Assert.Contains(allFollows, f => f.FollowerID == 2 && f.FolloweeID == 3);
+        Assert.Contains(allFollows, f => f.FollowerID == 1 && f.FolloweeID == 3);
+        Assert.Contains(allFollows, f => f.FollowerID == 3 && f.FolloweeID == 1);
     }
 }
