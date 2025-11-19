@@ -20,6 +20,7 @@ public class PublicModel : PageModel
     private readonly IAuthorService _authorService;
     private readonly IFollowService _followService;
 
+    public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
 
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
@@ -51,7 +52,13 @@ public class PublicModel : PageModel
         TempData["currentPage"] = page;
 
 
-        Optional<AuthorDTO> currentAuthor = await _authorService.GetLoggedInAuthor(User);
+        var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
+        AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
+
+        if (currentAuthor != null)
+        {
+            FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
+        }
 
         if (author == "")
             Cheeps = await _service.GetCheeps(page, _pageSize);
@@ -59,9 +66,9 @@ public class PublicModel : PageModel
         {
             TempData["timeline"] = author;
 
-            if (currentAuthor.HasValue && currentAuthor.Value().Name == author)
+            if (currentAuthor != null && currentAuthor.Name == author)
             {
-                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Value().Id, page, _pageSize);
+                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Id, page, _pageSize);
             }
             else
             {
@@ -71,14 +78,13 @@ public class PublicModel : PageModel
 
     }
 
-    public async Task<IActionResult> OnPostFollow(string author)
+    public async Task<IActionResult> OnPostFollow(string author, string returnUrl)
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
 
         if (!currentAuthor.HasValue)
         {
-            // todo: actually redirect properly at somepoint
-            return Page();
+            return Redirect(returnUrl);
         }
 
         var followee = await _authorService.FindByNameAsync(author);
@@ -87,23 +93,19 @@ public class PublicModel : PageModel
         {
             var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
             await _followService.FollowAuthorAsync(request);
-            // todo: actually redirect properly at somepoint
-            return Page();
+            return Redirect(returnUrl);
         }
 
-        // todo: actually redirect properly at somepoint
-        return Page();
-        return Redirect(Request.GetDisplayUrl());
+        return Redirect(returnUrl);
     }
 
-    public async Task<IActionResult> OnPostUnfollow(string author)
+    public async Task<IActionResult> OnPostUnfollow(string author, string returnUrl = "/")
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
 
         if (!currentAuthor.HasValue)
         {
-            // todo: actually redirect properly at somepoint
-            return Page();
+            return Redirect(returnUrl);
         }
 
         var followee = await _authorService.FindByNameAsync(author);
@@ -112,12 +114,10 @@ public class PublicModel : PageModel
         {
             var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
             await _followService.UnfollowAuthorAsync(request);
-            // todo: actually redirect properly at somepoint
-            return Page();
+            return Redirect(returnUrl);
         }
 
-        // todo: actually redirect properly at somepoint
-        return Page();
+        return Redirect(returnUrl);
     }
 
     // BE AWARE OF BUG!

@@ -1,14 +1,13 @@
 ﻿@page "/"
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.PublicModel
+@using Microsoft.AspNetCore.Http.Extensions
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
 }
 
 <div>
-
-
     @if (User.Identity?.IsAuthenticated == true)
     {
         <b class="warning">@TempData["message"]</b>
@@ -40,6 +39,35 @@
                         </strong>
                         @cheep.Text
                         <small>&mdash; @cheep.Timestamp</small>
+
+                        @if (User.Identity!.IsAuthenticated && User.Identity!.Name != cheep.Author)
+                        {
+
+                            @if (Model.FollowedAuthorNames.Contains(cheep.Author))
+                            {
+                            <form asp-page-handler="Unfollow" method="post" style="display:inline;">
+                                <input type="hidden" name="author" value="@cheep.Author" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                                <button type="submit"
+                                    style="background:none;border:none;padding:0;margin:0;color:#007bff;
+                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
+                                    Unfollow
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-page-handler="Follow" method="post" style="display:inline;">
+                                <input type="hidden" name="author" value="@cheep.Author" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                                <button type="submit"
+                                    style="background:none;border:none;padding:0;margin:0;color:#007bff;
+                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
+                                    Follow
+                                </button>
+                            </form>
+                        }
+                    }
                     </p>
                 </li>
             }
