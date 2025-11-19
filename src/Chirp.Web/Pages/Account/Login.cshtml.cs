@@ -18,9 +18,9 @@ public class LoginPageModel : PageModel
         _authorService = authorService;
     }
 
-    public async Task<IActionResult> OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
-       Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
+        Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
 
         if (tmp.HasValue)
         {
@@ -32,7 +32,8 @@ public class LoginPageModel : PageModel
 
     public IActionResult OnPostExternalLogin(string provider)
     {
-        if(!OAuthEnabledStatus.IsOAuthEnabled) {
+        if (!OAuthEnabledStatus.IsOAuthEnabled)
+        {
             TempData["message"] = "OAuth is not configured, missing Client ID and/or Client secret";
             return Page();
         }
@@ -70,7 +71,7 @@ public class LoginPageModel : PageModel
         return Page();
     }
 
-    public IActionResult OnPostLogin(LoginViewModel login)
+    public async Task<IActionResult> OnPostLogin(LoginViewModel login)
     {
         // This case occurs when the password or email don't fit the requirements
         // set by the annotations on the password and email field.
@@ -81,16 +82,14 @@ public class LoginPageModel : PageModel
             return Page();
         }
 
-        var result = _authorService.LoginUserAsync(login);
-        result.Wait();
-
-        if (result.Result.Succeeded)
+        var result = await _authorService.LoginUserAsync(login);
+        if (result.Succeeded)
         {
             Console.WriteLine("Login success");
             return Redirect("/");
         }
 
-        if (result.Result.IsNotAllowed)
+        if (result.IsNotAllowed)
             TempData["message"] = "Email is not confirmed yet.";
         else
             TempData["message"] = "Invalid login attampt.";

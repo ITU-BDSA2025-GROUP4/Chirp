@@ -291,3 +291,57 @@ ul.nav li a:hover {
 .warning {
     color: red;
 }
+
+.nav-bar {
+  background: #DEE9E8;
+  padding: 6px 14px;
+  border-block: 1px solid #cfcfcf;
+  font-size: 13px;
+  color: #556;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+}
+
+.nav-items span {
+  display: flex;
+  align-items: center;
+}
+
+.nav-items span + span::before {
+  content: "";
+  width: 1px;
+  height: 14px;
+  background: #9aa7a6;
+  margin: 0 12px;
+}
+
+.nav-items a {
+  position: relative;
+  text-decoration: none;
+  color: #556;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-items a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0%;
+  height: 2px;
+  background-color: #445;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.nav-items a:hover {
+  color: #223;
+}
+
+.nav-items a:hover::after {
+  width: 100%;
+}
