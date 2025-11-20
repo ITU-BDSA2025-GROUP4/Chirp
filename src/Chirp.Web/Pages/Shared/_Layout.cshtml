@@ -1,40 +1,43 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>@ViewData["Title"]</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
-<body>
-<div class=page>
-    <h1><a href="/" style="color: inherit; text-decoration: inherit;"><img src="/images/icon1.png" alt="Icon1"/>Chirp!</a></h1>
-    <header>
-        <br>
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <button onclick="window.location.href='/Account/Logout';">
-                    Logout
-            </button>
-        }
-        else
-        {
-            <button id="LoginPageButton" onclick="window.location.href='/Account/Login';">
-                    Login
-            </button>
-            <button id="RegisterPageButton" onclick="window.location.href='/Account/Register';">
-                    Register
-            </button>
-        }
-    </header>
 
-    <div class=body>
+<body>
+    <div class=page>
+        <h1><a href="/" style="color: inherit; text-decoration: inherit;"><img src="/images/icon1.png"
+                    alt="Icon1" />Chirp!</a></h1>
+        <div class="nav-bar">
+            @if (User.Identity!.IsAuthenticated)
+            {
+                <div class="nav-items">
+                    <span><a href="/">Public Timeline</a></span>
+                    <span><a href="/?author=@User.Identity!.Name">My Timeline</a></span>
+                    <span><a href="/Account/Logout">Logout</a></span>
+                </div>
+            }
+            else
+            {
+                <div class="nav-items">
+                    <span><a href="/">Public Timeline</a></span>
+                    <span><a id="LoginPageButton" href="/Account/Login">Login</a></span>
+                    <span><a id="RegisterPageButton" href="/Account/Register">Register</a></span>
+                </div>
+            }
+        </div>
+        <div class=body>
             @RenderBody()
+        </div>
+        <div class=footer>
+            Chirp &mdash; An ASP.NET Application
+        </div>
     </div>
-    <div class=footer>
-        Chirp &mdash; An ASP.NET Application
-    </div>
-</div>
 
 </body>
 @await RenderSectionAsync("Scripts", required: false)
+
 </html>

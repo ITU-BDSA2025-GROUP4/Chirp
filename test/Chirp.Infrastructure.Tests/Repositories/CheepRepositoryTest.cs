@@ -1,12 +1,15 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+
 using Chirp.Core.Application;
 using Chirp.Core.Application.Contracts;
 using Chirp.Core.Entities;
 using Chirp.Core.Utils;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
+
 using Microsoft.EntityFrameworkCore;
+
 using Xunit;
 
 namespace Chirp.Tests.Infrastructure.Repositories
@@ -53,10 +56,10 @@ namespace Chirp.Tests.Infrastructure.Repositories
             var cheepId = ctx.Cheeps.OrderBy(c => c.Id).Select(c => c.Id).Last();
             var etag = created.ETag;
 
-           foreach (var entry in ctx.ChangeTracker.Entries<Cheep>().ToList())
+            foreach (var entry in ctx.ChangeTracker.Entries<Cheep>().ToList())
                 entry.State = EntityState.Detached;
 
-            var res = await repo.UpdateAsync(new UpdateCheepRequest(cheepId, author.Id, "new", etag));
+            var res = await repo.UpdateAsync(new UpdateCheepRequest(cheepId, author.Id, "new", etag!));
 
             Assert.Equal(AppStatus.Ok, res.Status);
             Assert.NotNull(res.Value);
@@ -84,7 +87,7 @@ namespace Chirp.Tests.Infrastructure.Repositories
             Assert.Null(res.Value);
 
             var inDb = await ctx.Cheeps.FindAsync(cheepId);
-            await ctx.Entry(inDb!).ReloadAsync();   
+            await ctx.Entry(inDb!).ReloadAsync();
             Assert.Equal("text", inDb!.Text);
         }
 
