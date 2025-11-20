@@ -167,8 +167,14 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
 
     public async Task<List<CheepDTO>> GetCheepsWrittenByAuthorAndFollowedAuthors(int authorId, int pageNumber, int pageSize)
     {
+        // Materialize the list of followed author IDs up front to avoid N+1 queries
+        var followedAuthorIds = await _context.Follows
+            .Where(f => f.FollowerFK == authorId)
+            .Select(f => f.FolloweeFK)
+            .ToListAsync();
+
         return await _context.Cheeps
-            .Where(c => c.AuthorId == authorId || _context.Follows.Any(f => f.FollowerFK == authorId && f.FolloweeFK == c.AuthorId))
+            .Where(c => c.AuthorId == authorId || followedAuthorIds.Contains(c.AuthorId))
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
