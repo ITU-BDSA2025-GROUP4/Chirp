@@ -81,7 +81,6 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
         return AppResult<CheepDTO>.Created(dtoOut, etag);
     }
 
-
     public async Task<AppResult<CheepDTO>> UpdateAsync(UpdateCheepRequest dto)
     {
         var e = new Cheep { Id = dto.CheepId };
@@ -109,7 +108,6 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
 
         return AppResult<CheepDTO>.Ok(dtoOut, newEtag);
     }
-
 
     // Should perhaps include cascading deletion down the line for likes and such
     public async Task<AppResult> DeleteAsync(DeleteCheepRequest dto)
@@ -152,8 +150,6 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
         entry.Property("ETag").OriginalValue = Convert.FromBase64String(etag);
         return null;
     }
-
-
 
     private Task<CheepDTO> ProjectCheepDtoAsync(int id) =>
         _context.Cheeps
