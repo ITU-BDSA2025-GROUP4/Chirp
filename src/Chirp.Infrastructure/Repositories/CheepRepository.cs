@@ -151,6 +151,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
         return null;
     }
 
+
     private Task<CheepDTO> ProjectCheepDtoAsync(int id) =>
         _context.Cheeps
             .AsNoTracking()
@@ -163,7 +164,6 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
 
     public async Task<List<CheepDTO>> GetCheepsWrittenByAuthorAndFollowedAuthors(int authorId, int pageNumber, int pageSize)
     {
-        // Materialize the list of followed author IDs up front to avoid N+1 queries
         var followedAuthorIds = await _context.Follows
             .Where(f => f.FollowerFK == authorId)
             .Select(f => f.FolloweeFK)
