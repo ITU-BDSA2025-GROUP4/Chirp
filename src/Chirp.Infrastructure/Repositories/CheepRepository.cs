@@ -151,7 +151,6 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
         return null;
     }
 
-
     private Task<CheepDTO> ProjectCheepDtoAsync(int id) =>
         _context.Cheeps
             .AsNoTracking()
