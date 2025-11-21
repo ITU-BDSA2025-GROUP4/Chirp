@@ -13,6 +13,7 @@ public class ChirpDbContext
 
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
+    public DbSet<Follow> Follows => Set<Follow>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -33,7 +34,21 @@ public class ChirpDbContext
                 b.HasIndex(a => a.NormalizedEmail).IsUnique();
             });
 
-           builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
+            // Follow
+            builder.Entity<Follow>()
+                .HasKey(f => new { f.FollowerFK, f.FolloweeFK });
+
+            builder.Entity<Follow>()
+                .HasOne(f => f.Follower)
+                .WithMany(a => a.Following)
+                .HasForeignKey(f => f.FollowerFK);
+
+            builder.Entity<Follow>()
+                .HasOne(f => f.Followee)
+                .WithMany(a => a.Followers)
+                .HasForeignKey(f => f.FolloweeFK);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
         }
     }
 }

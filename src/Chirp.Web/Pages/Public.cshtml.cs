@@ -8,20 +8,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
+using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
-[IgnoreAntiforgeryToken]
 public class PublicModel : PageModel
 {
-    // Here for testing only, should be stored as secret in the future;
-    private static readonly string APItoken = "eD[oiaj24_wda=/232)=_1EEdhue]3";
-
     private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
     private readonly IAuthorService _authorService;
-    public IEnumerable<CheepDTO> Cheeps { get; set; } = null!;
+    private readonly IFollowService _followService;
+
+    public HashSet<string> FollowedAuthorNames { get; set; } = [];
+    public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
+
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
@@ -29,20 +30,20 @@ public class PublicModel : PageModel
         [BindProperty]
         [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
         public string? Cheep { get; set; }
-        public string? APItoken { get; set; } = null!;
-        
+
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
         {
             Cheep = Cheep?.Trim();
             if (string.IsNullOrWhiteSpace(Cheep))
-                yield return new ValidationResult("Cheep cannot be empty", new[] { nameof(Cheep) });
+                yield return new ValidationResult("Cheep cannot be empty", [nameof(Cheep)]);
         }
     }
 
-    public PublicModel(ICheepService service, IAuthorService authorService)
+    public PublicModel(ICheepService service, IAuthorService authorService, IFollowService followService)
     {
         _service = service;
         _authorService = authorService;
+        _followService = followService;
     }
 
     public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
@@ -50,34 +51,95 @@ public class PublicModel : PageModel
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
 
-        if(author == "")
-        Cheeps = await _service.GetCheeps(page, _pageSize);
-        else
-        Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
-    }
-    
 
-    [HttpPost]
+        var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
+        AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
+
+        if (currentAuthor != null)
+        {
+            FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
+        }
+
+        if (author == "")
+            Cheeps = await _service.GetCheeps(page, _pageSize);
+        else
+        {
+            TempData["timeline"] = author;
+
+            if (currentAuthor != null && currentAuthor.Name == author)
+            {
+                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Id, page, _pageSize);
+            }
+            else
+            {
+                Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+            }
+        }
+    }
+
+    public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            return Redirect(returnUrl);
+        }
+
+        var followee = await _authorService.FindByNameAsync(author);
+
+        if (followee.HasValue)
+        {
+            var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
+            await _followService.FollowAuthorAsync(request);
+            // todo: actually redirect properly at somepoint
+            return Redirect(returnUrl);
+        }
+
+        return Redirect(returnUrl);
+    }
+
+    public async Task<IActionResult> OnPostUnfollow(string author, string returnUrl = "/")
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            return Redirect(returnUrl);
+        }
+
+        var followee = await _authorService.FindByNameAsync(author);
+
+        if (followee.HasValue)
+        {
+            var request = new FollowRequest(currentAuthor.Value().Id, followee.Value().Id);
+            await _followService.UnfollowAuthorAsync(request);
+            return Redirect(returnUrl);
+        }
+
+        return Redirect(returnUrl);
+    }
+
+    // BE AWARE OF BUG!
+    // For an unknown reason, returning Page() causes this.Cheeps to be null,
+    // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
+    // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
     {
         if (!ModelState.IsValid)
-            return Page();
+            return Redirect("/");
 
         string name;
-        if (form.APItoken != null && form.APItoken == APItoken)
+        Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
+        tmp.Wait();
+
+        if (!tmp.Result.HasValue)
         {
-            name = "Jacqualine Gilcoine";
+            TempData["message"] = "Must be logged in to cheep";
+            return Redirect("/");
         }
-        else
-        {
-            var logged = await _authorService.GetLoggedInAuthor(User);
-            if (!logged.HasValue)
-            {
-                TempData["message"] = "Must be logged in to cheep";
-                return Redirect("/");
-            }
-            name = logged.Value().Name;
-        }
+
+        name = tmp.Result.Value().Name;
 
         var authorOpt = await _authorService.FindByNameAsync(name);
         if (!authorOpt.HasValue)
@@ -100,17 +162,16 @@ public class PublicModel : PageModel
             return Redirect("/");
         }
 
-        return Redirect("/cheep");
+        return Redirect("/");
     }
 
-    [HttpPost]
     public IActionResult OnPostPageHandle(string Page, string Author)
     {
         int page = 1;
         int.TryParse(Page, out page);
-        if(Author == null || Author.Trim() == "")
-        return Redirect("/?page="+page);
+        if (Author == null || Author.Trim() == "")
+            return Redirect("/?page=" + page);
         else
-        return Redirect("/?page="+page+"&author="+Author.Trim());
+            return Redirect("/?page=" + page + "&author=" + Author.Trim());
     }
 }

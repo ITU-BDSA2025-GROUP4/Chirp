@@ -44,12 +44,15 @@ builder.Services.ConfigureApplicationCookie(options =>
     });
 
 
-if(string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
+if (string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
     string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
-) {
+)
+{
     Console.WriteLine("OAuth client id or client secret missing, Github OAuth will not function");
     OAuthEnabledStatus.IsOAuthEnabled = false;
-} else {
+}
+else
+{
     OAuthEnabledStatus.IsOAuthEnabled = true;
     builder.Services
         .AddAuthentication()
@@ -67,6 +70,9 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+
+builder.Services.AddScoped<IFollowRepository, FollowRepository>();
+builder.Services.AddScoped<IFollowService, FollowService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 

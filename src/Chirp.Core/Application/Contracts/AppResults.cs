@@ -40,7 +40,6 @@
 
         public bool IsError => !IsSuccess;
 
-        // 🚨 Throw if not successful
         public void ThrowIfError()
         {
             if (!IsError) return;
