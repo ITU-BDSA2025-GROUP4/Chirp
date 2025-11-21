@@ -15,6 +15,7 @@
             <form method="post">
                 <input asp-for="Form.Cheep" id="cheep" name="Cheep"
                     placeholder="What's on your mind, @(User.Identity!.Name)?" />
+                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                 <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit" />
             </form>
         </div>
@@ -53,7 +54,7 @@
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                                 <button type="submit"
                                     style="background:none;border:none;padding:0;margin:0;color:#007bff;
-                                                                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
+                                                                                                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
                                     Unfollow
                                 </button>
                             </form>
@@ -65,7 +66,7 @@
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                                 <button type="submit"
                                     style="background:none;border:none;padding:0;margin:0;color:#007bff;
-                                                                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
+                                                                                                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
                                     Follow
                                 </button>
                             </form>
