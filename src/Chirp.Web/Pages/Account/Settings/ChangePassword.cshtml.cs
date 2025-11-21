@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
@@ -9,11 +10,11 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Razor.Pages;
 
-public class SettingsPageModel : PageModel
+public class ChangePasswordPageModel : PageModel
 {
     private readonly IAuthorService _authorService;
 
-    public SettingsPageModel(IAuthorService authorService)
+    public ChangePasswordPageModel(IAuthorService authorService)
     {
         _authorService = authorService;
     }
@@ -30,17 +31,17 @@ public class SettingsPageModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostDeleteAccount()
+    public async Task<IActionResult> OnPostChangePassword(ChangePasswordForm form)
     {
-       Optional<AuthorDTO> user = await _authorService.GetLoggedInAuthor(User);
+        Console.WriteLine("Changing password");
+        Optional<AuthorDTO> user = await _authorService.GetLoggedInAuthor(User);
         if (!user.HasValue)
         {
+            Console.WriteLine("Not loggied in");
             return Redirect("/Account/Login");
         }
 
-        await _authorService.LogoutAuthorAsync();
-        AuthorDTO authorDTO = user.Value();
-        await _authorService.DeleteAuthorAsync(authorDTO);
+        _authorService.ChangeAuthorPasswordAsync(form, User);
 
         return Redirect("/");
     }

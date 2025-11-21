@@ -19,6 +19,13 @@ public enum ExternalLoginStatus
     Success,
 }
 
+public enum ChangePasswordStatus
+{
+    PasswordsDoNotMatch,
+    NotLoggedIn,
+    Success,
+}
+
 public interface IAuthorService
 {
     public Task<IEnumerable<AuthorDTO>> GetAuthorsAsync();
@@ -26,9 +33,10 @@ public interface IAuthorService
     public Task<Optional<AuthorDTO>> FindByEmailAsync(string email);
     public Task<Optional<AuthorDTO>> FindByIdAsync(int id);
 
+    Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
+    Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claims);
 
     Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal);
-    Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
     public Task<bool> DeleteAuthorAsync(AuthorDTO author);
     Task<IdentityResult> ConfirmEmailAsync(Guid userId, string token);
     Task<SignInResult> LoginUserAsync(LoginViewModel model);

@@ -2,27 +2,11 @@
 let params = new URL(document.location.toString()).searchParams;
 
 function redirect_to_page(num, authorName) {
-    let form = document.createElement("form");
-    form.method = "POST";
-    form.action = "/?handler=PageHandle";
-
-    let page = document.createElement("input");
-    page.name = "Page";
-    page.value = num;
-    form.appendChild(page);
-
-    let author = document.createElement("input");
-    author.name = "Author";
-
-    if(authorName != null) {
-        author.value = authorName;
+    if(!authorName) {
+        window.location.href =`/?page=${num}`
     } else {
-        author.value = " ";
+        window.location.href =`/?page=${num}&author=${authorName}`
     }
-    form.appendChild(author);
-
-    document.body.appendChild(form);
-    form.submit();
 }
 
 function parse_page_number_or_default(def) {

@@ -51,7 +51,6 @@ public class PublicModel : PageModel
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
 
-
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
 
@@ -163,15 +162,5 @@ public class PublicModel : PageModel
         }
 
         return Redirect(returnUrl);
-    }
-
-    public IActionResult OnPostPageHandle(string Page, string Author)
-    {
-        int page = 1;
-        int.TryParse(Page, out page);
-        if (Author == null || Author.Trim() == "")
-            return Redirect("/?page=" + page);
-        else
-            return Redirect("/?page=" + page + "&author=" + Author.Trim());
     }
 }
