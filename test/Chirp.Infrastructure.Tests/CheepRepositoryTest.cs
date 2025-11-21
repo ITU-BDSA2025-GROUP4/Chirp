@@ -81,7 +81,6 @@ public class CheepRepostioryTest
         DateTime dt = DateTime.Parse(date);
         var result = await repo.QueryAsync(x => x.Timestamp.CompareTo(dt) >= 0, 1, expectedNumberOfCheeps);
 
-
         foreach(CheepDTO cheep in result)
         {
             var cheepDt = TimestampUtils.DateTimeStringToDateTimeTimeStamp(cheep.Timestamp);
@@ -131,7 +130,5 @@ public class CheepRepostioryTest
         {
             Assert.False(cheeps2.Contains(ch));
         }
-
     }
-
 }
