@@ -50,6 +50,36 @@ public class AuthorService : IAuthorService
     }
 
 
+    public async Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claim) {
+        Optional<AuthorDTO> author = await GetLoggedInAuthor(claim);
+
+        if(!author.HasValue)
+        {
+            return ChangePasswordStatus.NotLoggedIn;
+        }
+
+        if(form.NewPassword != form.NewPasswordConfirm)
+        {
+            return ChangePasswordStatus.PasswordsDoNotMatch;
+        }
+
+        Optional<Author> concreteAuthor =
+            await _repository.GetConcreteAuthorAsync(author.Value().Email);
+
+        if(!concreteAuthor.HasValue)
+        {
+            return ChangePasswordStatus.NotLoggedIn;
+        }
+        
+        await _userManager.ChangePasswordAsync(
+                concreteAuthor.Value(),
+                form.PreviousPassword,
+                form.NewPassword
+        );
+
+        return ChangePasswordStatus.Success;
+    }
+
     // this is used for logging in a user or giving them feedback on what they can do
     // i.e. for example, if the it is possible to create a new author with the external information, we do it and log them in
     // if the email is taken, we return a enum member indicating that

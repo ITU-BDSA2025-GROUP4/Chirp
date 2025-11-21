@@ -31,7 +31,7 @@
         Change password
     </button>
 
-    <form method="post" asp-page-handler="DeleteAccount">
+    <form method="post" asp-page-handler="DeleteAccount" onsubmit="return confirm('Warning: You are about to delete your account, this action cannot be undone. Are you sure?');">
         <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
     </form>
 </div>
