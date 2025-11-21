@@ -4,6 +4,7 @@ namespace Chirp.Infrastructure.Services;
 
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
+using System.Collections.Generic;
 
 public class CheepService : ICheepService
 {
@@ -25,5 +26,10 @@ public class CheepService : ICheepService
     public async Task<IEnumerable<CheepDTO>> GetCheepsFromAuthor(string author, int page, int pageSize)
     {
         return await _repository.QueryAsync(c => c.Author.Name == author, page, pageSize);
+    }
+
+    public async Task<List<CheepDTO>> GetCheepsWrittenByAuthorAndFollowedAuthors(int authorId, int pageNumber, int pageSize)
+    {
+        return await _repository.GetCheepsWrittenByAuthorAndFollowedAuthors(authorId, pageNumber, pageSize);
     }
 }

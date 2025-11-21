@@ -8,7 +8,7 @@
 
 `Chirp!` is a lightweight social media-like platform for sending and receiving `Cheeps`, Short messages for other Chirp users to read and respond to.
 
-## INSTALLATION
+## Installation
 ### Prerequisites
 
 Please make sure to have the following dependencies installed:
@@ -44,7 +44,7 @@ If done correctly, the application will be served on localhost at port 5273. Cop
 localhost:5273
 ```
 
-## USAGE
+## Usage
 
 Having launched Chirp! you should now be able to navigate the UI from your browser. You will first be met with the `Public Timeline`, showing all posts sorted by recency. Here you can either `register` as a new user, or `login` with an existing profile.
 
@@ -74,7 +74,7 @@ Remember, you can log out at any time. Feel free to navigate the many posts on `
 
 ---
 
-## AUTHORS AND CONTRIBUTORS
+## Authors and Contributors
 
 Authors of this project are
 
@@ -84,11 +84,8 @@ Authors of this project are
 -  `RockRottenSalad`
 -  `V0idshock`
 
-With further contributions from
-
-- `oshelITU`
 
 Special thanks to the `ITU BDSA course team` and to all contributors of the project
  
-## LICENSE
+## License
 This program uses the MIT License - For further reading consult [LICENSE.md](LICENSE.md)

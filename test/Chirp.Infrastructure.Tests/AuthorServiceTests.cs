@@ -4,9 +4,8 @@ using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
 using Chirp.Infrastructure.Services;
-using Microsoft.AspNetCore.Identity;
 
-namespace Chirp.Core.Tests.Unit;
+namespace Chirp.Infrastructure.Tests;
 
 public class AuthorServiceTests
 {
@@ -25,7 +24,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.ReadAll())
             .ReturnsAsync(expectedAuthors);
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.GetAuthorsAsync();
 
@@ -42,7 +41,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.ReadAll())
             .ReturnsAsync(new List<AuthorDTO>());
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.GetAuthorsAsync();
 
@@ -60,7 +59,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindByNameAsync("Alice"))
             .ReturnsAsync(Optional.Of(expectedAuthor));
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.FindByNameAsync("Alice");
 
@@ -80,7 +79,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindByNameAsync(It.IsAny<string>()))
             .ReturnsAsync(Optional.Empty<AuthorDTO>());
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.FindByNameAsync("Alice");
 
@@ -98,7 +97,7 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindByEmailAsync("alice@chirp.dk"))
             .ReturnsAsync(Optional.Of(expectedAuthor));
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.FindByEmailAsync("alice@chirp.dk");
 
@@ -118,14 +117,14 @@ public class AuthorServiceTests
             .Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(Optional.Empty<AuthorDTO>());
 
-        var service = new AuthorService(null, null, mockRepository.Object, null, null);
+        var service = new AuthorService(null!, null!, mockRepository.Object, null!, null!);
 
         var result = await service.FindByEmailAsync("alice@chirp.dk");
 
         Assert.False(result.HasValue);
         mockRepository.Verify(repo => repo.FindByEmailAsync(It.IsAny<string>()), Times.Once);
     }
-    
+
     [Fact]
     public async Task GetAuthorById_ShouldReturnAuthor()
     {
@@ -134,7 +133,7 @@ public class AuthorServiceTests
         repo.Setup(r => r.FindByIdAsync(3))
             .ReturnsAsync(Optional.Of(expected));
 
-        var svc = new AuthorService(null, null, repo.Object, null, null);
+        var svc = new AuthorService(null!, null!, repo.Object, null!, null!);
 
         var result = await svc.FindByIdAsync(3);
 
@@ -143,7 +142,7 @@ public class AuthorServiceTests
         Assert.True(result.Value().Id > 0);
         repo.Verify(r => r.FindByIdAsync(3), Moq.Times.Once);
     }
-    
+
     [Fact]
     public async Task GetAuthorById_ShouldReturnEmpty_WhenMissing()
     {
@@ -151,14 +150,14 @@ public class AuthorServiceTests
         repo.Setup(r => r.FindByIdAsync(Moq.It.IsAny<int>()))
             .ReturnsAsync(Optional.Empty<AuthorDTO>());
 
-        var svc = new AuthorService(null, null, repo.Object, null, null);
+        var svc = new AuthorService(null!, null!, repo.Object, null!, null!);
 
         var result = await svc.FindByIdAsync(42);
 
         Assert.False(result.HasValue);
         repo.Verify(r => r.FindByIdAsync(42), Moq.Times.Once);
     }
-    
+
     [Fact]
     public async Task FindByName_And_FindByEmail_return_same_id()
     {
@@ -169,9 +168,9 @@ public class AuthorServiceTests
         repo.Setup(r => r.FindByEmailAsync("alice@chirp.dk"))
             .ReturnsAsync(Optional.Of(expected));
 
-        var svc = new AuthorService(null, null, repo.Object, null, null);
+        var svc = new AuthorService(null!, null!, repo.Object, null!, null!);
 
-        var byName  = await svc.FindByNameAsync("Alice");
+        var byName = await svc.FindByNameAsync("Alice");
         var byEmail = await svc.FindByEmailAsync("alice@chirp.dk");
 
         Assert.True(byName.HasValue && byEmail.HasValue);

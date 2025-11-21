@@ -12,7 +12,7 @@ namespace Chirp.Infrastructure.Tests;
 public class AuthorRepositoryTest
 {
     private const int expectedNumberOfAuthors = 12;
-    private static IAuthorRepository repo;
+    private static IAuthorRepository repo = null!;
 
     public AuthorRepositoryTest()
     {
@@ -135,7 +135,7 @@ public class AuthorRepositoryTest
         // Ids from both lookups should match
         Assert.Equal(authorByName2.Value().Id, authorByEmail2.Value().Id);
     }
-    
+
     [Fact]
     public async Task FindAuthorById_returns_author_when_exists()
     {
@@ -149,7 +149,7 @@ public class AuthorRepositoryTest
         Assert.Equal(byName.Value().Name, byId.Value().Name);
         Assert.Equal(byName.Value().Email, byId.Value().Email);
     }
-    
+
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -159,7 +159,7 @@ public class AuthorRepositoryTest
         var byId = await repo.FindByIdAsync(id);
         Assert.False(byId.HasValue);
     }
-    
+
     [Fact]
     public async Task AddAuthor_then_fetch_by_id_roundtrip()
     {
@@ -180,7 +180,7 @@ public class AuthorRepositoryTest
         Assert.Equal(name, roundtrip.Value().Name);
         Assert.Equal(email, roundtrip.Value().Email);
     }
-    
+
     [Fact]
     public async Task ReadAll_produces_unique_positive_ids()
     {

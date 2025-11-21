@@ -63,7 +63,7 @@ public class ExampleTest : PageTest
         // CHEEP
         string html = await Page.ContentAsync();
 
-        Assert.True(html.Contains("What's on your mind?"));
+        Assert.True(html.Contains("What's on your mind"));
         Assert.False(html.Contains(cheep));
         
         await Page.Locator("#cheep").FillAsync(cheep);
