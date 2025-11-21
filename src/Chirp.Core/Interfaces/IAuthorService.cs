@@ -33,7 +33,6 @@ public interface IAuthorService
     public Task<Optional<AuthorDTO>> FindByEmailAsync(string email);
     public Task<Optional<AuthorDTO>> FindByIdAsync(int id);
 
-
     Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
     Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claims);
 

@@ -51,7 +51,6 @@ public class PublicModel : PageModel
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
 
-
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
 

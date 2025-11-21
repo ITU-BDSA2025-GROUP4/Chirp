@@ -49,7 +49,6 @@ public class AuthorService : IAuthorService
         return await _userManager.FindByNameAsync(username) == null ? username : throw new Exception("Unable to generate unique username");
     }
 
-
     public async Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claim) {
         Optional<AuthorDTO> author = await GetLoggedInAuthor(claim);
 
@@ -87,7 +86,6 @@ public class AuthorService : IAuthorService
     {
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null) return ExternalLoginStatus.FailedToRetrieveLoginInfo;
-
 
         var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
         if (user != null)
@@ -199,7 +197,6 @@ public class AuthorService : IAuthorService
         await _repository.DeleteAuthor(author);
         return true;
     }
-
 
     public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginUserAsync(LoginViewModel model)
     {

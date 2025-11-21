@@ -80,7 +80,6 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task Write() => await _context.SaveChangesAsync();
 
-
     public async Task<Optional<Author>> GetConcreteAuthorAsync(string email)
     {
         var author = await _context.Authors
