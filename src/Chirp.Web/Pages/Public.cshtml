@@ -72,6 +72,26 @@
                             </form>
                         }
                     }
+
+                    @foreach (var reply in Model.Replies[cheep.Id])
+                    {
+                        <div class="replyContainer">
+                            <a href="/?author=@reply.Author">@reply.Author</a>
+                            @reply.Text
+                        </div>
+                    }
+
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <div class="replyInputContainer">
+                            <form asp-page-handler="Reply" method="post" style="display:inline;">
+                                <input type="text" name="ReplyText"/>
+                                <input type="hidden" name="CheepId" value="@cheep.Id" />
+                                <input type="hidden" name="Author" value="@User.Identity.Name" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                            </form>
+                        </div>
+                    }
                     </p>
                 </li>
             }

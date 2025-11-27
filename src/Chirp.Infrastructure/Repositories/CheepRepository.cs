@@ -21,7 +21,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
         return await _context.Cheeps
             .Include(c => c.Author)
             .OrderByDescending(c => c.Timestamp)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+            .Select(c => new CheepDTO(c.Id, c.Author.Name, c.Text,
                 TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
@@ -33,7 +33,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+            .Select(c => new CheepDTO(c.Id, c.Author.Name, c.Text,
                 TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
@@ -48,7 +48,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text,
+            .Select(c => new CheepDTO(c.Id, c.Author.Name, c.Text,
                         TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
@@ -156,6 +156,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
             .AsNoTracking()
             .Where(c => c.Id == id)
             .Select(c => new CheepDTO(
+                c.Id,
                 c.Author.Name,
                 c.Text,
                 TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
@@ -173,7 +174,7 @@ public class CheepRepository(ChirpDbContext context) : ICheepRepository
             .OrderByDescending(c => c.Timestamp)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CheepDTO(c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
+            .Select(c => new CheepDTO(c.Id, c.Author.Name, c.Text, TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .ToListAsync();
     }
 }
