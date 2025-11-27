@@ -14,8 +14,8 @@ public class CheepServiceTests
     {
         var expectedCheeps = new List<CheepDTO>
         {
-            new("Alice", "Vim > Emacs > Everything else", "2025-10-10T12:00:00Z"),
-            new("Bob", "Jarvis, rewrite this project in rust", "2025-10-10T12:30:00Z")
+            new(0, "Alice", "Vim > Emacs > Everything else", "2025-10-10T12:00:00Z"),
+            new(1, "Bob", "Jarvis, rewrite this project in rust", "2025-10-10T12:30:00Z")
         };
 
         var mockRepository = new Mock<ICheepRepository>();
@@ -37,8 +37,8 @@ public class CheepServiceTests
     {
         var expectedCheeps = new List<CheepDTO>
         {
-            new("Alice", "Hmm, what should we write here?", "2025-10-10T14:00:00Z"),
-            new("Alice", "Hello, World!", "2025-10-10T18:30:00Z")
+            new(0, "Alice", "Hmm, what should we write here?", "2025-10-10T14:00:00Z"),
+            new(1, "Alice", "Hello, World!", "2025-10-10T18:30:00Z")
         };
 
         var mockRepository = new Mock<ICheepRepository>();

@@ -114,7 +114,7 @@ public class CheepRepostioryTest
     async Task ReadsCorrectNumberOfCheepsOnDifferentPage(int page)
     {
         var pageSize = 32;
-        var result = await repo.ReadAsync(page, pageSize);
+        var result = await _repo.ReadAsync(page, pageSize);
 
         Assert.Equal(result.Count(), pageSize);
     }
