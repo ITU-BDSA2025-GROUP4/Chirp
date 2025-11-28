@@ -1,18 +1,18 @@
+using Chirp.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Core.Entities;
-
-using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure.Data;
 
-public class ChirpDbContext
-    : IdentityDbContext<Author, IdentityRole<int>, int>
+public class ChirpDbContext : IdentityDbContext<Author, IdentityRole<int>, int>
 {
-    public ChirpDbContext(DbContextOptions<ChirpDbContext> options) : base(options) { }
+    public ChirpDbContext(DbContextOptions<ChirpDbContext> options)
+        : base(options) { }
 
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Reply> Replies => Set<Reply>();
+    public DbSet<ReCheep> ReCheeps => Set<ReCheep>();
     public DbSet<Author> Authors => Set<Author>();
     public DbSet<Follow> Follows => Set<Follow>();
 
@@ -23,35 +23,34 @@ public class ChirpDbContext
             // Author
             builder.Entity<Author>(b =>
             {
-                b.Property(a => a.Email)
-                    .IsRequired()
-                    .HasMaxLength(256);
+                b.Property(a => a.Email).IsRequired().HasMaxLength(256);
 
-                b.Property(a => a.UserName)
-                    .IsRequired()
-                    .HasMaxLength(256);
+                b.Property(a => a.UserName).IsRequired().HasMaxLength(256);
 
                 b.HasIndex(a => a.NormalizedUserName).IsUnique();
                 b.HasIndex(a => a.NormalizedEmail).IsUnique();
             });
 
             // Follow
-            builder.Entity<Follow>()
-                .HasKey(f => new { f.FollowerFK, f.FolloweeFK });
+            builder.Entity<Follow>().HasKey(f => new { f.FollowerFK, f.FolloweeFK });
 
-            builder.Entity<Follow>()
+            builder
+                .Entity<Follow>()
                 .HasOne(f => f.Follower)
                 .WithMany(a => a.Following)
                 .HasForeignKey(f => f.FollowerFK);
 
-            builder.Entity<Follow>()
+            builder
+                .Entity<Follow>()
                 .HasOne(f => f.Followee)
                 .WithMany(a => a.Followers)
                 .HasForeignKey(f => f.FolloweeFK);
 
             // Reply
-            builder.Entity<Reply>()
-                .HasKey(r => new { r.Id });
+            builder.Entity<Reply>().HasKey(r => new { r.Id });
+
+            // ReCheep
+            builder.Entity<ReCheep>().HasKey(r => new { r.Id });
 
             builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
         }

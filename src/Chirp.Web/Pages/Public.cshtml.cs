@@ -1,14 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-
 using Chirp.Core.Application.Contracts;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
@@ -18,19 +15,26 @@ public class PublicModel : PageModel
 
     private readonly ICheepService _service;
     private readonly IReplyService _replyService;
+    private readonly IReCheepService _reCheepService;
     private readonly IAuthorService _authorService;
     private readonly IFollowService _followService;
 
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
+    public IEnumerable<ReCheepDTO> ReCheeps { get; set; } = [];
     public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
 
-    [BindProperty] public CheepSubmitForm Form { get; set; } = new();
+    [BindProperty]
+    public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
     {
         [BindProperty]
-        [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
+        [StringLength(
+            160,
+            MinimumLength = 1,
+            ErrorMessage = "Cheep length must be between 1 and 160"
+        )]
         public string? Cheep { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
@@ -41,10 +45,17 @@ public class PublicModel : PageModel
         }
     }
 
-    public PublicModel(ICheepService service, IReplyService replyService, IAuthorService authorService, IFollowService followService)
+    public PublicModel(
+        ICheepService service,
+        IReplyService replyService,
+        IReCheepService reCheepService,
+        IAuthorService authorService,
+        IFollowService followService
+    )
     {
         _service = service;
         _replyService = replyService;
+        _reCheepService = reCheepService;
         _authorService = authorService;
         _followService = followService;
     }
@@ -53,7 +64,6 @@ public class PublicModel : PageModel
     {
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
-
 
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
@@ -71,7 +81,12 @@ public class PublicModel : PageModel
 
             if (currentAuthor != null && currentAuthor.Name == author)
             {
-                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Id, page, _pageSize);
+                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(
+                    currentAuthor.Id,
+                    page,
+                    _pageSize
+                );
+                ReCheeps = await _reCheepService.GetReCheeps(currentAuthor.Id);
             }
             else
             {
@@ -79,11 +94,10 @@ public class PublicModel : PageModel
             }
         }
 
-        foreach(CheepDTO cheep in Cheeps)
+        foreach (CheepDTO cheep in Cheeps)
         {
             Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
-
     }
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
@@ -158,10 +172,7 @@ public class PublicModel : PageModel
         }
         var authorId = authorOpt.Value().Id;
 
-        var request = new CreateCheepRequest(
-            Text: form.Cheep!.Trim(),
-            AuthorId: authorId
-        );
+        var request = new CreateCheepRequest(Text: form.Cheep!.Trim(), AuthorId: authorId);
 
         var result = await _service.PostCheepAsync(request); // AppResult<CheepDTO>
 
@@ -174,12 +185,16 @@ public class PublicModel : PageModel
         return Redirect(returnUrl);
     }
 
-    public async Task<IActionResult> OnPostReply(string ReplyText, int CheepId, string Author, string returnUrl = "/")
+    public async Task<IActionResult> OnPostReply(
+        string ReplyText,
+        int CheepId,
+        string Author,
+        string returnUrl = "/"
+    )
     {
-
         Optional<AuthorDTO> currentUserMaybe = await _authorService.GetLoggedInAuthor(User);
 
-        if(!currentUserMaybe.HasValue)
+        if (!currentUserMaybe.HasValue)
         {
             TempData["message"] = "Must be logged in to reply";
             return Redirect(returnUrl);
@@ -196,7 +211,6 @@ public class PublicModel : PageModel
         await _replyService.PostReplyAsync(reply);
 
         return Redirect(returnUrl);
-
     }
 
     public IActionResult OnPostPageHandle(string Page, string Author)
