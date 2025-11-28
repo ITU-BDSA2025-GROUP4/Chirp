@@ -2,6 +2,9 @@
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.PublicModel
 @using Microsoft.AspNetCore.Http.Extensions
+
+@{int NumberOfRepliesShown = 3;}
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -73,12 +76,30 @@
                         }
                     }
 
-                    @foreach (var reply in Model.Replies[cheep.Id])
+                    @if (Model.Replies[cheep.Id].Any())
+                    {
+                        <br><b>Replies</b>
+                    }
+
+                    @foreach (var reply in Model.Replies[cheep.Id].Take(NumberOfRepliesShown))
                     {
                         <div class="replyContainer">
                             <a href="/?author=@reply.Author">@reply.Author</a>
                             @reply.Text
                         </div>
+                    }
+                    @if (Model.Replies[cheep.Id].Count() > NumberOfRepliesShown)
+                    {
+                        <div class="collapsedReplies">
+                            @foreach (var reply in Model.Replies[cheep.Id].Skip(NumberOfRepliesShown))
+                            {
+                                <div class="replyContainer">
+                                    <a href="/?author=@reply.Author">@reply.Author</a>
+                                    @reply.Text
+                                </div>
+                            }
+                        </div>
+                        <a class="collapseButton">Show remaining replies</a>
                     }
 
                     @if (User.Identity!.IsAuthenticated)
@@ -113,3 +134,4 @@
 </center>
 
 <script src="/js/pagination.js"></script>
+<script src="/js/collapsedReplies.js"></script>
