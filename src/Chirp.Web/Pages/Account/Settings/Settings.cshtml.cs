@@ -12,6 +12,7 @@ namespace Chirp.Razor.Pages;
 public class SettingsPageModel : PageModel
 {
     private readonly IAuthorService _authorService;
+    public bool UsingOAuth;
 
     public SettingsPageModel(IAuthorService authorService)
     {
@@ -27,6 +28,7 @@ public class SettingsPageModel : PageModel
             return Redirect("/Account/Login");
         }
 
+        UsingOAuth = await _authorService.UsingOAuth(User);
         TempData["username"] = tmp.Value().Name;
         TempData["email"] = tmp.Value().Email;
 

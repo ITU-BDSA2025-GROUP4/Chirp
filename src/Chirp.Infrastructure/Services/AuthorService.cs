@@ -79,6 +79,27 @@ public class AuthorService : IAuthorService
         return ChangePasswordStatus.Success;
     }
 
+    public async Task<bool> UsingOAuth(ClaimsPrincipal claim)
+    {
+        Optional<AuthorDTO> author = await GetLoggedInAuthor(claim);
+
+        if(!author.HasValue)
+        {
+            return false;
+        }
+
+        Optional<Author> concreteAuthor =
+            await _repository.GetConcreteAuthorAsync(author.Value().Email);
+
+        if(!concreteAuthor.HasValue)
+        {
+            return false;
+        }
+
+        // Users who use OAuth have no password
+        return !await _userManager.HasPasswordAsync(concreteAuthor.Value());
+    }
+
     // this is used for logging in a user or giving them feedback on what they can do
     // i.e. for example, if the it is possible to create a new author with the external information, we do it and log them in
     // if the email is taken, we return a enum member indicating that

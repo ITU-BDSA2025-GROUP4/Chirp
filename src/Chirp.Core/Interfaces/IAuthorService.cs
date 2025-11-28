@@ -36,6 +36,7 @@ public interface IAuthorService
     Task<(bool, string?)> RegisterAuthorAsync(RegisterViewModel model);
     Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claims);
 
+    public Task<bool> UsingOAuth(ClaimsPrincipal claim);
     Task<Optional<AuthorDTO>> GetLoggedInAuthor(ClaimsPrincipal principal);
     public Task<bool> DeleteAuthorAsync(AuthorDTO author);
     Task<IdentityResult> ConfirmEmailAsync(Guid userId, string token);
