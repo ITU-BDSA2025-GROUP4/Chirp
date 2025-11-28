@@ -28,6 +28,15 @@ public class ReCheepRepository(ChirpDbContext context) : IReCheepRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<ReCheepDTO>> ReadAsync(string author)
+    {
+        return await _context
+            .ReCheeps.Where(c => c.Author.Name == author)
+            .OrderBy(c => c.Cheep.Timestamp)
+            .Select(c => new ReCheepDTO(c.Id, c.CheepId, c.Author.Name))
+            .ToListAsync();
+    }
+
     public async Task<AppResult<ReCheepDTO>> CreateAsync(CreateReCheepRequst dto)
     {
         if (dto.AuthorId <= 0)

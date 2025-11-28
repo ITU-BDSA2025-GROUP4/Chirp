@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using Chirp.Core.Application.Contracts;
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
@@ -22,6 +23,7 @@ public class PublicModel : PageModel
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
     public IEnumerable<ReCheepDTO> ReCheeps { get; set; } = [];
+    public IEnumerable<TimelineEntities> TimelineEntities { get; set; } = [];
     public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
 
     [BindProperty]
@@ -74,7 +76,10 @@ public class PublicModel : PageModel
         }
 
         if (author == "")
+        {
             Cheeps = await _service.GetCheeps(page, _pageSize);
+            ReCheeps = await _reCheepService.ReadAll();
+        }
         else
         {
             TempData["timeline"] = author;
@@ -91,6 +96,68 @@ public class PublicModel : PageModel
             else
             {
                 Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+                ReCheeps = await _reCheepService.GetReCheeps(author);
+            }
+        }
+
+        try
+        {
+            var cheepEnumerator = Cheeps.GetEnumerator();
+            var cheepNext = cheepEnumerator.Current;
+            var reCheepEnumerator = ReCheeps.GetEnumerator();
+            var reCheepNext = reCheepEnumerator?.Current;
+            Debug.Write(Cheeps.ToString());
+            //Debug.Write(ReCheeps.ToString());
+            for (int i = 0; i < Cheeps.Count() && i < ReCheeps.Count(); i++)
+            {
+                DateTime cheepDate =
+                    cheepNext != null ? DateTime.Parse(cheepNext.Timestamp) : DateTime.MaxValue;
+                DateTime reCheepDate =
+                    reCheepNext != null
+                        ? DateTime.Parse(
+                            Cheeps
+                                .Where(c => c.Id == reCheepNext.CheepId)
+                                .Select(c => c.Timestamp)
+                                .First()
+                        )
+                        : DateTime.MaxValue;
+
+                Debug.Write(cheepDate.ToString());
+                Debug.Write(reCheepDate.ToString());
+                var entity = new TimelineEntities();
+                if (cheepDate <= reCheepDate)
+                {
+                    Debug.Write("ReCheep date heigher");
+                    entity.Type = TimelineType.Cheep;
+                    entity.Cheep = cheepNext!;
+                    cheepEnumerator.MoveNext();
+                    cheepNext = cheepEnumerator.Current;
+                }
+                else if (cheepDate > reCheepDate)
+                {
+                    Debug.Write("Cheep date heigher");
+                    entity.Type = TimelineType.ReCheep;
+                    entity.ReCheep = new Optional<ReCheepDTO>(reCheepNext!);
+                    entity.Cheep = Cheeps
+                        .Where(c => c.Id == reCheepNext!.CheepId)
+                        .Select(c => new CheepDTO(c.Id, c.Author, c.Text, c.Timestamp))
+                        .First()!;
+                    reCheepEnumerator.MoveNext();
+                    reCheepNext = reCheepEnumerator.Current;
+                }
+
+                TimelineEntities = TimelineEntities.Append(entity);
+
+                if (cheepNext == null && reCheepNext == null)
+                    break;
+            }
+        }
+        catch
+        {
+            foreach (var cheep in Cheeps)
+            {
+                var entity = new TimelineEntities { Type = TimelineType.Cheep, Cheep = cheep };
+                TimelineEntities = TimelineEntities.Append(entity);
             }
         }
 
