@@ -346,18 +346,17 @@ ul.nav li a:hover {
   width: 100%;
 }
 
-/*
-.collapseButton {
-    background-color: #eee;
-    border: none;
-    color: white;
-    padding: 1px 1px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-}*/
+.ReplyInputField {
+    width: 80%;
+}
+
+.CheepInputField {
+    width: 70%;
+}
 
 .collapsedReplies {
     display: none;
     overflow: hidden;
 }
+
+

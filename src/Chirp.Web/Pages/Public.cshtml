@@ -16,7 +16,7 @@
         <div class="cheep-container">
             <b class="warning">@TempData["message"]</b>
             <form method="post">
-                <input asp-for="Form.Cheep" id="cheep" name="Cheep"
+                <input class ="CheepInputField" asp-for="Form.Cheep" id="cheep" name="Cheep"
                     placeholder="What's on your mind, @(User.Identity!.Name)?" />
                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                 <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit" />
@@ -99,14 +99,15 @@
                                 </div>
                             }
                         </div>
-                        <a class="collapseButton">Show remaining replies</a>
+                        <a class="collapseButton">Show remaining replies</a><br>
                     }
 
                     @if (User.Identity!.IsAuthenticated)
                     {
-                        <div class="replyInputContainer">
+                        <a onclick="toggle_reply_input(this);">Reply</a>
+                        <div class="replyInputContainer" style="display:none;">
                             <form asp-page-handler="Reply" method="post" style="display:inline;">
-                                <input type="text" name="ReplyText"/>
+                                <input type="text" name="ReplyText" class="ReplyInputField"/>
                                 <input type="hidden" name="CheepId" value="@cheep.Id" />
                                 <input type="hidden" name="Author" value="@User.Identity.Name" />
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />

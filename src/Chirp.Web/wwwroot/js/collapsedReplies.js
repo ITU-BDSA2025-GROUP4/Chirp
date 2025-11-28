@@ -15,3 +15,18 @@ for (var button of buttons) {
     })
 }
 
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function toggle_reply_input(button) {
+    let replyInputForm = button.nextElementSibling;
+    button.style.display = "none";
+    replyInputForm.style.display = "block";
+
+    let replyInputField = replyInputForm.getElementsByClassName("ReplyInputField")[0];
+
+    replyInputField.focus();
+
+    console.log(document.activeElement===replyInputField);
+}
