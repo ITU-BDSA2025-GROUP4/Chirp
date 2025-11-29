@@ -22,5 +22,8 @@ public class ReCheepService : IReCheepService
     public async Task<IEnumerable<ReCheepDTO>> GetReCheeps(string author) =>
         await _repository.ReadAsync(author);
 
+    public async Task<IEnumerable<ReCheepDTO>> GetReCheeps(int page, int pageSize) =>
+        await _repository.ReadAsync(page, pageSize);
+
     public async Task<IEnumerable<ReCheepDTO>> ReadAll() => await _repository.ReadAll();
 }
