@@ -1,14 +1,12 @@
 using System.ComponentModel.DataAnnotations;
-
+using System.Diagnostics;
 using Chirp.Core.Application.Contracts;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
@@ -17,18 +15,28 @@ public class PublicModel : PageModel
     private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
+    private readonly IReplyService _replyService;
+    private readonly IReCheepService _reCheepService;
     private readonly IAuthorService _authorService;
     private readonly IFollowService _followService;
 
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
+    public IEnumerable<ReCheepDTO> ReCheeps { get; set; } = [];
+    public IEnumerable<TimelineEntities> TimelineEntities { get; set; } = [];
+    public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
 
-    [BindProperty] public CheepSubmitForm Form { get; set; } = new();
+    [BindProperty]
+    public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
     {
         [BindProperty]
-        [StringLength(160, MinimumLength = 1, ErrorMessage = "Cheep length must be between 1 and 160")]
+        [StringLength(
+            160,
+            MinimumLength = 1,
+            ErrorMessage = "Cheep length must be between 1 and 160"
+        )]
         public string? Cheep { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
@@ -39,9 +47,17 @@ public class PublicModel : PageModel
         }
     }
 
-    public PublicModel(ICheepService service, IAuthorService authorService, IFollowService followService)
+    public PublicModel(
+        ICheepService service,
+        IReplyService replyService,
+        IReCheepService reCheepService,
+        IAuthorService authorService,
+        IFollowService followService
+    )
     {
         _service = service;
+        _replyService = replyService;
+        _reCheepService = reCheepService;
         _authorService = authorService;
         _followService = followService;
     }
@@ -50,7 +66,6 @@ public class PublicModel : PageModel
     {
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
-
 
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
@@ -61,20 +76,110 @@ public class PublicModel : PageModel
         }
 
         if (author == "")
+        {
             Cheeps = await _service.GetCheeps(page, _pageSize);
+            ReCheeps = await _reCheepService.ReadAll();
+        }
         else
         {
             TempData["timeline"] = author;
 
             if (currentAuthor != null && currentAuthor.Name == author)
             {
-                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(currentAuthor.Id, page, _pageSize);
+                Cheeps = await _service.GetCheepsWrittenByAuthorAndFollowedAuthors(
+                    currentAuthor.Id,
+                    page,
+                    _pageSize
+                );
+                ReCheeps = await _reCheepService.GetReCheeps(currentAuthor.Id);
             }
             else
             {
                 Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
+                ReCheeps = await _reCheepService.GetReCheeps(author);
             }
         }
+
+        try // try-catch is because im stupid and don't know a better soulution. Why no mach a result :c
+        {
+            var cheepEnumerator = Cheeps.GetEnumerator();
+            var cheepNext = cheepEnumerator.Current;
+            var reCheepEnumerator = ReCheeps.GetEnumerator();
+            var reCheepNext = reCheepEnumerator?.Current;
+            Debug.Write(Cheeps.ToString());
+            //Debug.Write(ReCheeps.ToString());
+            for (int i = 0; i < Cheeps.Count() && i < ReCheeps.Count(); i++)
+            {
+                DateTime cheepDate =
+                    cheepNext != null ? DateTime.Parse(cheepNext.Timestamp) : DateTime.MaxValue;
+                DateTime reCheepDate =
+                    reCheepNext != null
+                        ? DateTime.Parse(
+                            Cheeps
+                                .Where(c => c.Id == reCheepNext.CheepId)
+                                .Select(c => c.Timestamp)
+                                .First()
+                        )
+                        : DateTime.MaxValue;
+
+                Debug.Write(cheepDate.ToString());
+                Debug.Write(reCheepDate.ToString());
+                var entity = new TimelineEntities();
+                if (cheepDate <= reCheepDate && cheepEnumerator != null)
+                {
+                    Debug.Write("ReCheep date heigher");
+                    entity.Type = TimelineType.Cheep;
+                    entity.Cheep = cheepNext!;
+                    cheepEnumerator.MoveNext();
+                    cheepNext = cheepEnumerator.Current;
+                }
+                else if (cheepDate > reCheepDate && reCheepEnumerator != null)
+                {
+                    Debug.Write("Cheep date heigher");
+                    entity.Type = TimelineType.ReCheep;
+                    entity.ReCheep = new Optional<ReCheepDTO>(reCheepNext!);
+                    entity.Cheep = Cheeps
+                        .Where(c => c.Id == reCheepNext!.CheepId)
+                        .Select(c => new CheepDTO(c.Id, c.Author, c.Text, c.Timestamp))
+                        .First()!;
+                    reCheepEnumerator.MoveNext();
+                    reCheepNext = reCheepEnumerator.Current;
+                }
+                await Response.WriteAsync(entity.Cheep.ToString());
+                TimelineEntities = TimelineEntities.Append(entity);
+
+                if (cheepNext == null && reCheepNext == null)
+                    break;
+            }
+        }
+        catch
+        {
+            foreach (var cheep in Cheeps)
+            {
+                var entity = new TimelineEntities { Type = TimelineType.Cheep, Cheep = cheep };
+                TimelineEntities = TimelineEntities.Append(entity);
+            }
+        }
+
+        foreach (CheepDTO cheep in Cheeps)
+        {
+            Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
+        }
+    }
+
+    public async Task<IActionResult> OnPostReCheep(int cheepId, string returnURl = "/")
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            return Redirect(returnURl);
+        }
+
+        CreateReCheepRequst reCheep = new(currentAuthor.Value().Id, cheepId);
+        await _reCheepService.PostReCheepAsync(reCheep);
+
+        return Redirect(returnURl);
     }
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
@@ -149,10 +254,7 @@ public class PublicModel : PageModel
         }
         var authorId = authorOpt.Value().Id;
 
-        var request = new CreateCheepRequest(
-            Text: form.Cheep!.Trim(),
-            AuthorId: authorId
-        );
+        var request = new CreateCheepRequest(Text: form.Cheep!.Trim(), AuthorId: authorId);
 
         var result = await _service.PostCheepAsync(request); // AppResult<CheepDTO>
 
@@ -161,6 +263,34 @@ public class PublicModel : PageModel
             TempData["message"] = result.Message ?? "failed to create cheep";
             return Redirect(returnUrl);
         }
+
+        return Redirect(returnUrl);
+    }
+
+    public async Task<IActionResult> OnPostReply(
+        string ReplyText,
+        int CheepId,
+        string Author,
+        string returnUrl = "/"
+    )
+    {
+        Optional<AuthorDTO> currentUserMaybe = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentUserMaybe.HasValue)
+        {
+            TempData["message"] = "Must be logged in to reply";
+            return Redirect(returnUrl);
+        }
+
+        AuthorDTO currentUser = currentUserMaybe.Value();
+
+        Console.WriteLine("REPLY: " + ReplyText);
+        Console.WriteLine("Author: " + Author);
+        Console.WriteLine("CheepId: " + CheepId);
+        Console.WriteLine("returnUrl: " + returnUrl);
+
+        CreateReplyRequest reply = new(currentUser.Id, CheepId, ReplyText);
+        await _replyService.PostReplyAsync(reply);
 
         return Redirect(returnUrl);
     }

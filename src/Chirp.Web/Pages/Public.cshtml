@@ -2,6 +2,7 @@
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.PublicModel
 @using Microsoft.AspNetCore.Http.Extensions
+@using Chirp.Core.Entities
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -34,23 +35,56 @@
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @foreach (var cheep in Model.TimelineEntities)
             {
                 <li>
                     <p>
-                        <strong>
-                            <a href="/?author=@cheep.Author">@cheep.Author</a>
-                        </strong>
-                        @cheep.Text
-                        <small>&mdash; @cheep.Timestamp</small>
+                        @* Why do I need this try-catch *@
+                        @try 
+                        {
+                            @if (cheep.Type == TimelineType.ReCheep)
+                            {
+                                <strong>
+                                    @cheep.ReCheep.Value().Author ReCheeped this
+                                </strong>
 
-                        @if (User.Identity!.IsAuthenticated && User.Identity!.Name != cheep.Author)
+                            }
+                            else 
+                            {
+                                <strong>
+                                    Not a reCheep
+                                </strong>
+                            }
+                        }
+                        catch
+                        {
+                            <strong>
+                                Error in reading ReCheep
+                            </strong>
+                        } 
+                        <strong>
+                            <a href="/?author=@cheep.Cheep.Author">@cheep.Cheep.Author</a>
+                        </strong>
+                        @cheep.Cheep.Text
+                        <small>&mdash; @cheep.Cheep.Timestamp</small>
+
+                        @if (User.Identity!.IsAuthenticated && User.Identity!.Name != cheep.Cheep.Author)
                         {
 
-                            @if (Model.FollowedAuthorNames.Contains(cheep.Author))
+                            <form asp-page-handler="ReCheep" method="post" style="display:inline;">
+                                <input type="hidden" name="cheepId" value="@cheep.Cheep.Id" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                                <button type="submit"
+                                    style="background:none;border:none;padding:0;margin:0;color:#007bff;
+                                                                                                                                                                                                                        text-decoration:underline;cursor:pointer;font-size:0.8rem;">
+                                    ReCheep
+                                </button>
+                            </form>
+
+                            @if (Model.FollowedAuthorNames.Contains(cheep.Cheep.Author))
                             {
                             <form asp-page-handler="Unfollow" method="post" style="display:inline;">
-                                <input type="hidden" name="author" value="@cheep.Author" />
+                                <input type="hidden" name="author" value="@cheep.Cheep.Author" />
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                                 <button type="submit"
                                     style="background:none;border:none;padding:0;margin:0;color:#007bff;
@@ -62,7 +96,7 @@
                         else
                         {
                             <form asp-page-handler="Follow" method="post" style="display:inline;">
-                                <input type="hidden" name="author" value="@cheep.Author" />
+                                <input type="hidden" name="author" value="@cheep.Cheep.Author" />
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                                 <button type="submit"
                                     style="background:none;border:none;padding:0;margin:0;color:#007bff;
@@ -71,6 +105,26 @@
                                 </button>
                             </form>
                         }
+                    }
+
+                    @foreach (var reply in Model.Replies[cheep.Cheep.Id])
+                    {
+                        <div class="replyContainer">
+                            <a href="/?author=@reply.Author">@reply.Author</a>
+                            @reply.Text
+                        </div>
+                    }
+
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <div class="replyInputContainer">
+                            <form asp-page-handler="Reply" method="post" style="display:inline;">
+                                <input type="text" name="ReplyText"/>
+                                <input type="hidden" name="CheepId" value="@cheep.Cheep.Id" />
+                                <input type="hidden" name="Author" value="@User.Identity.Name" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                            </form>
+                        </div>
                     }
                     </p>
                 </li>

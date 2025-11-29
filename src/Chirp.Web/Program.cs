@@ -1,6 +1,6 @@
 //todo: is there a cleaner way to do DI?
-using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
+using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
@@ -29,23 +29,28 @@ builder
     .AddEntityFrameworkStores<ChirpDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromMinutes(30));
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+    options.TokenLifespan = TimeSpan.FromMinutes(30)
+);
 
-builder.Services.AddIdentityCore<Author>().AddEntityFrameworkStores<ChirpDbContext>().AddApiEndpoints();
+builder
+    .Services.AddIdentityCore<Author>()
+    .AddEntityFrameworkStores<ChirpDbContext>()
+    .AddApiEndpoints();
 
 builder.Services.ConfigureApplicationCookie(options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
 
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/";
-        options.SlidingExpiration = true;
-    });
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/";
+    options.SlidingExpiration = true;
+});
 
-
-if (string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
-    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
+if (
+    string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"])
+    || string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
 )
 {
     Console.WriteLine("OAuth client id or client secret missing, Github OAuth will not function");
@@ -54,8 +59,8 @@ if (string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
 else
 {
     OAuthEnabledStatus.IsOAuthEnabled = true;
-    builder.Services
-        .AddAuthentication()
+    builder
+        .Services.AddAuthentication()
         .AddGitHub(options =>
         {
             options.ClientId = builder.Configuration["AUTHGITHUBCLIENTID"]!;
@@ -67,6 +72,10 @@ else
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
+builder.Services.AddScoped<IReplyRepository, ReplyRepository>();
+builder.Services.AddScoped<IReplyService, ReplyService>();
+builder.Services.AddScoped<IReCheepRepository, ReCheepRepository>();
+builder.Services.AddScoped<IReCheepService, ReCheepService>();
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
