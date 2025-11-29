@@ -100,7 +100,7 @@ public class PublicModel : PageModel
             }
         }
 
-        try
+        try // try-catch is because im stupid and don't know a better soulution. Why no mach a result :c
         {
             var cheepEnumerator = Cheeps.GetEnumerator();
             var cheepNext = cheepEnumerator.Current;
@@ -125,7 +125,7 @@ public class PublicModel : PageModel
                 Debug.Write(cheepDate.ToString());
                 Debug.Write(reCheepDate.ToString());
                 var entity = new TimelineEntities();
-                if (cheepDate <= reCheepDate)
+                if (cheepDate <= reCheepDate && cheepEnumerator != null)
                 {
                     Debug.Write("ReCheep date heigher");
                     entity.Type = TimelineType.Cheep;
@@ -133,7 +133,7 @@ public class PublicModel : PageModel
                     cheepEnumerator.MoveNext();
                     cheepNext = cheepEnumerator.Current;
                 }
-                else if (cheepDate > reCheepDate)
+                else if (cheepDate > reCheepDate && reCheepEnumerator != null)
                 {
                     Debug.Write("Cheep date heigher");
                     entity.Type = TimelineType.ReCheep;
@@ -145,7 +145,7 @@ public class PublicModel : PageModel
                     reCheepEnumerator.MoveNext();
                     reCheepNext = reCheepEnumerator.Current;
                 }
-
+                await Response.WriteAsync(entity.Cheep.ToString());
                 TimelineEntities = TimelineEntities.Append(entity);
 
                 if (cheepNext == null && reCheepNext == null)
@@ -165,6 +165,21 @@ public class PublicModel : PageModel
         {
             Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
+    }
+
+    public async Task<IActionResult> OnPostReCheep(int cheepId, string returnURl = "/")
+    {
+        var currentAuthor = await _authorService.GetLoggedInAuthor(User);
+
+        if (!currentAuthor.HasValue)
+        {
+            return Redirect(returnURl);
+        }
+
+        CreateReCheepRequst reCheep = new(currentAuthor.Value().Id, cheepId);
+        await _reCheepService.PostReCheepAsync(reCheep);
+
+        return Redirect(returnURl);
     }
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
