@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Chirp.Core.Interfaces;
@@ -46,7 +46,6 @@ public class LoginPageModel : PageModel
     public async Task<IActionResult> OnGetExternalLoginCallback()
     {
         var loginStatus = await _authorService.LoginOrGetOptionsAsync();
-
 
         switch (loginStatus)
         {
