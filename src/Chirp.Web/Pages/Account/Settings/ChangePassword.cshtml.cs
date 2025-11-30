@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Core.Utils;
-using Chirp.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Razor.Pages;
 
@@ -28,6 +25,12 @@ public class ChangePasswordPageModel : PageModel
             return Redirect("/Account/Login");
         }
 
+        bool loggedInViaOAuth = await _authorService.UsingOAuth(User);
+        if(loggedInViaOAuth)
+        {
+            return Redirect("/Account/Settings");
+        }
+
         return Page();
     }
 
@@ -41,7 +44,7 @@ public class ChangePasswordPageModel : PageModel
             return Redirect("/Account/Login");
         }
 
-        _authorService.ChangeAuthorPasswordAsync(form, User);
+        await _authorService.ChangeAuthorPasswordAsync(form, User);
 
         return Redirect("/");
     }
