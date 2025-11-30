@@ -75,5 +75,4 @@ public class ReplyRepository(ChirpDbContext context) : IReplyRepository
                 c.Text,
                 TimestampUtils.DateTimeTimeStampToDateTimeString(c.Timestamp)))
             .SingleAsync();
-
 }

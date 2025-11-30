@@ -82,7 +82,6 @@ public class PublicModel : PageModel
         {
             Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
-
     }
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
@@ -175,7 +174,6 @@ public class PublicModel : PageModel
 
     public async Task<IActionResult> OnPostReply(string ReplyText, int CheepId, string Author, string returnUrl = "/")
     {
-
         Optional<AuthorDTO> currentUserMaybe = await _authorService.GetLoggedInAuthor(User);
 
         if(!currentUserMaybe.HasValue)
@@ -195,7 +193,6 @@ public class PublicModel : PageModel
         await _replyService.PostReplyAsync(reply);
 
         return Redirect(returnUrl);
-
     }
 
     public IActionResult OnPostPageHandle(string Page, string Author)

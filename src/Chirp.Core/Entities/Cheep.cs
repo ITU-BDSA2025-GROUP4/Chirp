@@ -13,5 +13,4 @@ public class Cheep
     public int AuthorId { get; set; }
 
     public List<Reply> Replies { get; set; } = [];
-
 }
