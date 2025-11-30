@@ -71,7 +71,11 @@ public class AuthorRepository : IAuthorRepository
         List<Cheep> cheeps = 
             await _context.Cheeps.Where(c => c.Author.Email == author.Email).ToListAsync();
 
+        List<Reply> replies = 
+            await _context.Replies.Where(r => r.AuthorId == author.Id).ToListAsync();
+
         _context.RemoveRange(cheeps);
+        _context.RemoveRange(replies);
         _context.Remove(result[0]);
         await _context.SaveChangesAsync();
 
