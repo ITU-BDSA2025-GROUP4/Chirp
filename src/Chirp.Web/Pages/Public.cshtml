@@ -104,12 +104,13 @@
 
                     @if (User.Identity!.IsAuthenticated)
                     {
-                        <div onclick="toggle_reply_input(this);">
+                        <div class="displayReplyInputButton" onclick="toggle_reply_input(this);">
                             <a>Reply</a>
                         </div>
                         <div class="replyInputContainer" style="display:none;">
                             <form asp-page-handler="Reply" method="post" style="display:inline;">
                                 <input type="text" name="ReplyText" class="ReplyInputField"/>
+                                <input type="submit" name="ReplySubmit" value="Reply" class="ReplySubmitButton"/>
                                 <input type="hidden" name="CheepId" value="@cheep.Id" />
                                 <input type="hidden" name="Author" value="@User.Identity.Name" />
                                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
