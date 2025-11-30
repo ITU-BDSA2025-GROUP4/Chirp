@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Account Settings";
-    Layout = "../Shared/_Layout.cshtml";
+    Layout = "../../Shared/_Layout.cshtml";
 }
 
 <div class="container">
@@ -15,9 +15,27 @@
     </p>
     <b class="warning" id="WarningMessage">@TempData["message"]</b>
 
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <h4>Username</h4>
+        @TempData["username"]
+
+        <h4>Email</h4>
+        @TempData["email"]
+    }
+
     <!-- Options to change username and password would be useful -->
 
-    <form method="post" asp-page-handler="DeleteAccount">
+    <br>
+
+    @if (!Model.UsingOAuth)
+    {
+        <button id="ChangePasswordPageButton" onclick="window.location.href='/Account/Settings/ChangePassword';">
+            Change password
+        </button>
+    }
+
+    <form method="post" asp-page-handler="DeleteAccount" onsubmit="return confirm('Warning: You are about to delete your account, this action cannot be undone. Are you sure?');">
         <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
     </form>
 </div>

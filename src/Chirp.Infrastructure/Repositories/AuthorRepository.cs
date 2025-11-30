@@ -79,4 +79,17 @@ public class AuthorRepository : IAuthorRepository
     }
 
     public async Task Write() => await _context.SaveChangesAsync();
+
+    public async Task<Optional<Author>> GetConcreteAuthorAsync(string email)
+    {
+        var author = await _context.Authors
+            .Where(a => a.Email == email)
+            .FirstOrDefaultAsync();
+
+        if(author == null)
+        {
+            return Optional.Empty<Author>();
+        }
+        return Optional.Of<Author>(author);
+    }
 }

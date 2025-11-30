@@ -86,9 +86,9 @@
 <center>
     <div class="pagingButtons">
         <!-- When return key is pressed on the page number input field  -->
-        <button onclick="prev_page();">Previous</button>
+        <button id="PreviousPageButton" onclick="prev_page();">Previous</button>
         <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]" />
-        <button onclick="next_page();">Next</button>
+        <button id="NextPageButton" onclick="next_page();">Next</button>
     </div>
 </center>
 
