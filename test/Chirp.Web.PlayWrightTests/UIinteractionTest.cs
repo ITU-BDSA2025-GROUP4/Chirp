@@ -32,6 +32,69 @@ public class ExampleTest : PageTest
         await Expect(Page.Locator("#WarningMessage")).ToHaveTextAsync("Incorrect password or email");
     } 
 
+    public async Task Login(string email, string password)
+    {
+        await Page.GotoAsync("http://localhost:5273/Account/Login");
+
+        await Page.Locator("#Email").FillAsync(email);
+        await Page.Locator("#Password").FillAsync(password);
+
+        await Page.Locator("#LoginSubmit").ClickAsync();
+    }
+
+    public async Task Register(string name, string email, string password)
+    {
+        await Page.GotoAsync("http://localhost:5273/Account/Register");
+
+        await Page.Locator("#Username").FillAsync(name);
+        await Page.Locator("#Email").FillAsync(email);
+        await Page.Locator("#Password").FillAsync(password);
+        await Page.Locator("#ConfirmPassword").FillAsync(password);
+
+        await Page.Locator("#RegisterSubmit").ClickAsync();
+    }
+
+    [Test]
+    public async Task ChangePassword()
+    {
+        string username = "exampleUsername2";
+        string email = "example2@service.com";
+        string password1 = "a_84zJw!i9Hq14kPgR";
+        string password2 = "EXTRAa_84zJw!i9Hq14kPgR";
+
+        // Register with password1 and login
+        await Register(username, email, password1);
+        await Login(email, password1);
+
+        // We should now be able to see the email used to register in the settings page
+        // since we're logged in
+        await Page.GotoAsync("http://localhost:5273/Account/Settings");
+        string html = await Page.ContentAsync();
+        Assert.True(html.Contains(email));
+
+        // Change passwora and logout
+        await Page.Locator("#ChangePasswordPageButton").ClickAsync();
+        await Page.Locator("#PreviousPassword").FillAsync(password1);
+        await Page.Locator("#NewPassword").FillAsync(password2);
+        await Page.Locator("#NewPasswordConfirm").FillAsync(password2);
+        await Page.Locator("#ChangePasswordSubmit").ClickAsync();
+        await Page.Locator("#LogoutButton").ClickAsync();
+
+        // Attempt to login with previous password
+        // This should fail
+        await Login(email, password1);
+        await Page.GotoAsync("http://localhost:5273/Account/Settings");
+        html = await Page.ContentAsync();
+        Assert.False(html.Contains(email));
+
+        // Attempt to login with new password
+        // This should work
+        await Login(email, password2);
+        await Page.GotoAsync("http://localhost:5273/Account/Settings");
+        html = await Page.ContentAsync();
+        Assert.True(html.Contains(email));
+    } 
+
     [Test]
     public async Task RegisterAndLoginAndCheep()
     {

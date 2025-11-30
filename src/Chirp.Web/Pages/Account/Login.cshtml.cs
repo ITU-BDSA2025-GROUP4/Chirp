@@ -61,7 +61,7 @@ public class LoginPageModel : PageModel
                 break;
 
             case ExternalLoginStatus.LoggedIn:
-                Console.WriteLine("Login success");
+//                Console.WriteLine("Login success");
                 return Redirect("/");
 
             default:
@@ -85,7 +85,7 @@ public class LoginPageModel : PageModel
         var result = await _authorService.LoginUserAsync(login);
         if (result.Succeeded)
         {
-            Console.WriteLine("Login success");
+//            Console.WriteLine("Login success");
             return Redirect("/");
         }
 
