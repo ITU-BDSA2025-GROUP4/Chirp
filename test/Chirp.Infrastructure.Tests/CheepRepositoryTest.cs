@@ -11,19 +11,22 @@ public class CheepRepostioryTest
 {
     private const int ExpectedNumberOfCheeps = 657;
     private readonly CheepRepository _repo;
-
+    
     public CheepRepostioryTest()
     {
-        string DbPath = "tmp.db";
-        DbContextOptionsBuilder<ChirpDbContext> optionsBuilder = new();
-        optionsBuilder.UseSqlite($"Data Source={DbPath}");
-        ChirpDbContext context = new(optionsBuilder.Options);
+        var options = new DbContextOptionsBuilder<ChirpDbContext>()
+            .UseSqlite("DataSource=:memory:")
+            .Options;
+
+        var context = new ChirpDbContext(options);
+        context.Database.OpenConnection();
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
-
+      
         _repo = new CheepRepository(context);
-    }
 
+    }
+   
     [Fact]
     public async Task ReadsAllInitializerData()
     {

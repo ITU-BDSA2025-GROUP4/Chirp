@@ -12,24 +12,27 @@ namespace Chirp.Infrastructure.Tests;
 public class AuthorRepositoryTest
 {
     private const int expectedNumberOfAuthors = 12;
-    private static IAuthorRepository repo = null!;
+    private static IAuthorRepository _repo = null!;
 
     public AuthorRepositoryTest()
     {
-        string DbPath = StringUtils.UniqueFilePath("./", ".db");
-        DbContextOptionsBuilder<ChirpDbContext> optionsBuilder = new();
-        optionsBuilder.UseSqlite($"Data Source={DbPath}");
-        ChirpDbContext context = new(optionsBuilder.Options);
+         var options = new DbContextOptionsBuilder<ChirpDbContext>()
+            .UseSqlite("DataSource=:memory:")
+            .Options;
+
+        var context = new ChirpDbContext(options);
+        context.Database.OpenConnection();
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
-
-        repo = new AuthorRepository(context);
+      
+        _repo = new AuthorRepository(context);
+    
     }
 
     [Fact]
     async Task ReadsAllInitializerData()
     {
-        var result = await repo.ReadAll();
+        var result = await _repo.ReadAll();
 
         // Tests run in parallel; AddAuthorTest might run before this and
         // cause the number to be greater than the expected 12
@@ -51,7 +54,7 @@ public class AuthorRepositoryTest
     [InlineData("Adrian")]
     async Task FindsAuthorByName(string name)
     {
-        var author = await repo.FindByNameAsync(name);
+        var author = await _repo.FindByNameAsync(name);
 
         Assert.True(author.HasValue);
         Assert.Equal(name, author.Value().Name);
@@ -73,7 +76,7 @@ public class AuthorRepositoryTest
     [InlineData("adho@itu.dk")]
     async Task FindAuthorsByEmail(string email)
     {
-        var author = await repo.FindByEmailAsync(email);
+        var author = await _repo.FindByEmailAsync(email);
 
         Assert.True(author.HasValue);
         Assert.Equal(email, author.Value().Email);
@@ -85,7 +88,7 @@ public class AuthorRepositoryTest
     [InlineData("does@not.exist")]
     async Task FindAuthorsByEmailInvalid(string email)
     {
-        var author = await repo.FindByEmailAsync(email);
+        var author = await _repo.FindByEmailAsync(email);
 
         Assert.False(author.HasValue);
     }
@@ -97,7 +100,7 @@ public class AuthorRepositoryTest
     [InlineData("a")]
     async Task FindAuthorsByNameInvalid(string name)
     {
-        var author = await repo.FindByNameAsync(name);
+        var author = await _repo.FindByNameAsync(name);
 
         Assert.False(author.HasValue);
     }
@@ -109,17 +112,17 @@ public class AuthorRepositoryTest
     async Task AddAuthorTest(string name, string email)
     {
         // Should not exist before inserting
-        var authorByName = await repo.FindByNameAsync(name);
-        var authorByEmail = await repo.FindByEmailAsync(email);
+        var authorByName = await _repo.FindByNameAsync(name);
+        var authorByEmail = await _repo.FindByEmailAsync(email);
 
         Assert.False(authorByName.HasValue);
         Assert.False(authorByEmail.HasValue);
 
         // Provide a placeholder id (0) — repository/DB should assign a real one.
-        await repo.AddAuthorAsync(new AuthorDTO(name, email, 0));
+        await _repo.AddAuthorAsync(new AuthorDTO(name, email, 0));
 
-        var authorByName2 = await repo.FindByNameAsync(name);
-        var authorByEmail2 = await repo.FindByEmailAsync(email);
+        var authorByName2 = await _repo.FindByNameAsync(name);
+        var authorByEmail2 = await _repo.FindByEmailAsync(email);
 
         Assert.True(authorByName2.HasValue);
         Assert.True(authorByEmail2.HasValue);
@@ -139,10 +142,10 @@ public class AuthorRepositoryTest
     [Fact]
     public async Task FindAuthorById_returns_author_when_exists()
     {
-        var byName = await repo.FindByNameAsync("Roger Histand");
+        var byName = await _repo.FindByNameAsync("Roger Histand");
         Assert.True(byName.HasValue);
 
-        var byId = await repo.FindByIdAsync(byName.Value().Id);
+        var byId = await _repo.FindByIdAsync(byName.Value().Id);
 
         Assert.True(byId.HasValue);
         Assert.Equal(byName.Value().Id, byId.Value().Id);
@@ -156,7 +159,7 @@ public class AuthorRepositoryTest
     [InlineData(int.MaxValue)]
     public async Task FindAuthorById_returns_empty_when_missing(int id)
     {
-        var byId = await repo.FindByIdAsync(id);
+        var byId = await _repo.FindByIdAsync(id);
         Assert.False(byId.HasValue);
     }
 
@@ -166,16 +169,16 @@ public class AuthorRepositoryTest
         var name = "roundtrip";
         var email = "roundtrip@chirp.dk";
 
-        var before = await repo.FindByEmailAsync(email);
+        var before = await _repo.FindByEmailAsync(email);
         Assert.False(before.HasValue);
 
-        await repo.AddAuthorAsync(new AuthorDTO(name, email, 0));
+        await _repo.AddAuthorAsync(new AuthorDTO(name, email, 0));
 
-        var after = await repo.FindByEmailAsync(email);
+        var after = await _repo.FindByEmailAsync(email);
         Assert.True(after.HasValue);
         Assert.True(after.Value().Id > 0);
 
-        var roundtrip = await repo.FindByIdAsync(after.Value().Id);
+        var roundtrip = await _repo.FindByIdAsync(after.Value().Id);
         Assert.True(roundtrip.HasValue);
         Assert.Equal(name, roundtrip.Value().Name);
         Assert.Equal(email, roundtrip.Value().Email);
@@ -184,7 +187,7 @@ public class AuthorRepositoryTest
     [Fact]
     public async Task ReadAll_produces_unique_positive_ids()
     {
-        var all = await repo.ReadAll();
+        var all = await _repo.ReadAll();
         Assert.All(all, a => Assert.True(a.Id > 0));
 
         var distinct = all.Select(a => a.Id).Distinct().Count();
