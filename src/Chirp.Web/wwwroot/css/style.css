@@ -394,6 +394,7 @@ ul.nav li a:hover {
 .settings-item button {
     width: auto !important; 
     margin-top: 10px; 
+    width: 10em !important; 
 }
 
 .btn-primary {
@@ -409,12 +410,14 @@ ul.nav li a:hover {
     background-color: #dc3545;
     color: white;
     border: 1px solid #dc3545;
-    padding: 8px 15px;
+    padding: 8px 8px;
     border-radius: 4px;
     text-decoration: none;
 }
 
 #ChangePasswordPageButton {
     display: inline-block !important; 
-    width: auto !important; 
+    padding: 8px 8px;
+    border-radius: 4px;
+    width: 10em !important; 
 }
