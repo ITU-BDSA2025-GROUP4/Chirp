@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class idk : Migration
+    public partial class main : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,10 +32,10 @@ namespace Chirp.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),

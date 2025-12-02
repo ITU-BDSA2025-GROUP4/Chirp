@@ -49,6 +49,56 @@ public class AuthorService : IAuthorService
         return await _userManager.FindByNameAsync(username) == null ? username : throw new Exception("Unable to generate unique username");
     }
 
+    public async Task<ChangePasswordStatus> ChangeAuthorPasswordAsync(ChangePasswordForm form, ClaimsPrincipal claim) {
+        Optional<AuthorDTO> author = await GetLoggedInAuthor(claim);
+
+        if(!author.HasValue)
+        {
+            return ChangePasswordStatus.NotLoggedIn;
+        }
+
+        if(form.NewPassword != form.NewPasswordConfirm)
+        {
+            return ChangePasswordStatus.PasswordsDoNotMatch;
+        }
+
+        Optional<Author> concreteAuthor =
+            await _repository.GetConcreteAuthorAsync(author.Value().Email);
+
+        if(!concreteAuthor.HasValue)
+        {
+            return ChangePasswordStatus.NotLoggedIn;
+        }
+        
+        await _userManager.ChangePasswordAsync(
+                concreteAuthor.Value(),
+                form.PreviousPassword,
+                form.NewPassword
+        );
+
+        return ChangePasswordStatus.Success;
+    }
+
+    public async Task<bool> UsingOAuth(ClaimsPrincipal claim)
+    {
+        Optional<AuthorDTO> author = await GetLoggedInAuthor(claim);
+
+        if(!author.HasValue)
+        {
+            return false;
+        }
+
+        Optional<Author> concreteAuthor =
+            await _repository.GetConcreteAuthorAsync(author.Value().Email);
+
+        if(!concreteAuthor.HasValue)
+        {
+            return false;
+        }
+
+        // Users who use OAuth have no password
+        return !await _userManager.HasPasswordAsync(concreteAuthor.Value());
+    }
 
     // this is used for logging in a user or giving them feedback on what they can do
     // i.e. for example, if the it is possible to create a new author with the external information, we do it and log them in
@@ -57,7 +107,6 @@ public class AuthorService : IAuthorService
     {
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null) return ExternalLoginStatus.FailedToRetrieveLoginInfo;
-
 
         var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
         if (user != null)
@@ -169,7 +218,6 @@ public class AuthorService : IAuthorService
         await _repository.DeleteAuthor(author);
         return true;
     }
-
 
     public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginUserAsync(LoginViewModel model)
     {

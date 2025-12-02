@@ -51,7 +51,6 @@ public class PublicModel : PageModel
         page = page > 1 ? page : 1;
         TempData["currentPage"] = page;
 
-
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
 
@@ -124,10 +123,10 @@ public class PublicModel : PageModel
     // For an unknown reason, returning Page() causes this.Cheeps to be null,
     // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
     // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
-    public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form)
+    public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form, string returnUrl = "/")
     {
         if (!ModelState.IsValid)
-            return Redirect("/");
+            return Redirect(returnUrl);
 
         string name;
         Task<Optional<AuthorDTO>> tmp = _authorService.GetLoggedInAuthor(User);
@@ -136,7 +135,7 @@ public class PublicModel : PageModel
         if (!tmp.Result.HasValue)
         {
             TempData["message"] = "Must be logged in to cheep";
-            return Redirect("/");
+            return Redirect(returnUrl);
         }
 
         name = tmp.Result.Value().Name;
@@ -145,7 +144,7 @@ public class PublicModel : PageModel
         if (!authorOpt.HasValue)
         {
             TempData["message"] = $"Username '{name}' not found";
-            return Redirect("/");
+            return Redirect(returnUrl);
         }
         var authorId = authorOpt.Value().Id;
 
@@ -159,19 +158,9 @@ public class PublicModel : PageModel
         if (!result.IsSuccess)
         {
             TempData["message"] = result.Message ?? "failed to create cheep";
-            return Redirect("/");
+            return Redirect(returnUrl);
         }
 
-        return Redirect("/");
-    }
-
-    public IActionResult OnPostPageHandle(string Page, string Author)
-    {
-        int page = 1;
-        int.TryParse(Page, out page);
-        if (Author == null || Author.Trim() == "")
-            return Redirect("/?page=" + page);
-        else
-            return Redirect("/?page=" + page + "&author=" + Author.Trim());
+        return Redirect(returnUrl);
     }
 }
