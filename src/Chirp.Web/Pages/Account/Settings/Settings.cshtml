@@ -17,26 +17,46 @@
 
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <h4>Username</h4>
-        @TempData["username"]
-
-        <h4>Email</h4>
-        @TempData["email"]
+        <div class="settings-item">
+            <h4>Username</h4>
+            <span class="settings-field uneditable-field">
+                <p>@TempData["username"]</p>
+            </span>
+        </div>
+        <div class="settings-item">
+            <h4>Email</h4>
+            <span class="settings-field uneditable-field">
+                <p>@TempData["email"]</p>
+            </span>
+        </div>
     }
-
-    <!-- Options to change username and password would be useful -->
-
-    <br>
 
     @if (!Model.UsingOAuth)
     {
-        <button id="ChangePasswordPageButton" onclick="window.location.href='/Account/Settings/ChangePassword';">
-            Change password
-        </button>
+        <div class="settings-item">
+            <h4>Password</h4>
+            <p>
+                Click the button below to change your current password.
+            </p>
+            <button id="ChangePasswordPageButton" class="btn btn-danger"
+                onclick="window.location.href='/Account/Settings/ChangePassword';">
+                Change Password
+            </button>
+        </div>
     }
 
-    <form method="post" asp-page-handler="DeleteAccount" onsubmit="return confirm('Warning: You are about to delete your account, this action cannot be undone. Are you sure?');">
-        <button id ="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete Account</button>
-    </form>
+    <div class="settings-item">
+        <h4>Forget Me</h4>
+        <p>
+            Deleting your account is permanent and irreversible. All your data, including profile information,
+            settings, cheeps, follows and likes will be immediately and permanently erased from our system.
+            <strong>This action cannot be undone.</strong> Please be absolutely certain before proceeding.
+        </p>
+        <form method="post" asp-page-handler="DeleteAccount"
+            onsubmit="return confirm('Warning: You are about to delete your account, this action cannot be undone. Are you sure?');">
+            <button id="DeleteAccountButton" class="btn btn-lg btn-success m-1 btn-danger" type="submit">Delete
+                Account</button>
+        </form>
+    </div>
 </div>
 
