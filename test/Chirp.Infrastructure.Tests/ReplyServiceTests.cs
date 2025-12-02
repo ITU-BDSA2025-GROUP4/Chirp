@@ -34,7 +34,6 @@ public class ReplyServiceTests
         mockRepository.Verify(repo => repo.ReadAsync(cheepId), Times.Once);
     }
 
-
     [Fact]
     public async Task PostReply()
     {
@@ -59,5 +58,4 @@ public class ReplyServiceTests
         Assert.Single(replies);
         Assert.Equal(replyDto, replies.First());
     }
-
 }
