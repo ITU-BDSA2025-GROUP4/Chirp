@@ -184,11 +184,6 @@ public class PublicModel : PageModel
 
         AuthorDTO currentUser = currentUserMaybe.Value();
 
-        Console.WriteLine("REPLY: " + ReplyText);
-        Console.WriteLine("Author: " + Author);
-        Console.WriteLine("CheepId: " + CheepId);
-        Console.WriteLine("returnUrl: " + returnUrl);
-
         CreateReplyRequest reply = new(currentUser.Id, CheepId, ReplyText);
         await _replyService.PostReplyAsync(reply);
 
