@@ -54,7 +54,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.109
+          dotnet-version: 8.0.0
 
       - name: Build
         shell: bash
