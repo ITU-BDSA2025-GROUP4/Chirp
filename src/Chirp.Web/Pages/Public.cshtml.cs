@@ -17,11 +17,13 @@ public class PublicModel : PageModel
     private static readonly int _pageSize = 32;
 
     private readonly ICheepService _service;
+    private readonly IReplyService _replyService;
     private readonly IAuthorService _authorService;
     private readonly IFollowService _followService;
 
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
+    public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
 
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
@@ -39,9 +41,10 @@ public class PublicModel : PageModel
         }
     }
 
-    public PublicModel(ICheepService service, IAuthorService authorService, IFollowService followService)
+    public PublicModel(ICheepService service, IReplyService replyService, IAuthorService authorService, IFollowService followService)
     {
         _service = service;
+        _replyService = replyService;
         _authorService = authorService;
         _followService = followService;
     }
@@ -73,6 +76,11 @@ public class PublicModel : PageModel
             {
                 Cheeps = await _service.GetCheepsFromAuthor(author, page, _pageSize);
             }
+        }
+
+        foreach(CheepDTO cheep in Cheeps)
+        {
+            Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
     }
 
@@ -162,5 +170,33 @@ public class PublicModel : PageModel
         }
 
         return Redirect(returnUrl);
+    }
+
+    public async Task<IActionResult> OnPostReply(string ReplyText, int CheepId, string Author, string returnUrl = "/")
+    {
+        Optional<AuthorDTO> currentUserMaybe = await _authorService.GetLoggedInAuthor(User);
+
+        if(!currentUserMaybe.HasValue)
+        {
+            TempData["message"] = "Must be logged in to reply";
+            return Redirect(returnUrl);
+        }
+
+        AuthorDTO currentUser = currentUserMaybe.Value();
+
+        CreateReplyRequest reply = new(currentUser.Id, CheepId, ReplyText);
+        await _replyService.PostReplyAsync(reply);
+
+        return Redirect(returnUrl);
+    }
+
+    public IActionResult OnPostPageHandle(string Page, string Author)
+    {
+        int page = 1;
+        int.TryParse(Page, out page);
+        if (Author == null || Author.Trim() == "")
+            return Redirect("/?page=" + page);
+        else
+            return Redirect("/?page=" + page + "&author=" + Author.Trim());
     }
 }
