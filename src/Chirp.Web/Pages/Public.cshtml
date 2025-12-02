@@ -2,6 +2,9 @@
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.PublicModel
 @using Microsoft.AspNetCore.Http.Extensions
+
+@{int NumberOfRepliesShown = 3;}
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -13,7 +16,7 @@
         <div class="cheep-container">
             <b class="warning">@TempData["message"]</b>
             <form method="post">
-                <input asp-for="Form.Cheep" id="cheep" name="Cheep"
+                <input class ="CheepInputField" asp-for="Form.Cheep" id="cheep" name="Cheep"
                     placeholder="What's on your mind, @(User.Identity!.Name)?" />
                 <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
                 <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit" />
@@ -72,6 +75,48 @@
                             </form>
                         }
                     }
+
+                    @if (Model.Replies[cheep.Id].Any())
+                    {
+                        <br><b>Replies</b>
+                    }
+
+                    @foreach (var reply in Model.Replies[cheep.Id].Take(NumberOfRepliesShown))
+                    {
+                        <div class="replyContainer">
+                            <a href="/?author=@reply.Author">@reply.Author</a>
+                            @reply.Text
+                        </div>
+                    }
+                    @if (Model.Replies[cheep.Id].Count() > NumberOfRepliesShown)
+                    {
+                        <div class="collapsedReplies">
+                            @foreach (var reply in Model.Replies[cheep.Id].Skip(NumberOfRepliesShown))
+                            {
+                                <div class="replyContainer">
+                                    <a href="/?author=@reply.Author">@reply.Author</a>
+                                    @reply.Text
+                                </div>
+                            }
+                        </div>
+                        <a class="collapseButton">Show remaining replies</a><br>
+                    }
+
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <div class="displayReplyInputButton" onclick="toggle_reply_input(this);">
+                            <a>Reply</a>
+                        </div>
+                        <div class="replyInputContainer" style="display:none;">
+                            <form asp-page-handler="Reply" method="post" style="display:inline;">
+                                <input type="text" name="ReplyText" class="ReplyInputField"/>
+                                <input type="submit" name="ReplySubmit" value="Reply" class="ReplySubmitButton"/>
+                                <input type="hidden" name="CheepId" value="@cheep.Id" />
+                                <input type="hidden" name="Author" value="@User.Identity.Name" />
+                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                            </form>
+                        </div>
+                    }
                     </p>
                 </li>
             }
@@ -93,3 +138,4 @@
 </center>
 
 <script src="/js/pagination.js"></script>
+<script src="/js/collapsedReplies.js"></script>

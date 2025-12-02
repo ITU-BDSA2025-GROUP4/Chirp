@@ -12,6 +12,7 @@ public class ChirpDbContext
     public ChirpDbContext(DbContextOptions<ChirpDbContext> options) : base(options) { }
 
     public DbSet<Cheep> Cheeps => Set<Cheep>();
+    public DbSet<Reply> Replies => Set<Reply>();
     public DbSet<Author> Authors => Set<Author>();
     public DbSet<Follow> Follows => Set<Follow>();
 
@@ -47,6 +48,10 @@ public class ChirpDbContext
                 .HasOne(f => f.Followee)
                 .WithMany(a => a.Followers)
                 .HasForeignKey(f => f.FolloweeFK);
+
+            // Reply
+            builder.Entity<Reply>()
+                .HasKey(r => new { r.Id });
 
             builder.ApplyConfigurationsFromAssembly(typeof(ChirpDbContext).Assembly);
         }

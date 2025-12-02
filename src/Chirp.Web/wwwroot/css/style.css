@@ -345,3 +345,18 @@ ul.nav li a:hover {
 .nav-items a:hover::after {
   width: 100%;
 }
+
+.ReplyInputField {
+    width: 70%;
+}
+
+.CheepInputField {
+    width: 70%;
+}
+
+.collapsedReplies {
+    display: none;
+    overflow: hidden;
+}
+
+
