@@ -37,27 +37,79 @@ public class ReplyRepostioryTest
     {
         var result = await _repo.ReadAll();
         // Replies should be empty
-        Assert.Equal(0, result.Count);
+        Assert.Empty(result);
     }
 
     [Fact]
-    public async Task CreateReplyAndReturnIt(string name)
+    public async Task CreateReplyAndReturnIt()
     {
-        CreateReplyRequest dto = new CreateReplyRequest(1, 2, "Reply");
+        int authorId = 1;
+        int cheepId = 2;
+        string replyText = "Reply";
+        CreateReplyRequest dto = new CreateReplyRequest(authorId, cheepId, replyText);
 
         await _repo.CreateAsync(dto);
 
-        var reply = await _repo.ReadAsync(2);
+        var reply = await _repo.ReadAsync(cheepId);
+        Optional<AuthorDTO> authorDTO = await authorRepo.FindByIdAsync(authorId);
 
-        Assert.Equal(1, reply.Count());
-        Assert.Equal(reply.First().Author, "Alice");
-        Assert.Equal(reply.First().CheepId, 2);
-        Assert.Equal(reply.First().Text, "Reply");
+        Assert.True(authorDTO.HasValue);
+        Assert.Single(reply);
+        Assert.Equal(reply.First().Author, authorDTO.Value().Name);
+        Assert.Equal(reply.First().CheepId, cheepId);
+        Assert.Equal(reply.First().Text, replyText);
     }
 
     [Fact]
-    public async Task CreateMultipleReplies()
+    public async Task CreateMultipleRepliesForSameCheep()
     {
-        var allAuthors = await authorRepo.ReadAll();
+        List<AuthorDTO> allAuthors = await authorRepo.ReadAll();
+        var expectedReplies = new List<(AuthorDTO, string)>();
+
+        int cheepId = 2;
+
+        foreach(AuthorDTO author in allAuthors) {
+            string replyText = "Reply by " + author.Name;
+            expectedReplies.Add((author, replyText));
+            var dto = new CreateReplyRequest(author.Id, cheepId, replyText);
+            await _repo.CreateAsync(dto);
+        }
+
+        IEnumerable<ReplyDTO> replies = await _repo.ReadAsync(cheepId);
+        foreach((AuthorDTO, string) expectedReply in expectedReplies) {
+            var reply = replies.Where(r => r.Author == expectedReply.Item1.Name).First();
+            Assert.NotNull(reply);
+
+            Assert.Equal(reply.Text, expectedReply.Item2);
+        }
+    }
+
+    [Fact]
+    public async Task CreateMultipleRepliesForDifferentCheeps()
+    {
+        List<AuthorDTO> allAuthors = await authorRepo.ReadAll();
+        var expectedReplies = new List<(AuthorDTO, string)>();
+
+        var cheeps = new List<int>{1, 2, 3, 4};
+
+        foreach(AuthorDTO author in allAuthors) {
+            string replyText = "Reply by " + author.Name;
+            expectedReplies.Add((author, replyText));
+
+            foreach(int cheepId in cheeps) {
+                var dto = new CreateReplyRequest(author.Id, cheepId, replyText);
+                await _repo.CreateAsync(dto);
+            }
+        }
+
+        foreach(int cheepId in cheeps) {
+            IEnumerable<ReplyDTO> replies = await _repo.ReadAsync(cheepId);
+            foreach((AuthorDTO, string) expectedReply in expectedReplies) {
+                var reply = replies.Where(r => r.Author == expectedReply.Item1.Name).First();
+                Assert.NotNull(reply);
+
+                Assert.Equal(reply.Text, expectedReply.Item2);
+            }
+        }
     }
 }
