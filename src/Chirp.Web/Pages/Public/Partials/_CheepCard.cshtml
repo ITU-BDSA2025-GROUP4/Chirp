@@ -63,7 +63,7 @@
                                 <div class="replyContainer">
                                     <a href="/?author=@reply.Author">@reply.Author</a>
                                     @reply.Text
-                                </div>
+                                </div>      <input type="hidden" asp-for="ReturnUrl" />
                             }
                         </div>
                         <a class="collapseButton">Show remaining replies</a><br>
@@ -80,7 +80,7 @@
                                 <input type="submit" name="ReplySubmit" value="Reply" class="ReplySubmitButton"/>
                                 <input type="hidden" name="CheepId" value="@cheep.Id" />
                                 <input type="hidden" name="Author" value="@User.Identity.Name" />
-                                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
+                                <input type="hidden" asp-for="ReturnUrl" />
                             </form>
                         </div>
                     }

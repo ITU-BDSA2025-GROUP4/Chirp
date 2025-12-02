@@ -24,8 +24,8 @@ public class PublicModel : PageModel
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
     public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
+    
     public string ReturnUrl { get; private set; } = string.Empty;
-
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
