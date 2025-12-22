@@ -1,6 +1,6 @@
 ---
 title: _Chirp!_ Project Report
-subtitle: ITU BDSA 2025 Group `4`
+subtitle: ITU BDSA 2025 Group 4
 author:
 - "Adam Yaser Sweilem  <adsw@itu.dk>"
 - "Ask Filip Christensen <asfc@itu.dk>"
