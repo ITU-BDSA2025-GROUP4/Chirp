@@ -1,7 +1,7 @@
 # Design and architecture
 ## Domain model
 
-![bg right:50% 100%](img/chirp_domain_model.png)
+![bg right:50% 100%](img/chirp_domain_model.jpg)
 
 ## Architecture - in the small
 ## Architecture of deployed application
