@@ -12,6 +12,9 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 ![bg right:50% 100%](img/chirp_domain_model.jpg)
 
 ## Architecture - in the small
+
+![bg right:50% 100%](img/onion.svg)
+
 ## Architecture of deployed application
 ## User activities
 ## Sequence of functionality/calls through Chirp!
