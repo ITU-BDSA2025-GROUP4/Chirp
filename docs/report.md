@@ -1,22 +1,41 @@
-# Design and architecture
+---
+title: _Chirp!_ Project Report
+subtitle: ITU BDSA 2025 Group 4
+author:
+- "Adam Yaser Sweilem  <adsw@itu.dk>"
+- "Ask Filip Christensen <asfc@itu.dk>"
+- "August Leander Hedman <aulh@itu.dk>"
+- "Morgan Møller Torp <moto@itu.dk>"
+- "Vitus Ammitzbøll Brodersen <vitb@itu.dk>"
+numbersections: true
+---
+
+# Design and Architecture of _Chirp!_
+
 ## Domain model
-## Architecture - in the small
+
+
+## Architecture — In the small
+
 ## Architecture of deployed application
+
 ## User activities
-## Sequence of functionality/calls through Chirp!
+
+## Sequence of functionality/calls trough _Chirp!_
 
 # Process
-## Build, test, release, and deployment
-## Team work
-## How to make Chirp! work locally
-Ensure that the following dependencies are installed.
 
-`dotnet-runtime 8.0`
-`asp-runtime 8.0`
-`sqlite3`
+## Build, test, release, and deployment
+
+## Team work
+
+## How to make _Chirp!_ work locally
+Ensure that the following dependencies are installed:
+- `dotnet-runtime 8.0`
+- `asp-runtime 8.0`
+- `sqlite3`
 
 ## How to run test suite locally
-
 The simplest way to run all unit tests is to simply execute the helper script
 `scripts/run_all_tests.sh` like so.
 
