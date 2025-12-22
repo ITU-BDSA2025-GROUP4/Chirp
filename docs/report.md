@@ -8,12 +8,25 @@
 # Process
 ## Build, test, release, and deployment
 ## Team work
+
 ## How to make Chirp! work locally
 Ensure that the following dependencies are installed.
 
 `dotnet-runtime 8.0`
 `asp-runtime 8.0`
 `sqlite3`
+
+Ensure that the database migrations are up to date by using the migration
+helper script. For the migration_name, use anything that doesn't appear in
+`src/Chirp.Infrastructure/Migrations`.
+```
+./scripts/migration.sh <MIGRATION_NAME>
+```
+
+Compile and run the razor app.
+```
+dotnet run --project src/Chirp.Web
+```
 
 ## How to run test suite locally
 
@@ -34,5 +47,8 @@ dotnet test
 
 # Ethics
 ## License
+
+This projects makes use of the MIT license.
+
 ## LLMs, ChatGPT, CoPilot, and others
 
