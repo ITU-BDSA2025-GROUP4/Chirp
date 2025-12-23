@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    color-interpolation="auto" color-rendering="auto" fill="rgb(0,0,0)" fill-opacity="0"
+    font-family="'Dialog'" font-size="12px" font-style="normal" font-weight="normal" height="116"
+    image-rendering="auto" shape-rendering="auto" stroke="rgb(0,0,0)" stroke-dasharray="none"
+    stroke-dashoffset="0" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10"
+    stroke-opacity="0" stroke-width="1" text-rendering="auto" viewbox="0 0 527 116" width="527"><!--Generated
+    by the Batik Graphics2D SVG Generator-->
+    <defs id="genericDefs" />
+    <g>
+        <defs id="defs1">
+            <clipPath clipPathUnits="userSpaceOnUse" id="c8dbf74c-f246-4c33-a587-0b5c0187e600">
+                <path d="M-7 -7 L298 -7 L298 121 L-7 121 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="f8fd6627-173b-44a1-8fda-3ddc3607840a">
+                <path d="M-7 -7 L298 -7 L298 121 L-7 121 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="615d3842-cb58-4bb9-a6c2-4bea72d4e296">
+                <path d="M-7 -7 L298 -7 L298 121 L-7 121 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="fa0d1e2f-bbe8-4047-8173-fb3cf69e14d5">
+                <path d="M-0 0 L-0 34 L279 34 L279 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a2f9c063-0f3b-4940-8932-a3cf8b33da75">
+                <path d="M-0 0 L-0 68 L278 68 L278 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c022a685-fd49-4e34-8941-e733fa14ae04">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6f8dd7c8-d27c-49e9-8111-2e468e8b62b4">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="4197735f-b9d5-45cf-971a-f1ad51d530ef">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6660486b-436c-4343-b7ed-85be78354167">
+                <path d="M-0 0 L-0 40 L91 40 L91 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7ee82a45-f5c2-4594-b0b7-a7692ef39ba4">
+                <path d="M-0 0 L-0 7 L115 7 L115 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="529359c2-203b-4652-98de-07e0aea9f766">
+                <path d="M-7 -7 L105 -7 L105 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="3ac09041-5eac-43fd-a57a-a5810f5c1fb6">
+                <path d="M-7 -7 L105 -7 L105 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="896fd4a3-41aa-4eba-8b82-58f7d4ddfa49">
+                <path d="M-7 -7 L105 -7 L105 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="141d7655-f179-4e94-915a-b3573aef60e6">
+                <path d="M-0 0 L-0 40 L69 40 L69 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="0dfc09ce-da18-48fe-9713-7bbdd37c3658">
+                <path d="M-7 -7 L157 -7 L157 110 L-7 110 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="577f0659-3d4a-43ce-8886-bf6812aa3754">
+                <path d="M-7 -7 L157 -7 L157 110 L-7 110 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="ddbd249a-4290-4b3e-a2e1-26977bb3fe8d">
+                <path d="M-7 -7 L157 -7 L157 110 L-7 110 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c2b76e6f-fdeb-43c2-8b5c-13c10e7ffea3">
+                <path d="M0 0 L0 34 L138 34 L138 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="12e64fdd-1ecd-47e3-a002-ac40ef3acb31">
+                <path d="M0 0 L0 57 L137 57 L137 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="90b2a21b-2433-4414-945d-9c545dc50118">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="501f9c9d-b4a9-4d96-b535-c8c39ccef6f8">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b9c50027-29b4-48be-84ff-b9d6b1d9c83b">
+                <path d="M-7 -7 L126 -7 L126 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c55e8d56-7ca6-4383-b98f-d87678c7a883">
+                <path d="M0 0 L0 7 L115 7 L115 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="82c1329e-39f3-4787-96fe-15c2c9e81ef1">
+                <path d="M0 0 L0 40 L91 40 L91 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7b2187e0-fe14-4f9d-bd9f-039457d7aeef">
+                <path d="M-0 0 L126 0 L126 87 L-0 87 L-0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="9fb25607-4cb7-48d2-9fd8-079d379585ae">
+                <path d="M-0 0 L-0 87 L126 87 L126 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c5e687e3-ef7f-42a0-a81f-396e5ca85c50">
+                <path d="M-0 0 L175 0 L175 87 L-0 87 L-0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="58286701-c20c-40ac-a21b-12bac288fe79">
+                <path d="M113 26 L113 41 L56 41 L56 26 ZM-0 0 L-0 87 L175 87 L175 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b31d04f5-a25d-4623-a896-650a55f9b3f5">
+                <path d="M-57 -15 L114 -15 L114 30 L-57 30 L-57 -15 Z" />
+            </clipPath>
+        </defs>
+        <g fill="white" fill-opacity="1" stroke="white" stroke-opacity="1"
+            text-rendering="geometricPrecision">
+            <rect height="116" stroke="none" width="527" x="0" y="0" />
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Azure App Service&quot;,&quot;modelType&quot;:&quot;Node&quot;}"
+            hyper="" model-id="shape-a2FjEtmGAqAAPwxI"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(237.1429,2.3846)">
+                <path clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)"
+                    d="M8 0 L286 0 L278 8 L0 8 Z" stroke="none" />
+                <path clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)"
+                    d="M286 0 L286 101 L278 109 L278 8 Z" stroke="none" />
+                <rect clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)" height="101"
+                    stroke="none" width="278" x="0" y="8" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(237.1429,2.3846)">
+                <path clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)"
+                    d="M8 0 L286 0 L278 8 L0 8 Z" fill="none" />
+                <path clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)"
+                    d="M286 0 L286 101 L278 109 L278 8 Z" fill="none" />
+                <rect clip-path="url(#f8fd6627-173b-44a1-8fda-3ddc3607840a)" fill="none"
+                    height="101" width="278" x="0" y="8" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(237.1429,10.3846)">
+            <text clip-path="url(#fa0d1e2f-bbe8-4047-8173-fb3cf69e14d5)" stroke="none" x="110"
+                xml:space="preserve" y="16">&lt;&lt;device&gt;&gt;</text>
+            <text clip-path="url(#fa0d1e2f-bbe8-4047-8173-fb3cf69e14d5)" font-weight="bold"
+                stroke="none" x="90" xml:space="preserve" y="31">Azure App Service</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Web Server&quot;,&quot;modelType&quot;:&quot;Component&quot;}"
+            hyper="" model-id="shape-yxXzEtmGAqAAPw2f"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(256.1429,55.3846)">
+                <rect clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" height="40"
+                    stroke="none" width="115" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(256.1429,55.3846)">
+                <rect clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none" height="39"
+                    width="114" x="0" y="0" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="109" y1="5" y2="5" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="109"
+                    x2="109" y1="5" y2="21" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="109" y1="21" y2="21" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="5" y2="8" />
+                <rect clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none" height="4"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" width="7"
+                    x="96" y="8" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="12" y2="14" />
+                <rect clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none" height="4"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" width="7"
+                    x="96" y="14" />
+                <line clip-path="url(#6f8dd7c8-d27c-49e9-8111-2e468e8b62b4)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="18" y2="21" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(256.1429,55.3846)">
+            <text clip-path="url(#6660486b-436c-4343-b7ed-85be78354167)" stroke="none" x="4"
+                xml:space="preserve" y="15">&lt;&lt;component&gt;&gt;</text>
+            <text clip-path="url(#6660486b-436c-4343-b7ed-85be78354167)" font-weight="bold"
+                stroke="none" x="14" xml:space="preserve" y="30">Web Server</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;Database&quot;,&quot;modelType&quot;:&quot;Artifact&quot;}"
+            hyper="" model-id="shape-0_GXEtmGAqAAPw6p"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(410.1429,55.3846)">
+                <rect clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" height="40"
+                    stroke="none" width="94" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(410.1429,55.3846)">
+                <rect clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none" height="40"
+                    width="94" x="0" y="0" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="78"
+                    x2="84" y1="5" y2="5" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="84"
+                    x2="88" y1="5" y2="9" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="88"
+                    x2="88" y1="9" y2="17" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="88"
+                    x2="78" y1="17" y2="17" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="78"
+                    x2="78" y1="17" y2="5" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="84"
+                    x2="84" y1="5" y2="9" />
+                <line clip-path="url(#3ac09041-5eac-43fd-a57a-a5810f5c1fb6)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="84"
+                    x2="88" y1="9" y2="9" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(410.1429,55.3846)">
+            <text clip-path="url(#141d7655-f179-4e94-915a-b3573aef60e6)" stroke="none" x="5"
+                xml:space="preserve" y="18">&lt;&lt;artifact&gt;&gt;</text>
+            <text clip-path="url(#141d7655-f179-4e94-915a-b3573aef60e6)" font-weight="bold"
+                stroke="none" x="10" xml:space="preserve" y="33">Database</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;User Device&quot;,&quot;modelType&quot;:&quot;Node&quot;}"
+            hyper="" model-id="shape-ZybXEtmGAqAAPw77"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(2.1429,6.3846)">
+                <path clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)"
+                    d="M8 0 L145 0 L137 8 L0 8 Z" stroke="none" />
+                <path clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)"
+                    d="M145 0 L145 90 L137 98 L137 8 Z" stroke="none" />
+                <rect clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)" height="90"
+                    stroke="none" width="137" x="0" y="8" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(2.1429,6.3846)">
+                <path clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)"
+                    d="M8 0 L145 0 L137 8 L0 8 Z" fill="none" />
+                <path clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)"
+                    d="M145 0 L145 90 L137 98 L137 8 Z" fill="none" />
+                <rect clip-path="url(#577f0659-3d4a-43ce-8886-bf6812aa3754)" fill="none" height="90"
+                    width="137" x="0" y="8" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(2.1429,14.3846)">
+            <text clip-path="url(#c2b76e6f-fdeb-43c2-8b5c-13c10e7ffea3)" stroke="none" x="39"
+                xml:space="preserve" y="16">&lt;&lt;device&gt;&gt;</text>
+            <text clip-path="url(#c2b76e6f-fdeb-43c2-8b5c-13c10e7ffea3)" font-weight="bold"
+                stroke="none" x="37" xml:space="preserve" y="31">User Device</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Web Browser&quot;,&quot;modelType&quot;:&quot;Component&quot;}"
+            hyper="" model-id="shape-vmA3EtmGAqAAPw8a"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(17.1429,55.3846)">
+                <rect clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" height="40"
+                    stroke="none" width="115" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(17.1429,55.3846)">
+                <rect clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none" height="39"
+                    width="114" x="0" y="0" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="109" y1="5" y2="5" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="109"
+                    x2="109" y1="5" y2="21" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="109" y1="21" y2="21" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="5" y2="8" />
+                <rect clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none" height="4"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" width="7"
+                    x="96" y="8" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="12" y2="14" />
+                <rect clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none" height="4"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" width="7"
+                    x="96" y="14" />
+                <line clip-path="url(#501f9c9d-b4a9-4d96-b535-c8c39ccef6f8)" fill="none"
+                    stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10" x1="99"
+                    x2="99" y1="18" y2="21" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(17.1429,55.3846)">
+            <text clip-path="url(#82c1329e-39f3-4787-96fe-15c2c9e81ef1)" stroke="none" x="4"
+                xml:space="preserve" y="15">&lt;&lt;component&gt;&gt;</text>
+            <text clip-path="url(#82c1329e-39f3-4787-96fe-15c2c9e81ef1)" font-weight="bold"
+                stroke="none" x="9" xml:space="preserve" y="30">Web Browser</text>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Dependency&quot;}" hyper=""
+            model-id="connector-UvuXEtmGAqAAPw7Z" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-dasharray="5"
+                stroke-dashoffset="1" stroke-linecap="butt" stroke-linejoin="round"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(329.1429,33.3846)">
+                <line clip-path="url(#9fb25607-4cb7-48d2-9fd8-079d379585ae)" fill="none" x1="42"
+                    x2="80" y1="42" y2="42" />
+                <line clip-path="url(#9fb25607-4cb7-48d2-9fd8-079d379585ae)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="80" x2="68" y1="42" y2="36" />
+                <line clip-path="url(#9fb25607-4cb7-48d2-9fd8-079d379585ae)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="80" x2="68" y1="42" y2="48" />
+            </g>
+        </g>
+        <g data="{&quot;name&quot;:&quot;HTTPS&quot;,&quot;modelType&quot;:&quot;Association&quot;}"
+            hyper="" model-id="connector-9uxPEtmGAqAAPxA5"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(107.1429,15.3846)">
+                <line clip-path="url(#58286701-c20c-40ac-a21b-12bac288fe79)" fill="none" x1="42"
+                    x2="129" y1="42" y2="42" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(163.1429,41.3846)">
+            <text clip-path="url(#b31d04f5-a25d-4623-a896-650a55f9b3f5)" stroke="none" x="9"
+                xml:space="preserve" y="12">HTTPS</text>
+        </g>
+    </g>
+</svg>
