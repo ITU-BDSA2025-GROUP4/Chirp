@@ -2,18 +2,17 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2025 Group 4
 author:
-- "Adam Yaser Sweilem  <adsw@itu.dk>"
-- "Ask Filip Christensen <asfc@itu.dk>"
-- "August Leander Hedman <aulh@itu.dk>"
-- "Morgan Møller Torp <moto@itu.dk>"
-- "Vitus Ammitzbøll Brodersen <vitb@itu.dk>"
+  - "Adam Yaser Sweilem  <adsw@itu.dk>"
+  - "Ask Filip Christensen <asfc@itu.dk>"
+  - "August Leander Hedman <aulh@itu.dk>"
+  - "Morgan Møller Torp <moto@itu.dk>"
+  - "Vitus Ammitzbøll Brodersen <vitb@itu.dk>"
 numbersections: true
 ---
 
 # Design and Architecture of _Chirp!_
 
 ## Domain model
-
 
 ## Architecture — In the small
 
@@ -27,15 +26,41 @@ numbersections: true
 
 ## Build, test, release, and deployment
 
+In our workflow we have 3 different GitHub workflow. These solve 3 different issues. These are in order of the diagrams inserted, Build and Test, Publish and release to Github, and Build and deploy to Azure.
+
+<center>
+</center>
+![Build and Test](diagrams/Build and test 90.svg){#fig:BuildTest}
+
+<center>
+</center>
+
+![Publish and release to Github](diagrams/Publish and release github 90.svg){#fig:PubRelease}
+
+<center>
+</center>
+
+![Build and deploy to Azure](diagrams/Build and deploy ASP.Net Core app to Azure Web App - bdsagroup4chirprazor 2.0.svg){#fig:AzureDeploy}
+
+Common to all of the workflows is that they need to Checkout this is done by Github's workflow `actions/checkout`. They also all need to setup dotnet environment.
+The Build and Test workflow is just a standard workflow, seen in [@fig:BuildTest], where it builds the program and then runs all of the test before clean.
+
+Compared to the others the Publish and release starts out with creating a release page on Github before it checkout and setup dotnet. Interestingly here it checks if the executable is for windows or not. If it is then it zips the file with 7z else it compresses and archives the file to a tar.gz file. Seen in [@fig:PubRelease]
+
+The workflow to deploy to Azure seen in [@fig:AzureDeploy] is just the standard workflow given by Azure. Here it fist creates a build before uploading it to another job which then downloads it and logins to Azure to deploy it there.
+
 ## Team work
 
 ## How to make _Chirp!_ work locally
+
 Ensure that the following dependencies are installed:
+
 - `dotnet-runtime 8.0`
 - `asp-runtime 8.0`
 - `sqlite3`
 
 ## How to run test suite locally
+
 The simplest way to run all unit tests is to simply execute the helper script
 `scripts/run_all_tests.sh` like so.
 
@@ -52,10 +77,13 @@ dotnet test
 ```
 
 # Ethics
+
 ## License
+
 The project is licensed under the MIT license.
 
 ## LLMs, ChatGPT, CoPilot, and others
+
 During the development of this project, several LLMs were used, namely `ChatGPT`, `GitHub Copilot` and `Google Gemini`. The models were used to support the development of the project, but not as substitutes for independent problem-solving; i.e., they were primarily used for suggesting implementations, clarifying syntax and language-specific features, and proposing alternative approaches to problems. GitHub Copilot was additionally used during code reviews as an automated tool that provided suggestions and caught bugs. Additionally, the LLMs were used to generate CSS for the project.
 
-Overall, the responses from the LLMs were *moderately* helpful. While they rarely produced fully functional code that could be integrated into the project without modification, they were very effective at pointing development in the right direction and offering different perspectives on problems. In this capacity, the LLMs thus functioned as a pair programmer or sparring partner. This helped speed up the project’s development, as having a sparring partner who continuously provided feedback helped with solving problems more efficiently.
+Overall, the responses from the LLMs were _moderately_ helpful. While they rarely produced fully functional code that could be integrated into the project without modification, they were very effective at pointing development in the right direction and offering different perspectives on problems. In this capacity, the LLMs thus functioned as a pair programmer or sparring partner. This helped speed up the project’s development, as having a sparring partner who continuously provided feedback helped with solving problems more efficiently.
