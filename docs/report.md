@@ -18,7 +18,7 @@ numbersections: true
 ## Architecture — In the small
 
 ## Architecture of deployed application
-[./images/deployment-diagram.svg]
+![Deployment Diagram](./images/deployment-diagram.svg)
 
 ## User activities
 
