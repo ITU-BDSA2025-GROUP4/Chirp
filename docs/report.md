@@ -13,6 +13,18 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 
 ## Architecture - in the small
 
+This project makes use of the Onion architecture, which splits the project into
+different layers. For this particular project, there are three layers in total.
+
+The core layer, which consists primarily of the domain model alongside
+interfaces that should be implemented in a higher layer. The infrastructure
+layer which is built upon the core. The infrastructure layer implements the
+aforementioned interfaces, it introduces features of the app through loosely
+coupled services and repositories. The final layer is the web layer, which is
+built upon the infrastructure layer. This layer implements the web front end
+and UI logic which makes use of the services implemented in the infrastructure
+layer.
+
 ![bg right:50% 100%](img/onion.svg)
 
 ## Architecture of deployed application
