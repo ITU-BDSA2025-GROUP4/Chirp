@@ -31,11 +31,11 @@ The diagram below shows the deployment architecture of the application. The appl
 ## Build, test, release, and deployment
 The application is built, tested, released, and deployed automatically using GitHub Actions workflows. These workflows are illustrated below in the UML activity diagrams. Please note that if any step in a workflow fails, the entire process is immediately aborted.
 
-The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process (see the activity diagram below).
+The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process:
 
 ![Build-Test Diagram](./images/build-test.svg)
 
-Whenever a push includes a numerical tag following the x.y.z syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and macOS:
+Whenever a push includes a numerical tag following the `x.y.z` syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and macOS:
 
 ![Build-Release Diagram](./images/build-release-activity-diagram.svg) 
 
