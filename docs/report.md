@@ -24,13 +24,12 @@ The diagram below shows the deployment architecture of the application. The appl
 
 ## User activities
 
-The typical start for a user of Chirp! will be the root `/` page, the standard public timeline, displaying all posted Cheeps sorted by recency. Access to different pages are determined by the user's authentication. 
-A non-authenticated user can access pages `/Account/Register` and `/Account/Login` directly from the public timeline, allowing for their authentication via OAuth. They are still able to see all posted cheeps, but are not able to reply nor follow.
+The typical start for any user of Chirp! will be the root `/` page (the standard public timeline), displaying all posted Cheeps sorted by recency. Access to different pages are determined by the user's authentication. 
 
-An authorized user will not see the Register and Login buttons, but will instead be able to post cheeps via the dedicated form, reply to cheeps and follow other authors. They will also be able to view their own timeline via the `My Timeline` button in the navigation bar.
+A non-authenticated user can access pages `/Account/Register` and `/Account/Login` directly from the public timeline, allowing for their authentication via OAuth. They are still able to see all posted cheeps and view other author's timelines, but are not able to reply nor follow.
 
-DELETE:
-Illustrate typical scenarios of a user journey through your Chirp! application. That is, start illustrating the first page that is presented to a non-authorized user, illustrate what a non-authorized user can do with your Chirp! application, and finally illustrate what a user can do after authentication.
+An authorized user will not see the Register and Login buttons, but will instead be able to post cheeps via the dedicated form, reply to cheeps and follow other authors, aswell as see other authors's timelines. They will also be able to view their own timeline via the `My Timeline` button in the navigation bar. Furthermore, the page `/Account/settings` will be available in navigation, allowing the change of account information, and the Forget-Me functionality. The logout button allows for the logout and invalidation of the session.
+
 ## Sequence of functionality/calls trough _Chirp!_
 
 # Process
