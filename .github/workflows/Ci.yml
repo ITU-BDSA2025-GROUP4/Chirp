@@ -68,7 +68,7 @@ jobs:
           #echo "namespace ${NAMESPACE} { public static class Version { public static string version = \"${tag}\";}}" > $FILEPATH
 
           # Build everything
-          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
