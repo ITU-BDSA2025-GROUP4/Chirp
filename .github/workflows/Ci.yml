@@ -32,7 +32,7 @@ jobs:
     needs: prep-release
     strategy:
       matrix:
-        kind: ['linux', 'windows', 'macOS', 'macOS-arm']
+        kind: ['linux', 'windows', 'macOS']
         include:
           - kind: linux
             os: ubuntu-latest
