@@ -35,16 +35,10 @@ The application is continuously built and tested whenever commits are pushed to 
 
 Whenever a push includes a numerical tag following the x.y.z syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and macOS:
 
-![Deployment Diagram](./images/build-test.svg) 
-**This image is a placeholder.**
+![Build-Release Diagram](./images/build-release-activity-diagram.svg) 
 
 The application is deployed to an Azure App Service when commits are pushed to the main branch:
 ![Build-Deploy Diagram](./images/deploy-activity-diagram.svg) 
-
-### Note: Do we want uml for project management tasks on github? I think it would be cool
-
-
-
 
 ## Team work
 
