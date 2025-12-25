@@ -45,7 +45,7 @@ In our workflow we have 3 different GitHub workflow. These solve 3 different iss
 Common to all of the workflows is that they need to Checkout this is done by Github's workflow `actions/checkout`. They also all need to setup dotnet environment.
 The Build and Test workflow is just a standard workflow, seen in [@fig:BuildTest], where it builds the program and then runs all of the test before clean.
 
-Compared to the others the Publish and release starts out with creating a release page on Github before it checkout and setup dotnet. Interestingly here it checks if the executable is for windows or not. If it is then it zips the file with 7z else it compresses and archives the file to a tar.gz file. Seen in [@fig:PubRelease]
+Compared to the others the Publish and release starts out with creating a release page on Github before it checkout and setup dotnet. It then zips the file with 7z. Seen in [@fig:PubRelease]
 
 The workflow to deploy to Azure seen in [@fig:AzureDeploy] is just the standard workflow given by Azure. Here it fist creates a build before uploading it to another job which then downloads it and logins to Azure to deploy it there.
 
