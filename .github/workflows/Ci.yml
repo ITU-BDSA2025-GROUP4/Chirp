@@ -54,7 +54,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.109
+          dotnet-version: 8.0.122
 
       - name: Build CLI
         shell: bash
@@ -68,14 +68,10 @@ jobs:
           echo "namespace ${NAMESPACE} { public static class Version { public static string version = \"${tag}\";}}" > $FILEPATH
 
           # Build everything
-          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.CLI.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
-            tar czvf "${release_name}.tar.gz" "$release_name"
-          fi
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
 
           # Delete output directory
           rm -r "$release_name"
@@ -88,14 +84,10 @@ jobs:
           release_name="Chirp.API-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish src/Chirp.API/Chirp.API.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish src/Chirp.API/Chirp.API.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
-            tar czvf "${release_name}.tar.gz" "$release_name"
-          fi
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
 
           # Delete output directory
           rm -r "$release_name"
