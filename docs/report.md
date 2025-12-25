@@ -24,7 +24,9 @@ The diagram below shows the deployment architecture of the application. The appl
 
 ## User activities
 
-The typical behavioral flow of a non-authorized guest user launching the application will be the root `/` page, the standard public timeline, displaying all Cheeps sorted by recency.
+The typical start for a user of Chirp! will be the root `/` page, the standard public timeline, displaying all posted Cheeps sorted by recency. 
+
+Access to different pages are determined by the user's authentication. A non-authenticated user can access pages `/Account/Register` and `/Account/Login` directly from the public timeline, allowing for authentication. 
 
 DELETE:
 Illustrate typical scenarios of a user journey through your Chirp! application. That is, start illustrating the first page that is presented to a non-authorized user, illustrate what a non-authorized user can do with your Chirp! application, and finally illustrate what a user can do after authentication.
