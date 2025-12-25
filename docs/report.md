@@ -14,8 +14,18 @@ numbersections: true
 
 ## Domain model
 
+The domain model consists of 4 concrete classes and an abstract class which
+stems from the .NET Identity library.
 
-## Architecture — In the small
+Users on the *Chirp!* platform are represented with the **Author** class. A
+follow relationship between two users is represented using the **Follow**
+class. The **Cheep** class represents messages an **Author** can make. Finally,
+**Reply** is the class used for representing replies to messages.
+
+![bg right:50% 100%](img/chirp_domain_model.jpg)
+
+## Architecture - in the small
+
 
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
@@ -38,6 +48,18 @@ Ensure that the following dependencies are installed:
 - `asp-runtime 8.0`
 - `sqlite3`
 
+Ensure that the database migrations are up to date by using the migration
+helper script. For the migration_name, use anything that doesn't appear in
+`src/Chirp.Infrastructure/Migrations`.
+```
+./scripts/migration.sh <MIGRATION_NAME>
+```
+
+Compile and run the razor app.
+```
+dotnet run --project src/Chirp.Web
+```
+
 ## How to run test suite locally
 The simplest way to run all unit tests is to simply execute the helper script
 `scripts/run_all_tests.sh` like so.
@@ -57,6 +79,7 @@ dotnet test
 # Ethics
 ## License
 The project is licensed under the MIT license.
+
 
 ## LLMs, ChatGPT, CoPilot, and others
 During the development of this project, several LLMs were used, namely `ChatGPT`, `GitHub Copilot` and `Google Gemini`. The models were used to support the development of the project, but not as substitutes for our own problem-solving, i.e., they were primarily used for suggesting implementations, clarifying syntax and language-specific features, and proposing alternative approaches to problems. GitHub Copilot was additionally used during code reviews as an automated tool that provided suggestions and caught bugs. Additionally, the LLMs were used to generate CSS for the project.
