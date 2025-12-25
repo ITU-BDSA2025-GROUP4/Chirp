@@ -31,7 +31,7 @@ The diagram below shows the deployment architecture of the application. The appl
 ## Build, test, release, and deployment
 The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process (see the activity diagram below).
 
-![Deployment Diagram](./images/build-test.svg)
+![Build-Test Diagram](./images/build-test.svg)
 
 Whenever a push includes a numerical tag following the x.y.z syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and macOS:
 
@@ -39,10 +39,7 @@ Whenever a push includes a numerical tag following the x.y.z syntax, the applica
 **This image is a placeholder.**
 
 The application is deployed to an Azure App Service when commits are pushed to the main branch:
-
-![Deployment Diagram](./images/build-test.svg) 
-**This image is a placeholder.**
-
+![Build-Deploy Diagram](./images/deploy-activity-diagram.svg) 
 
 ### Note: Do we want uml for project management tasks on github? I think it would be cool
 
