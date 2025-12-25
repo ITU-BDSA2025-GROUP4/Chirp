@@ -30,6 +30,9 @@ A non-authenticated user can access pages `/Account/Register` and `/Account/Logi
 
 An authorized user will not see the Register and Login buttons, but will instead be able to post cheeps via the dedicated form, reply to cheeps and follow other authors, aswell as see other authors's timelines. They will also be able to view their own timeline via the `My Timeline` button in the navigation bar. Furthermore, the page `/Account/settings` will be available in navigation, allowing the change of account information, and the Forget-Me functionality. The logout button allows for the logout and invalidation of the session.
 
+Below is the use case diagram of authorized and non-authorized (guest) users.
+![Use case diagram](./images/use-case-diagram.svg)
+
 ## Sequence of functionality/calls trough _Chirp!_
 
 # Process
