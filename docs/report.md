@@ -17,15 +17,29 @@ numbersections: true
 The domain model consists of 4 concrete classes and an abstract class which
 stems from the .NET Identity library.
 
+
 Users on the *Chirp!* platform are represented with the **Author** class. A
 follow relationship between two users is represented using the **Follow**
 class. The **Cheep** class represents messages an **Author** can make. Finally,
 **Reply** is the class used for representing replies to messages.
 
-![bg right:50% 100%](images/chirp_domain_model.jpg)
+![bg right:50% 100%](./images/chirp_domain_model.jpg)
 
 ## Architecture - in the small
 
+This project makes use of the Onion architecture, which splits the project into
+different layers. For this particular project, there are three layers in total.
+
+The **Chirp.Core** layer, which consists primarily of the domain model alongside
+interfaces that should be implemented in a higher layer. The **Chirp.Infrastructure**
+layer which is built upon the core. The infrastructure layer implements the
+aforementioned interfaces, it introduces features of the app through loosely
+coupled services and repositories. The final layer is the **Chirp.Web** layer, which is
+built upon the infrastructure layer. This layer implements the web front end
+and UI logic which makes use of the services implemented in the infrastructure
+layer.
+
+![bg right:50% 100%](./images/onion.svg)
 
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
