@@ -35,7 +35,7 @@ The application is continuously built and tested whenever commits are pushed to 
 
 ![Build-Test Diagram](./images/build-test.svg)
 
-Whenever a push includes a numerical tag following the `x.y.z` syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and macOS:
+Whenever a push includes a numerical tag following the `x.y.z` syntax, the application is automatically tested for each major platform. If all the tests succeed, releases are created for Windows, Linux, and MacOS:
 
 ![Build-Release Diagram](./images/build-release-activity-diagram.svg) 
 
