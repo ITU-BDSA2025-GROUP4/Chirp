@@ -133,7 +133,7 @@ public class PublicModel : PageModel
     // BE AWARE OF BUG!
     // For an unknown reason, returning Page() causes this.Cheeps to be null,
     // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
-    // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
+    // Redirecting back to index seems to mitigate the issue, but it's worth looking into it.
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form, string returnUrl = "/")
     {
         if (!ModelState.IsValid)
