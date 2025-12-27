@@ -23,7 +23,7 @@ follow relationship between two users is represented using the **Follow**
 class. The **Cheep** class represents messages an **Author** can make. Finally,
 **Reply** is the class used for representing replies to messages.
 
-![bg right:50% 100%](img/chirp_domain_model.jpg)
+![bg right:50% 100%](./images/chirp_domain_model.jpg)
 
 ## Architecture - in the small
 
@@ -39,7 +39,7 @@ built upon the infrastructure layer. This layer implements the web front end
 and UI logic which makes use of the services implemented in the infrastructure
 layer.
 
-![bg right:50% 100%](img/onion.svg)
+![bg right:50% 100%](./images/onion.svg)
 
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
