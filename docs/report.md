@@ -48,22 +48,41 @@ Our group follows a simple and structured development workflow from issue creati
 ![Team Work](./images/team-work.svg)
 
 ## How to make _Chirp!_ work locally
-Ensure that the following dependencies are installed:
-- `dotnet-runtime 8.0`
-- `asp-runtime 8.0`
+### Dependencies
+The _Chirp!_ application has the following dependencies that must be installed for the application to run:
+
+- `dotnet-runtime-8.0`
+- `dotnet-sdk-8.0`
+- `aspnet-runtime-8.0`
 - `sqlite3`
 
-Ensure that the database migrations are up to date by using the migration
-helper script. For the migration_name, use anything that doesn't appear in
-`src/Chirp.Infrastructure/Migrations`.
+### Cloning the Repository
+To run the application locally, first clone the repository.
+One way to do this is by cloning it via HTTPS from the terminal:
+
+```
+git clone https://github.com/ITU-BDSA2025-GROUP4/Chirp.git
+```
+
+### Database Migrations
+After cloning the repository, ensure that the database migrations are up to date.
+
+From the repository root, run the migration helper script. Use any migration name that does **not** already exist in `src/Chirp.Infrastructure/Migrations`
+
 ```
 ./scripts/migration.sh <MIGRATION_NAME>
 ```
 
-Compile and run the razor app.
+### Running the Application
+
+The application can now be compiled and run using the following command from the repository root:
 ```
 dotnet run --project src/Chirp.Web
 ```
+The application will start listening on a local URL printed in the terminal. By default this is `localhost:5273`.
+
+### GitHub OAuth
+By default GitHub OAuth will **not** work locally becaue it requires secrets to be configured. These secrets cannot be shared without exposing them to the entirety of GitHub, so to test out the functionality please visit the deployed web app on [https://bdsagroup4chirprazor.azurewebsites.net/](https://bdsagroup4chirprazor.azurewebsites.net/).
 
 ## How to run test suite locally
 The simplest way to run all unit tests is to simply execute the helper script
