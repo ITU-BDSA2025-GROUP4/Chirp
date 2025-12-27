@@ -1,18 +1,16 @@
 # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action
 name: build and test
-
 on:
   workflow_dispatch:
+  workflow_call:
   push:
   pull_request:
     branches: [ main ]
 
 env:
-  DOTNET_VERSION: '9.0.109' # The .NET SDK version to use
-
+  DOTNET_VERSION: '8.0.x'
 jobs:
   build-chirp-razor:
-
     name: build-and-test-${{matrix.os}}
     runs-on: ${{ matrix.os }}
     strategy:

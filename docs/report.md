@@ -17,6 +17,7 @@ numbersections: true
 The domain model consists of 4 concrete classes and an abstract class which
 stems from the .NET Identity library.
 
+
 Users on the *Chirp!* platform are represented with the **Author** class. A
 follow relationship between two users is represented using the **Follow**
 class. The **Cheep** class represents messages an **Author** can make. Finally,
@@ -41,6 +42,9 @@ layer.
 ![bg right:50% 100%](img/onion.svg)
 
 ## Architecture of deployed application
+The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
+
+![Deployment Diagram](./images/deployment-diagram.svg)
 
 ## User activities
 
@@ -51,6 +55,11 @@ layer.
 ## Build, test, release, and deployment
 
 ## Team work
+**DO NOT FORGET! SHOW A SCREENSHOT OF PROJECT BOARD RIGHT BEFORE HAND-IN AND BRIEFLY DESCRIBE WHICH TASKS ARE STILL UNRESOLVED, I.E. WHICH FEATURES ARE MISSING OR WHICH FUNCTIONALITY IS INCOMPLETE**
+
+Our group follows a simple and structured development workflow from issue creation to feature integration. When a new issue (something that needs to be worked on) is identified, it is documented as an issue on GitHub in the format of a user story. The issue includes a clear task description, suitable acceptance criteria, and relevant labels. The issue is then assigned to one or more group members. The assigned developers then implement the required functionality and test it to verify that it meets the acceptance criteria. Once the work is completed, a pull request is opened against the main branch. Before the pull request is merged, it is automatically reviewed by CodeFactor and at least one team member. If the reviewer(s) approve the changes, the pull request is merged into the main branch. If any issues are identified during code review, the developers revise their implementation and repeat the testing and review process until it is approved. The flow can be seen in the activity diagram below:
+
+![Team Work](./images/team-work.svg)
 
 ## How to make _Chirp!_ work locally
 Ensure that the following dependencies are installed:
@@ -90,7 +99,8 @@ dotnet test
 ## License
 The project is licensed under the MIT license.
 
+
 ## LLMs, ChatGPT, CoPilot, and others
-During the development of this project, several LLMs were used, namely `ChatGPT`, `GitHub Copilot` and `Google Gemini`. The models were used to support the development of the project, but not as substitutes for independent problem-solving; i.e., they were primarily used for suggesting implementations, clarifying syntax and language-specific features, and proposing alternative approaches to problems. GitHub Copilot was additionally used during code reviews as an automated tool that provided suggestions and caught bugs. Additionally, the LLMs were used to generate CSS for the project.
+During the development of this project, several LLMs were used, namely `ChatGPT`, `GitHub Copilot` and `Google Gemini`. The models were used to support the development of the project, but not as substitutes for our own problem-solving, i.e., they were primarily used for suggesting implementations, clarifying syntax and language-specific features, and proposing alternative approaches to problems. GitHub Copilot was additionally used during code reviews as an automated tool that provided suggestions and caught bugs. Additionally, the LLMs were used to generate CSS for the project.
 
 Overall, the responses from the LLMs were *moderately* helpful. While they rarely produced fully functional code that could be integrated into the project without modification, they were very effective at pointing development in the right direction and offering different perspectives on problems. In this capacity, the LLMs thus functioned as a pair programmer or sparring partner. This helped speed up the project’s development, as having a sparring partner who continuously provided feedback helped with solving problems more efficiently.
