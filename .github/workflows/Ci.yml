@@ -14,9 +14,12 @@ on:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
+  test:
+    uses: ./.github/workflows/build-and-test.yml
+    
   prep-release:
     name: Prepare GitHub Release
-
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
@@ -29,7 +32,7 @@ jobs:
     needs: prep-release
     strategy:
       matrix:
-        kind: ['linux', 'windows', 'macOS', 'macOS-arm']
+        kind: ['linux', 'windows', 'macOS']
         include:
           - kind: linux
             os: ubuntu-latest
@@ -54,7 +57,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.109
+          dotnet-version: 8.0.x
 
       - name: Build
         shell: bash
@@ -68,14 +71,10 @@ jobs:
           #echo "namespace ${NAMESPACE} { public static class Version { public static string version = \"${tag}\";}}" > $FILEPATH
 
           # Build everything
-          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
-            tar czvf "${release_name}.tar.gz" "$release_name"
-          fi
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
 
           # Delete output directory
           rm -r "$release_name"
@@ -87,4 +86,3 @@ jobs:
           files: "Chirp.Web*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
