@@ -1,10 +1,9 @@
-﻿using Chirp.Core.Utils;
+using Chirp.Core.Utils;
 
 namespace Chirp.Core.Tests.Unit;
 
 public class UnitTests
 {
-
     [Theory]
     [InlineData(0, "01/01/1970 00:00:00")]
     [InlineData(-1758894113, "07/04/1914 10:18:07")]
@@ -13,7 +12,6 @@ public class UnitTests
     {
         Assert.Equal(expected, TimestampUtils.UnixTimeStampToDateTimeString(timestamp));
     }
-
 
     [Theory]
     [InlineData("01/01/1970 00:00:00")]
