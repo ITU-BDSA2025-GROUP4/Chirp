@@ -129,7 +129,6 @@ public class PublicModel : PageModel
         }
     }
 
-
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
