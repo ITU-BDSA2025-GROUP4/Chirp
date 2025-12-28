@@ -33,6 +33,12 @@ An authorized user will not see the Register and Login buttons, but will instead
 Below is the use case diagram of authorized and non-authorized (guest) users.
 ![Use case diagram](./images/use-case-diagram.svg)
 
+The activity flow of these two groups are shown below:
+
+Guests:
+![Guest diagram](./images/guest-activities.svg)
+Authorized:
+![Authorized diagram](./images/Authorized-activities.svg)
 ## Sequence of functionality/calls trough _Chirp!_
 
 # Process
