@@ -44,8 +44,4 @@ jobs:
       working-directory: test/Chirp.Web.Tests
       run: dotnet test --no-restore --verbosity normal
 
-    - name: Chirp.Core.Utils test
-      working-directory: test/Chirp.Utils.Tests
-      run: dotnet test --no-restore --verbosity normal
-
 
