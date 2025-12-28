@@ -1,7 +1,7 @@
 ﻿@page "/"
 @addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
-@model Chirp.Web.Pages.PublicModel
 @using Microsoft.AspNetCore.Http.Extensions
+@model Chirp.Web.Pages.PublicModel
 
 @{int NumberOfRepliesShown = 3;}
 
@@ -10,7 +10,7 @@
     Layout = "Shared/_Layout";
 }
 
-<div>
+<div id="public-timeline" data-current-page="@(TempData["currentPage"] ?? 1)" data-author="@(TempData.ContainsKey("timeline") ? TempData["timeline"] : "")">
     @if (User.Identity?.IsAuthenticated == true)
     {
         <div class="cheep-container">
@@ -36,7 +36,69 @@
 
     @if (Model.Cheeps.Any())
     {
-        <partial name="Partials/_CheepCard" model="Model" />
+        <div id="cheep-list">
+            <partial name="Partials/_CheepCard" model="Model" />
+        </div>
+        <div id="scroll-sentinel" aria-hidden="true"></div>
+        <div id="scroll-loading" hidden>Loading…</div>
+
+<script>
+(() => {
+    const host = document.getElementById("public-timeline");
+    const list = document.getElementById("cheep-list");
+    const sentinel = document.getElementById("scroll-sentinel");
+    const loading = document.getElementById("scroll-loading");
+
+    if (!host || !list || !sentinel) return;
+
+    let nextPage = Number(host.dataset.currentPage ?? "1") + 1;
+    const author = host.dataset.author ?? "";
+
+    let isLoading = false;
+    let hasMore = true;
+
+    async function loadNextPage() {
+        if (isLoading || !hasMore) return;
+        isLoading = true;
+        if (loading) loading.hidden = false;
+
+        const url = new URL(window.location.href);
+        url.searchParams.set("handler", "CheepCards");
+        url.searchParams.set("page", String(nextPage));
+        if (author) url.searchParams.set("author", author);
+
+        const res = await fetch(url.toString(), { headers: { "X-Requested-With": "fetch" } });
+        if (!res.ok) {
+            // Avoid an infinite busy loop if the server errors.
+            hasMore = false;
+            isLoading = false;
+            if (loading) loading.hidden = true;
+            return;
+        }
+
+        const html = await res.text();
+        if (!html || html.trim().length === 0) {
+            hasMore = false;
+        } else {
+            list.insertAdjacentHTML("beforeend", html);
+            nextPage += 1;
+        }
+
+        isLoading = false;
+        if (loading) loading.hidden = true;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        if (entries.some(e => e.isIntersecting)) {
+            void loadNextPage();
+        }
+    }, { rootMargin: "600px" });
+
+    observer.observe(sentinel);
+})();
+</script>
+
+      
     }
     else
     {
@@ -44,14 +106,4 @@
     }
 </div>
 
-<center>
-    <div class="pagingButtons">
-        <!-- When return key is pressed on the page number input field  -->
-        <button id="PreviousPageButton" onclick="prev_page();">Previous</button>
-        <input type="text" name="Page" id="PageInputField" value="@TempData["currentPage"]" />
-        <button id="NextPageButton" onclick="next_page();">Next</button>
-    </div>
-</center>
-
-<script src="/js/pagination.js"></script>
 <script src="/js/collapsedReplies.js"></script>

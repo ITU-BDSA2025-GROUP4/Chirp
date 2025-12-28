@@ -4,6 +4,7 @@ using Chirp.Core.Application.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
@@ -53,7 +54,6 @@ public class PublicModel : PageModel
     public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
     {
         page = page > 1 ? page : 1;
-        TempData["currentPage"] = page;
 
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
@@ -63,11 +63,55 @@ public class PublicModel : PageModel
             FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
         }
 
-        if (author == "")
+        await LoadTimelinePageAsync(page, author, currentAuthor, setTempData: true);
+
+        ReturnUrl = HttpContext.Request.GetDisplayUrl();
+    }
+
+    public async Task<IActionResult> OnGetCheepCardsAsync([FromQuery] int page, [FromQuery] string author = "")
+    {
+        page = page > 1 ? page : 1;
+
+        var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
+        AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
+
+        if (currentAuthor != null)
+        {
+            FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
+        }
+
+        await LoadTimelinePageAsync(page, author, currentAuthor, setTempData: false);
+
+        if (!Cheeps.Any())
+        {
+            // Signals the client that there are no more pages.
+            return Content(string.Empty);
+        }
+
+        return new PartialViewResult
+        {
+            ViewName = "Partials/_CheepCard",
+            ViewData = new ViewDataDictionary<PublicModel>(ViewData, this)
+        };
+    }
+
+    private async Task LoadTimelinePageAsync(int page, string author, AuthorDTO? currentAuthor, bool setTempData)
+    {
+        if (setTempData)
+        {
+            TempData["currentPage"] = page;
+        }
+
+        if (string.IsNullOrEmpty(author))
+        {
             Cheeps = await _service.GetCheeps(page, _pageSize);
+        }
         else
         {
-            TempData["timeline"] = author;
+            if (setTempData)
+            {
+                TempData["timeline"] = author;
+            }
 
             if (currentAuthor != null && currentAuthor.Name == author)
             {
@@ -79,13 +123,13 @@ public class PublicModel : PageModel
             }
         }
 
-        foreach(CheepDTO cheep in Cheeps)
+        Replies.Clear();
+        foreach (CheepDTO cheep in Cheeps)
         {
             Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
-        
-        ReturnUrl = HttpContext.Request.GetDisplayUrl();
     }
+
 
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
     {
