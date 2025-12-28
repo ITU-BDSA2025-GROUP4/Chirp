@@ -26,11 +26,13 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 ![bg right:50% 100%](./images/domain-model.svg)
 
 ## Architecture - in the small (WIP)
-The project utilizes the onion architecture, which divides the project into four distinct layers. This project does **not** distinguish between the domain and service layer, and therefore only three distinct layers exist. The organization of the code base can be seen below:
+The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
 ![bg right:50% 100%](./images/onion.png)
 
-As shown in the diagram above, `Chirp.Core` comprises the domain model, data transfer objects, domain interfaces, and other domain-specific objects. `Chirp.Infrastructure` contains the implementations of the domain interfaces and introduces features to the application through loosely coupled services and repositories. `Chirp.Web` contains the actual web application, which includes the web frontend and UI logic that utilizes the services implemented in `Chirp.Infrastructure`.
+*The innermost layer is the Domain layer, followed by the Repository layer, the Services layer, and finally the UI layer.*
+
+As shown in the diagram above, `Chirp.Core` comprises the domain model, data transfer objects, domain interfaces, and other domain-specific objects. `Chirp.Infrastructure` contains the implementations of the domain interfaces in the form of loosely coupled services and repositories. It also contains the data model and database context. `Chirp.Web` contains the actual web application (the Razor Page application), which includes the web frontend and UI logic that utilizes the services implemented in `Chirp.Infrastructure`.
 
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
