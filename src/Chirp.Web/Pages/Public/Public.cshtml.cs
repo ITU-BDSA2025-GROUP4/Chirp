@@ -1,15 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
 using Chirp.Core.Application.Contracts;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
+
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Chirp.Web.Pages;
 

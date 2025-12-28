@@ -3,23 +3,24 @@
 @using Microsoft.AspNetCore.Http.Extensions
 @model Chirp.Web.Pages.PublicModel
 
-@{int NumberOfRepliesShown = 3;}
+@{ int NumberOfRepliesShown = 3; }
 
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
 }
 
-<div id="public-timeline" data-current-page="@(TempData["currentPage"] ?? 1)" data-author="@(TempData.ContainsKey("timeline") ? TempData["timeline"] : "")">
+<div id="public-timeline" data-current-page="@(TempData["currentPage"] ?? 1)"
+     data-author="@(TempData.ContainsKey("timeline") ? TempData["timeline"] : "")">
     @if (User.Identity?.IsAuthenticated == true)
     {
         <div class="cheep-container">
             <b class="warning">@TempData["message"]</b>
             <form method="post">
-                <input class ="CheepInputField" asp-for="Form.Cheep" id="cheep" name="Cheep"
-                    placeholder="What's on your mind, @(User.Identity!.Name)?" />
-                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()" />
-                <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit" />
+                <input class="CheepInputField" asp-for="Form.Cheep" id="cheep" name="Cheep"
+                       placeholder="What's on your mind, @(User.Identity!.Name)?"/>
+                <input type="hidden" name="returnUrl" value="@HttpContext.Request.GetDisplayUrl()"/>
+                <input type="submit" id="CheepSubmit" value="Cheep" asp-page-handler="Submit"/>
             </form>
         </div>
     }
@@ -37,68 +38,66 @@
     @if (Model.Cheeps.Any())
     {
         <div id="cheep-list">
-            <partial name="Partials/_CheepCard" model="Model" />
+            <partial name="Partials/_CheepCard" model="Model"/>
         </div>
         <div id="scroll-sentinel" aria-hidden="true"></div>
         <div id="scroll-loading" hidden>Loading…</div>
 
-<script>
-(() => {
-    const host = document.getElementById("public-timeline");
-    const list = document.getElementById("cheep-list");
-    const sentinel = document.getElementById("scroll-sentinel");
-    const loading = document.getElementById("scroll-loading");
+        <script>
+            (() => {
+                const host = document.getElementById("public-timeline");
+                const list = document.getElementById("cheep-list");
+                const sentinel = document.getElementById("scroll-sentinel");
+                const loading = document.getElementById("scroll-loading");
 
-    if (!host || !list || !sentinel) return;
+                if (!host || !list || !sentinel) return;
 
-    let nextPage = Number(host.dataset.currentPage ?? "1") + 1;
-    const author = host.dataset.author ?? "";
+                let nextPage = Number(host.dataset.currentPage ?? "1") + 1;
+                const author = host.dataset.author ?? "";
 
-    let isLoading = false;
-    let hasMore = true;
+                let isLoading = false;
+                let hasMore = true;
 
-    async function loadNextPage() {
-        if (isLoading || !hasMore) return;
-        isLoading = true;
-        if (loading) loading.hidden = false;
+                async function loadNextPage() {
+                    if (isLoading || !hasMore) return;
+                    isLoading = true;
+                    if (loading) loading.hidden = false;
 
-        const url = new URL(window.location.href);
-        url.searchParams.set("handler", "CheepCards");
-        url.searchParams.set("page", String(nextPage));
-        if (author) url.searchParams.set("author", author);
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("handler", "CheepCards");
+                    url.searchParams.set("page", String(nextPage));
+                    if (author) url.searchParams.set("author", author);
 
-        const res = await fetch(url.toString(), { headers: { "X-Requested-With": "fetch" } });
-        if (!res.ok) {
-            // Avoid an infinite busy loop if the server errors.
-            hasMore = false;
-            isLoading = false;
-            if (loading) loading.hidden = true;
-            return;
-        }
+                    const res = await fetch(url.toString(), {headers: {"X-Requested-With": "fetch"}});
+                    if (!res.ok) {
+                        // Avoid an infinite busy loop if the server errors.
+                        hasMore = false;
+                        isLoading = false;
+                        if (loading) loading.hidden = true;
+                        return;
+                    }
 
-        const html = await res.text();
-        if (!html || html.trim().length === 0) {
-            hasMore = false;
-        } else {
-            list.insertAdjacentHTML("beforeend", html);
-            nextPage += 1;
-        }
+                    const html = await res.text();
+                    if (!html || html.trim().length === 0) {
+                        hasMore = false;
+                    } else {
+                        list.insertAdjacentHTML("beforeend", html);
+                        nextPage += 1;
+                    }
 
-        isLoading = false;
-        if (loading) loading.hidden = true;
-    }
+                    isLoading = false;
+                    if (loading) loading.hidden = true;
+                }
 
-    const observer = new IntersectionObserver((entries) => {
-        if (entries.some(e => e.isIntersecting)) {
-            void loadNextPage();
-        }
-    }, { rootMargin: "600px" });
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries.some(e => e.isIntersecting)) {
+                        void loadNextPage();
+                    }
+                }, {rootMargin: "600px"});
 
-    observer.observe(sentinel);
-})();
-</script>
-
-      
+                observer.observe(sentinel);
+            })();
+        </script>
     }
     else
     {
