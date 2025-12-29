@@ -20,7 +20,7 @@ public class AuthorRepository : IAuthorRepository
     {
         return await _context.Authors
             .AsNoTracking()
-            .Select(x => new AuthorDTO(x.Name, x.Email, x.Id))
+            .Select(x => new AuthorDTO(x.Name, x.Email!, x.Id))
             .ToListAsync();
     }
 
@@ -38,7 +38,7 @@ public class AuthorRepository : IAuthorRepository
         var entity = await _context.Authors
             .AsNoTracking()
             .Where(predicate)
-            .Select(x => new AuthorDTO(x.Name, x.Email, x.Id))
+            .Select(x => new AuthorDTO(x.Name, x.Email!, x.Id))
             .FirstOrDefaultAsync();
 
         return entity is null ? Optional.Empty<AuthorDTO>() : Optional.Of(entity);
