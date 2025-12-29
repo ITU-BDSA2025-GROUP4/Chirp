@@ -65,13 +65,12 @@ git clone https://github.com/ITU-BDSA2025-GROUP4/Chirp.git
 ### Database Migrations
 After cloning the repository, ensure that the database migrations are up to date.
 
-From the repository root, run the migration helper script. Use any migration name that does **not** already exist in `src/Chirp.Infrastructure/Migrations`
+From the repository root, run the migration helper script. Use any migration name that does **not** already exist in `src/Chirp.Infrastructure/Migrations`.
 ```
 ./scripts/migration.sh <MIGRATION_NAME>
 ```
 
 ### Running the Application
-
 The application can now be compiled and run using the following command from the repository root:
 ```
 dotnet run --project src/Chirp.Web
