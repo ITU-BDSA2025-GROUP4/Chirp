@@ -23,7 +23,7 @@ The diagram below shows the deployment architecture of the application. The appl
 ![Deployment Diagram](./images/deployment-diagram.svg)
 
 ## User activities
-For any Chirp! user, the entry point to the application is the root page, which displays the public timeline. This timeline shows all posted Cheeps sorted by most recent first. Unauthorized users can browse the public timeline and view individual authors' timelines, but they are not able to interact with cheeps or authors in any way. To gain access to interactive features, users must authenticate by registering and/or logging in, as illustrated in the use case diagram below:
+For any Chirp! user, the entry point to the application is the root page, which displays the public timeline. This timeline shows all posted Cheeps sorted in order of the most recent cheeps first. Unauthorized users can browse the public timeline and view individual authors' timelines, but they are not able to interact with cheeps or authors in any way. To gain access to the rest of the features, users must authenticate by registering and/or logging in, as illustrated in the diagram below:
 
 ![Use case diagram](./images/user-activities-unauthorized.svg)
 
