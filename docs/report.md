@@ -23,21 +23,12 @@ The diagram below shows the deployment architecture of the application. The appl
 ![Deployment Diagram](./images/deployment-diagram.svg)
 
 ## User activities
+For any Chirp! user, the entry point to the application is the root page, which displays the public timeline. This timeline shows all posted Cheeps sorted by most recent first. Unauthorized users can browse the public timeline and view individual authors' timelines, but they are not able to interact with cheeps or authors in any way. To gain access to interactive features, users must authenticate by registering and/or logging in, as illustrated in the use case diagram below:
 
-The typical start for any user of Chirp! will be the root `/` page (the standard public timeline), displaying all posted Cheeps sorted by recency. Access to different pages are determined by the user's authentication. 
+![Use case diagram](./images/user-activities-unauthorized.svg)
 
-A non-authenticated user can access pages `/Account/Register` and `/Account/Login` directly from the public timeline, allowing for their authentication via OAuth. They are still able to see all posted cheeps and view other author's timelines, but are not able to reply nor follow.
+An authorized user is able to post cheeps, reply to cheeps and follow other authors. They are also able to view their own private timeline. The private timeline contains the users own cheeps, and cheeps from authors they have followed. Authorized users are also able to access their account settings, which allows changing password and deleting their account.
 
-An authorized user will not see the Register and Login buttons, but will instead be able to post cheeps via the dedicated form, reply to cheeps and follow other authors, aswell as see other authors's timelines. They will also be able to view their own timeline via the `My Timeline` button in the navigation bar. Furthermore, the page `/Account/settings` will be available in navigation, allowing the change of account information, and the Forget-Me functionality. The logout button allows for the logout and invalidation of the session.
-
-Below is the use case diagram of authorized and non-authorized (guest) users.
-![Use case diagram](./images/use-case-diagram.svg)
-
-The activity flow of these two groups are shown below:
-
-Guests:
-![Guest diagram](./images/guest-activities.svg)
-Authorized:
 ![Authorized diagram](./images/Authorized-activities.svg)
 ## Sequence of functionality/calls trough _Chirp!_
 
