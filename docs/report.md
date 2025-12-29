@@ -29,7 +29,7 @@ For any Chirp! user, the entry point to the application is the root page, which 
 
 An authorized user is able to post cheeps, reply to cheeps and follow other authors. They are also able to view their own private timeline. The private timeline contains the users own cheeps, and cheeps from authors they have followed. Authorized users are also able to access their account settings, which allows them to change their password (if they are not signed up with OAuth) and deleting their account.
 
-![Authorized diagram](./images/Authorized-activities.svg)
+![Authorized diagram](./images/user-activities-authorized.svg)
 
 ## Sequence of functionality/calls trough _Chirp!_
 
