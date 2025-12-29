@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    color-interpolation="auto" color-rendering="auto" fill="rgb(0,0,0)" fill-opacity="0"
+    font-family="'Dialog'" font-size="12px" font-style="normal" font-weight="normal" height="515"
+    image-rendering="auto" shape-rendering="auto" stroke="rgb(0,0,0)" stroke-dasharray="none"
+    stroke-dashoffset="0" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10"
+    stroke-opacity="0" stroke-width="1" text-rendering="auto" viewbox="0 0 430 515" width="430"><!--Generated
+    by the Batik Graphics2D SVG Generator-->
+    <defs id="genericDefs" />
+    <g>
+        <defs id="defs1">
+            <clipPath clipPathUnits="userSpaceOnUse" id="bbceb9c1-8938-4ca6-bbd7-32f87f7329a8">
+                <path d="M-8 -8 L431 -8 L431 517 L-8 517 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="04d3ba6c-76fc-4a85-bfb1-9042e41f985e">
+                <path d="M-0 0 L-0 502 L7 502 L7 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="767f0e52-0ecd-473d-af67-c7e9cb91cb6f">
+                <path d="M0 0 L0 502 L7 502 L7 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c07357f0-41f7-4d42-9bf8-9194f180bad1">
+                <path d="M-8 -8 L220 -8 L220 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="06c17586-b4d4-4a68-8c96-070e17cc24c5">
+                <path d="M-8 -8 L220 -8 L220 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="f1490829-d730-47b2-9509-88c1b9da0eea">
+                <path d="M-8 -8 L220 -8 L220 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="bf0a3837-4f06-47e4-847b-13146206732c">
+                <path d="M0 0 L0 15 L208 15 L208 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="3af87ead-f070-44b6-bdc3-2fc7742119d2">
+                <path d="M-8 -8 L220 -8 L220 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="02bea51a-c4fd-48b3-bdce-b189338b4c44">
+                <path d="M-8 -8 L220 -8 L220 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="65e2c08e-31b9-4eb7-bd44-2d4d768adf5c">
+                <path d="M-8 -8 L220 -8 L220 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="628a4229-3591-4d1c-8414-e049ef8e5632">
+                <path d="M0 0 L0 489 L208 489 L208 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="2f8944b8-40ce-4abf-ae2d-a21980e92f0b">
+                <path d="M-7 -7 L51 -7 L51 31 L-7 31 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="0e999c8b-e142-4870-bc9b-d47a3f51de4a">
+                <path d="M-7 -7 L51 -7 L51 31 L-7 31 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="fade755e-4bed-473f-87ae-817be1f89252">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="df427ef8-6ba0-4871-8388-232a09cd3390">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5e2ae439-f353-4d47-b37b-41458c3dcf41">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="2cfdda2e-f83f-44d2-990f-8d499bddc33d">
+                <path d="M0 0 L0 40 L144 40 L144 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="826a801b-d71d-438a-b138-829744bd0134">
+                <path d="M-7 -7 L156 -7 L156 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a878f8a3-9b95-4d27-a567-79e2c1d9dd41">
+                <path d="M-7 -7 L156 -7 L156 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c7ac3ad1-8505-44d2-bc94-ae7285a5a81d">
+                <path d="M-7 -7 L156 -7 L156 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a20f872c-1945-4cc3-b4d7-8e62b1b15d47">
+                <path d="M0 0 L0 40 L145 40 L145 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5158386b-112c-40c0-87e9-f353b07c4229">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7a055935-1f06-45af-8ec4-647b96527361">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="9616c1f1-e56d-4742-ae40-fe7f74dbc513">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a843a1e7-5ddb-4807-8e1a-17c2fdf8f265">
+                <path d="M0 -0 L0 40 L144 40 L144 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="ac61e7a3-67e5-4b9d-a026-5256bb8ec811">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="e6554fe9-0498-47db-86f3-b0d3d778a4a1">
+                <path d="M-7 -7 L155 -7 L155 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="92b90923-c797-42c6-b6c0-4870519a3293">
+                <path d="M0 -0 L0 40 L144 40 L144 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="1de46c11-0172-46d2-a263-f4c9f672bdc7">
+                <path d="M-7 -7 L160 -7 L160 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="27893f81-4975-46f0-bd0b-1344d92de852">
+                <path d="M-7 -7 L160 -7 L160 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c361224f-881c-4c5a-9fd5-a345d64db66d">
+                <path d="M-7 -7 L160 -7 L160 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="de74d3ff-ae9c-48ac-ac3c-c487d5a8344f">
+                <path d="M0 0 L0 40 L149 40 L149 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="44d6b394-8b9c-4f76-9d4f-9c51b1776ef5">
+                <path d="M-8 -8 L223 -8 L223 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="44ddec6e-7aa7-4240-b655-b4c113a2f90b">
+                <path d="M-8 -8 L223 -8 L223 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d8633f23-f6e3-49cd-b610-7979cc5dc579">
+                <path d="M-8 -8 L223 -8 L223 27 L-8 27 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="393215a0-91ea-469b-bfd0-0998f6a148dc">
+                <path d="M0 0 L0 15 L211 15 L211 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="f4f784a5-290c-4b21-bb17-6006f9ad5ebf">
+                <path d="M-8 -8 L223 -8 L223 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="695d642a-1b7d-4a5a-b3b3-f401aece82fb">
+                <path d="M-8 -8 L223 -8 L223 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c8617c07-551a-4a3f-8986-a9c81003578d">
+                <path d="M-8 -8 L223 -8 L223 502 L-8 502 L-8 -8 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b48abae4-461e-49ea-ac20-2da2de4e8d93">
+                <path d="M0 0 L0 489 L211 489 L211 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="94253eeb-99ce-4249-a83d-080fbc834c7e">
+                <path d="M-7 -7 L31 -7 L31 31 L-7 31 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="eea05914-3baa-4b75-ac1b-1216a90bd07f">
+                <path d="M-7 -7 L31 -7 L31 31 L-7 31 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="1135d0f5-6946-41da-85b5-334ff145e57f">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7135f5ce-ca1d-4f5e-b2e0-5acf23ed1787">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d909646a-e03b-4f82-9fad-c2461075d09c">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="031a9115-a5a0-4269-90c9-aaf78f66d712">
+                <path d="M0 0 L0 40 L167 40 L167 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="4a9cb159-db50-41cd-8b69-ec9cc529bf5d">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="2c67c9ea-1abf-4063-a5c0-d8f7dcb08ee8">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="23c9071e-e4b5-4c20-979e-df25d88a698b">
+                <path d="M0 0 L0 40 L167 40 L167 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b7c42653-9cf4-45b7-94ac-08f1e1d127ea">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="811132d6-f497-4ddd-8468-26e1740a5172">
+                <path d="M-7 -7 L178 -7 L178 51 L-7 51 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="e16fe744-f402-446e-8c93-ec52714721d9">
+                <path d="M0 0 L0 40 L167 40 L167 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d2d92e43-0440-43d8-a8a4-dc480ebb01ef">
+                <path d="M0 0 L75 0 L75 91 L0 91 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6e95adde-760f-4a55-acd2-5ce79536ae2d">
+                <path d="M0 0 L0 91 L75 91 L75 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="67d8a4d0-6826-47f7-a669-b627ebbe47be">
+                <path d="M0 -0 L75 -0 L75 91 L0 91 L0 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="55cf1ca4-af58-4678-aa94-29ee11a57e71">
+                <path d="M0 -0 L0 91 L75 91 L75 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="18c994b3-110b-4994-a4a0-084bf7dec637">
+                <path d="M0 -0 L75 -0 L75 91 L0 91 L0 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="ccacfe6d-d062-4f1f-b648-e3070c7707c9">
+                <path d="M0 -0 L0 91 L75 91 L75 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6a64f777-4488-4b01-a62d-ed46b81aecfe">
+                <path d="M0 -0 L75 -0 L75 92 L0 92 L0 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="11240eb5-7d18-48f2-9eac-23539de86d7b">
+                <path d="M0 -0 L0 92 L75 92 L75 -0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d9fd8299-8837-4a4a-bcdb-14583875f52e">
+                <path d="M-0 0 L75 0 L75 95 L-0 95 L-0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="259e47a6-618c-4c20-a6b1-5207fe5fa63c">
+                <path d="M-0 0 L-0 95 L75 95 L75 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="4fac5217-ba16-4fc6-a24c-df976dc6879c">
+                <path d="M-0 0 L75 0 L75 95 L-0 95 L-0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d949d9a0-bf1b-4ea7-8abb-48f0ebdfb776">
+                <path d="M-0 0 L-0 95 L75 95 L75 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5ad858b4-5ccb-451a-88a9-4cbb08d2d64d">
+                <path d="M-0 0 L75 0 L75 96 L-0 96 L-0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a5a1c1a0-a68e-4f33-87e0-dacc40d5b838">
+                <path d="M-0 0 L-0 96 L75 96 L75 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="1dffa89f-2133-489b-a424-454f206ce1ab">
+                <path d="M0 0 L126 0 L126 75 L0 75 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="8284b31d-e01c-46fc-9df9-b6e796f492ce">
+                <path d="M0 0 L0 75 L126 75 L126 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="716a4614-0ce8-42c7-bbe4-5a4fd83b804d">
+                <path d="M0 0 L75 0 L75 93 L0 93 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="ed012efc-9fc2-4fc8-9060-2837682668ee">
+                <path d="M0 0 L0 93 L75 93 L75 0 Z" />
+            </clipPath>
+        </defs>
+        <g fill="white" fill-opacity="1" stroke="white" stroke-opacity="1"
+            text-rendering="geometricPrecision">
+            <rect height="515" stroke="none" width="430" x="0" y="0" />
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Build Job&quot;,&quot;modelType&quot;:&quot;ActivityPartition&quot;}"
+            hyper="" model-id="shape-q65eVtmFYEWAARg0"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1" stroke-width="2"
+                text-rendering="geometricPrecision" transform="translate(4.2857,3.7143)">
+                <rect clip-path="url(#06c17586-b4d4-4a68-8c96-070e17cc24c5)" fill="none" height="15"
+                    width="208" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(4.2857,3.7143)">
+            <text clip-path="url(#bf0a3837-4f06-47e4-847b-13146206732c)" stroke="none" x="81"
+                xml:space="preserve" y="12">Build Job</text>
+        </g>
+        <g data="" hyper="" model-id="" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1" stroke-width="2"
+                text-rendering="geometricPrecision" transform="translate(4.2857,18.7143)">
+                <rect clip-path="url(#02bea51a-c4fd-48b3-bdce-b189338b4c44)" fill="none"
+                    height="490" width="208" x="0" y="0" />
+            </g>
+        </g>
+        <g data="{&quot;name&quot;:&quot;&quot;,&quot;modelType&quot;:&quot;InitialNode&quot;}"
+            hyper="" model-id="shape-0QKr0tmGAqAAPwtw"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(89.2857,31.7143)">
+                <circle clip-path="url(#0e999c8b-e142-4870-bc9b-d47a3f51de4a)" cx="20" cy="10"
+                    r="10" stroke="none" />
+            </g>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Checkout repository (actions/checkout@v4)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-NSwb0tmGAqAAPwxq"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,68.7143)">
+                <rect clip-path="url(#df427ef8-6ba0-4871-8388-232a09cd3390)" height="40" rx="15"
+                    ry="15" stroke="none" width="144" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,68.7143)">
+                <rect clip-path="url(#df427ef8-6ba0-4871-8388-232a09cd3390)" fill="none" height="40"
+                    rx="15" ry="15" width="144" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(37.2857,68.7143)">
+            <text clip-path="url(#2cfdda2e-f83f-44d2-990f-8d499bddc33d)" stroke="none" x="23"
+                xml:space="preserve" y="17">Checkout repository</text>
+            <text clip-path="url(#2cfdda2e-f83f-44d2-990f-8d499bddc33d)" stroke="none" x="15"
+                xml:space="preserve" y="32">(actions/checkout@v4)</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Setup .NET 8 Core (actions/setup-dotnet@v4)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-HRub0tmGAqAAPwzu"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(39.2857,125.7143)">
+                <rect clip-path="url(#a878f8a3-9b95-4d27-a567-79e2c1d9dd41)" height="40" rx="15"
+                    ry="15" stroke="none" width="145" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(39.2857,125.7143)">
+                <rect clip-path="url(#a878f8a3-9b95-4d27-a567-79e2c1d9dd41)" fill="none" height="40"
+                    rx="15" ry="15" width="145" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(39.2857,125.7143)">
+            <text clip-path="url(#a20f872c-1945-4cc3-b4d7-8e62b1b15d47)" stroke="none" x="26"
+                xml:space="preserve" y="17">Setup .NET 8 Core</text>
+            <text clip-path="url(#a20f872c-1945-4cc3-b4d7-8e62b1b15d47)" stroke="none" x="7"
+                xml:space="preserve" y="32">(actions/setup-dotnet@v4)</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Build project&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-7zjb0tmGAqAAPw0p"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,183.7143)">
+                <rect clip-path="url(#7a055935-1f06-45af-8ec4-647b96527361)" height="40" rx="15"
+                    ry="15" stroke="none" width="144" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,183.7143)">
+                <rect clip-path="url(#7a055935-1f06-45af-8ec4-647b96527361)" fill="none" height="40"
+                    rx="15" ry="15" width="144" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(37.2857,183.7143)">
+            <text clip-path="url(#a843a1e7-5ddb-4807-8e1a-17c2fdf8f265)" stroke="none" x="41"
+                xml:space="preserve" y="24">Build project</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Publish project&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-O4K70tmGAqAAPw2J"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,240.7143)">
+                <rect clip-path="url(#ac61e7a3-67e5-4b9d-a026-5256bb8ec811)" height="40" rx="15"
+                    ry="15" stroke="none" width="144" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(37.2857,240.7143)">
+                <rect clip-path="url(#ac61e7a3-67e5-4b9d-a026-5256bb8ec811)" fill="none" height="40"
+                    rx="15" ry="15" width="144" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(37.2857,240.7143)">
+            <text clip-path="url(#92b90923-c797-42c6-b6c0-4870519a3293)" stroke="none" x="35"
+                xml:space="preserve" y="24">Publish project</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Upload build artifact (actions/upload-artifact@v4)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-LNh70tmGAqAAPw3B"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(34.2857,297.7143)">
+                <rect clip-path="url(#27893f81-4975-46f0-bd0b-1344d92de852)" height="40" rx="15"
+                    ry="15" stroke="none" width="149" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(34.2857,297.7143)">
+                <rect clip-path="url(#27893f81-4975-46f0-bd0b-1344d92de852)" fill="none" height="40"
+                    rx="15" ry="15" width="149" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(34.2857,297.7143)">
+            <text clip-path="url(#de74d3ff-ae9c-48ac-ac3c-c487d5a8344f)" stroke="none" x="25"
+                xml:space="preserve" y="17">Upload build artifact</text>
+            <text clip-path="url(#de74d3ff-ae9c-48ac-ac3c-c487d5a8344f)" stroke="none" x="5"
+                xml:space="preserve" y="32">(actions/upload-artifact@v4)</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Deploy Job&quot;,&quot;modelType&quot;:&quot;ActivityPartition&quot;}"
+            hyper="" model-id="shape-Z65eVtmFYEWAARg6"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1" stroke-width="2"
+                text-rendering="geometricPrecision" transform="translate(212.2857,3.7143)">
+                <rect clip-path="url(#44ddec6e-7aa7-4240-b655-b4c113a2f90b)" fill="none" height="15"
+                    width="211" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(212.2857,3.7143)">
+            <text clip-path="url(#393215a0-91ea-469b-bfd0-0998f6a148dc)" stroke="none" x="77"
+                xml:space="preserve" y="12">Deploy Job</text>
+        </g>
+        <g data="" hyper="" model-id="" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1" stroke-width="2"
+                text-rendering="geometricPrecision" transform="translate(212.2857,18.7143)">
+                <rect clip-path="url(#695d642a-1b7d-4a5a-b3b3-f401aece82fb)" fill="none"
+                    height="490" width="211" x="0" y="0" />
+            </g>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;&quot;,&quot;modelType&quot;:&quot;ActivityFinalNode&quot;}"
+            hyper="" model-id="shape-H7Gn0tmGAqAAPw_T"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(308.2857,477.7143)">
+                <circle clip-path="url(#eea05914-3baa-4b75-ac1b-1216a90bd07f)" cx="10" cy="10"
+                    r="6.6667" stroke="none" />
+                <circle clip-path="url(#eea05914-3baa-4b75-ac1b-1216a90bd07f)" cx="10" cy="10"
+                    fill="none" r="10" stroke-linecap="butt" stroke-linejoin="round"
+                    stroke-miterlimit="0" />
+            </g>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Download artifact from build job (actions/download-artifact@v4)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-a9HH0tmGAqAAPw8q"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,297.7143)">
+                <rect clip-path="url(#7135f5ce-ca1d-4f5e-b2e0-5acf23ed1787)" height="40" rx="15"
+                    ry="15" stroke="none" width="167" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,297.7143)">
+                <rect clip-path="url(#7135f5ce-ca1d-4f5e-b2e0-5acf23ed1787)" fill="none" height="40"
+                    rx="15" ry="15" width="167" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(234.2857,297.7143)">
+            <text clip-path="url(#031a9115-a5a0-4269-90c9-aaf78f66d712)" stroke="none" x="6"
+                xml:space="preserve" y="17">Download artifact from build job</text>
+            <text clip-path="url(#031a9115-a5a0-4269-90c9-aaf78f66d712)" stroke="none" x="7"
+                xml:space="preserve" y="32">(actions/download-artifact@v4)</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Login to Azure (azure/login@v2)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-aOYn0tmGAqAAPw9g"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,357.7143)">
+                <rect clip-path="url(#4a9cb159-db50-41cd-8b69-ec9cc529bf5d)" height="40" rx="15"
+                    ry="15" stroke="none" width="167" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,357.7143)">
+                <rect clip-path="url(#4a9cb159-db50-41cd-8b69-ec9cc529bf5d)" fill="none" height="40"
+                    rx="15" ry="15" width="167" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(234.2857,357.7143)">
+            <text clip-path="url(#23c9071e-e4b5-4c20-979e-df25d88a698b)" stroke="none" x="47"
+                xml:space="preserve" y="17">Login to Azure</text>
+            <text clip-path="url(#23c9071e-e4b5-4c20-979e-df25d88a698b)" stroke="none" x="41"
+                xml:space="preserve" y="32">(azure/login@v2)</text>
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;Deploy to Azure Web App (azure/webapps-deploy@v3)&quot;,&quot;modelType&quot;:&quot;ActivityAction&quot;}"
+            hyper="" model-id="shape-p4in0tmGAqAAPw.g"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="rgb(122,207,245)" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,417.7143)">
+                <rect clip-path="url(#b7c42653-9cf4-45b7-94ac-08f1e1d127ea)" height="40" rx="15"
+                    ry="15" stroke="none" width="167" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-miterlimit="0" stroke-opacity="1"
+                text-rendering="geometricPrecision" transform="translate(234.2857,417.7143)">
+                <rect clip-path="url(#b7c42653-9cf4-45b7-94ac-08f1e1d127ea)" fill="none" height="40"
+                    rx="15" ry="15" width="167" x="0" y="0" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(234.2857,417.7143)">
+            <text clip-path="url(#e16fe744-f402-446e-8c93-ec52714721d9)" stroke="none" x="20"
+                xml:space="preserve" y="17">Deploy to Azure Web App</text>
+            <text clip-path="url(#e16fe744-f402-446e-8c93-ec52714721d9)" stroke="none" x="13"
+                xml:space="preserve" y="32">(azure/webapps-deploy@v3)</text>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-axub0tmGAqAAPwzz" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(73.2857,73.7143)">
+                <line clip-path="url(#6e95adde-760f-4a55-acd2-5ce79536ae2d)" fill="none" x1="36"
+                    x2="36" y1="36" y2="51" />
+                <line clip-path="url(#6e95adde-760f-4a55-acd2-5ce79536ae2d)" fill="none" x1="36"
+                    x2="42" y1="51" y2="39" />
+                <line clip-path="url(#6e95adde-760f-4a55-acd2-5ce79536ae2d)" fill="none" x1="36"
+                    x2="30" y1="51" y2="39" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-KLjb0tmGAqAAPw0u" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(73.2857,130.7143)">
+                <line clip-path="url(#55cf1ca4-af58-4678-aa94-29ee11a57e71)" fill="none" x1="36"
+                    x2="36" y1="36" y2="51" />
+                <line clip-path="url(#55cf1ca4-af58-4678-aa94-29ee11a57e71)" fill="none" x1="36"
+                    x2="42" y1="51" y2="39" />
+                <line clip-path="url(#55cf1ca4-af58-4678-aa94-29ee11a57e71)" fill="none" x1="36"
+                    x2="30" y1="51" y2="39" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-t4K70tmGAqAAPw2O" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(73.2857,188.7143)">
+                <line clip-path="url(#ccacfe6d-d062-4f1f-b648-e3070c7707c9)" fill="none" x1="36"
+                    x2="36" y1="36" y2="51" />
+                <line clip-path="url(#ccacfe6d-d062-4f1f-b648-e3070c7707c9)" fill="none" x1="36"
+                    x2="42" y1="51" y2="39" />
+                <line clip-path="url(#ccacfe6d-d062-4f1f-b648-e3070c7707c9)" fill="none" x1="36"
+                    x2="30" y1="51" y2="39" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-Sth70tmGAqAAPw3G" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(72.2857,244.7143)">
+                <line clip-path="url(#11240eb5-7d18-48f2-9eac-23539de86d7b)" fill="none" x1="36"
+                    x2="36" y1="36" y2="52" />
+                <line clip-path="url(#11240eb5-7d18-48f2-9eac-23539de86d7b)" fill="none" x1="36"
+                    x2="42" y1="52" y2="40" />
+                <line clip-path="url(#11240eb5-7d18-48f2-9eac-23539de86d7b)" fill="none" x1="36"
+                    x2="30" y1="52" y2="40" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-FOYn0tmGAqAAPw9l" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(282.2857,301.7143)">
+                <line clip-path="url(#259e47a6-618c-4c20-a6b1-5207fe5fa63c)" fill="none" x1="36"
+                    x2="36" y1="36" y2="55" />
+                <line clip-path="url(#259e47a6-618c-4c20-a6b1-5207fe5fa63c)" fill="none" x1="36"
+                    x2="42" y1="55" y2="43" />
+                <line clip-path="url(#259e47a6-618c-4c20-a6b1-5207fe5fa63c)" fill="none" x1="36"
+                    x2="30" y1="55" y2="43" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-gEin0tmGAqAAPw.l" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(282.2857,361.7143)">
+                <line clip-path="url(#d949d9a0-bf1b-4ea7-8abb-48f0ebdfb776)" fill="none" x1="36"
+                    x2="36" y1="36" y2="55" />
+                <line clip-path="url(#d949d9a0-bf1b-4ea7-8abb-48f0ebdfb776)" fill="none" x1="36"
+                    x2="42" y1="55" y2="43" />
+                <line clip-path="url(#d949d9a0-bf1b-4ea7-8abb-48f0ebdfb776)" fill="none" x1="36"
+                    x2="30" y1="55" y2="43" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-EHGn0tmGAqAAPw_Y" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(282.2857,421.7143)">
+                <line clip-path="url(#a5a1c1a0-a68e-4f33-87e0-dacc40d5b838)" fill="none" x1="36"
+                    x2="36" y1="36" y2="56" />
+                <line clip-path="url(#a5a1c1a0-a68e-4f33-87e0-dacc40d5b838)" fill="none" x1="36"
+                    x2="42" y1="56" y2="44" />
+                <line clip-path="url(#a5a1c1a0-a68e-4f33-87e0-dacc40d5b838)" fill="none" x1="36"
+                    x2="30" y1="56" y2="44" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-Lc8v0tmGAqAAPxKG" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(147.2857,281.7143)">
+                <line clip-path="url(#8284b31d-e01c-46fc-9df9-b6e796f492ce)" fill="none" x1="36"
+                    x2="86" y1="36" y2="36" />
+                <line clip-path="url(#8284b31d-e01c-46fc-9df9-b6e796f492ce)" fill="none" x1="86"
+                    x2="74" y1="36" y2="30" />
+                <line clip-path="url(#8284b31d-e01c-46fc-9df9-b6e796f492ce)" fill="none" x1="86"
+                    x2="74" y1="36" y2="42" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;ControlFlow&quot;}" hyper=""
+            model-id="connector-9fTf0tmGAqAAPxKw" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(73.2857,15.7143)">
+                <line clip-path="url(#ed012efc-9fc2-4fc8-9060-2837682668ee)" fill="none" x1="36"
+                    x2="36" y1="36" y2="54" />
+                <line clip-path="url(#ed012efc-9fc2-4fc8-9060-2837682668ee)" fill="none" x1="36"
+                    x2="42" y1="54" y2="42" />
+                <line clip-path="url(#ed012efc-9fc2-4fc8-9060-2837682668ee)" fill="none" x1="36"
+                    x2="30" y1="54" y2="42" />
+            </g>
+        </g>
+    </g>
+</svg>

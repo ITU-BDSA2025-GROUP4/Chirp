@@ -42,7 +42,7 @@ layer.
 ![bg right:50% 100%](./images/onion.svg)
 
 ## Architecture of deployed application
-The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
+The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated SQLite database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
 
 ![Deployment Diagram](./images/deployment-diagram.svg)
 
@@ -53,6 +53,18 @@ The diagram below shows the deployment architecture of the application. The appl
 # Process
 
 ## Build, test, release, and deployment
+The application is built, tested, released, and deployed automatically using GitHub Actions workflows. These workflows are illustrated below in the UML activity diagrams. Please also note that if any step of a workflow fails during execution, the entire workflow is aborted. This is not illustrated in the diagrams, as it creates too much clutter.
+
+The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process:
+
+![Build-Test Diagram](./images/build-test.svg)
+
+Commits tagged using the `x.y.z` format, trigger the release workflow. This workflow automatically tests the application on each major platform using the previous workflow. If all the tests succeed, releases are created for Windows, Linux, and MacOS:
+
+![Build-Release Diagram](./images/build-release-activity-diagram.svg) 
+
+The application is deployed to an Azure App Service when commits are pushed to the main branch:
+![Build-Deploy Diagram](./images/deploy-activity-diagram.svg) 
 
 ## Team work
 **DO NOT FORGET! SHOW A SCREENSHOT OF PROJECT BOARD RIGHT BEFORE HAND-IN AND BRIEFLY DESCRIBE WHICH TASKS ARE STILL UNRESOLVED, I.E. WHICH FEATURES ARE MISSING OR WHICH FUNCTIONALITY IS INCOMPLETE**
