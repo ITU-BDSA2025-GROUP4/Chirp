@@ -79,7 +79,6 @@ The _Chirp!_ application has the following dependencies that must be installed f
 - `dotnet-runtime-8.0`
 - `dotnet-sdk-8.0`
 - `aspnet-runtime-8.0`
-- `sqlite3`
 
 ### Cloning the Repository
 To run the application locally, first clone the repository.
