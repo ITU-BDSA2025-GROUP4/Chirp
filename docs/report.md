@@ -89,9 +89,7 @@ git clone https://github.com/ITU-BDSA2025-GROUP4/Chirp.git
 ```
 
 ### Database Migrations
-After cloning the repository, ensure that the database migrations are up to date.
-
-From the repository root, run the migration helper script. Use any migration name that does **not** already exist in `src/Chirp.Infrastructure/Migrations`.
+After cloning the repository, ensure that the database migrations are up to date. From the repository root, run the migration helper script. Use any migration name that does **not** already exist in `src/Chirp.Infrastructure/Migrations`.
 ```
 ./scripts/migration.sh <MIGRATION_NAME>
 ```
