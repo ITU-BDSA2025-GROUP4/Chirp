@@ -29,7 +29,7 @@ The diagram below shows the deployment architecture of the application. The appl
 # Process
 
 ## Build, test, release, and deployment
-The application is built, tested, released, and deployed automatically using GitHub Actions workflows. These workflows are illustrated below in the UML activity diagrams. Please note that if any step in a workflow fails, the entire process is immediately aborted.
+The application is built, tested, released, and deployed automatically using GitHub Actions workflows. These workflows are illustrated below in the UML activity diagrams. Please also note that if any step of a workflow fails during execution, the entire workflow is aborted. This is not illustrated in the diagrams, as it creates too much clutter.
 
 The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process:
 
