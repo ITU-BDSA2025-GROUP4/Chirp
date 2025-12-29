@@ -25,21 +25,15 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 
 ![bg right:50% 100%](./images/domain-model.svg)
 
-## Architecture - in the small
+## Architecture - in the small (WIP)
+The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
-This project makes use of the Onion architecture, which splits the project into
-different layers. For this particular project, there are three layers in total.
+![bg right:50% 100%](./images/onion.png)\
+*The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one combined layer, and finally the UI layer.*
 
-The **Chirp.Core** layer, which consists primarily of the domain model alongside
-interfaces that should be implemented in a higher layer. The **Chirp.Infrastructure**
-layer which is built upon the core. The infrastructure layer implements the
-aforementioned interfaces, it introduces features of the app through loosely
-coupled services and repositories. The final layer is the **Chirp.Web** layer, which is
-built upon the infrastructure layer. This layer implements the web front end
-and UI logic which makes use of the services implemented in the infrastructure
-layer.
+The distinction between the repository and service layers is not strictly enforced, resulting in some overlap of responsibilities. Since the repository and service layers overlap in responsibilities, they can be considered as a single combined layer, resulting in a three-layered diagram as seen above. Nonetheless, the architecture still adheres to the onion architecture in the sense that all dependencies point inwards.
 
-![bg right:50% 100%](./images/onion.svg)
+As shown in the diagram above, `Chirp.Core` comprises the domain model, data transfer objects, domain interfaces, and other domain-specific objects. `Chirp.Infrastructure` contains the implementations of the domain interfaces in the form of loosely coupled services and repositories. It also contains the data model and database context. `Chirp.Web` contains the actual web application (the Razor Page application), which includes the web frontend and UI logic that utilizes the services implemented in `Chirp.Infrastructure`.
 
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated SQLite database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
