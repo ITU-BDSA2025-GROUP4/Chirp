@@ -29,7 +29,7 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
 ![bg right:50% 100%](./images/onion.png)\
-*The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one, and finally the UI layer.*
+*The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one combined layer, and finally the UI layer.*
 
 The distinction between the repository and service layers is not strictly enforced, resulting in some overlap of responsibilities. Since the repository and service layers overlap in responsibilities, they can be considered as a single combined layer, resulting in a three-layered diagram as seen above. Nonetheless, the architecture still adheres to the onion architecture in the sense that all dependencies point inwards.
 
