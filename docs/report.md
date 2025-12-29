@@ -25,7 +25,7 @@ class. The **Cheep** class represents messages an **Author** can make. Finally,
 
 ![bg right:50% 100%](./images/domain-model.svg)
 
-## Architecture - in the small (WIP)
+## Architecture - in the small
 The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
 ![bg right:50% 100%](./images/onion.png)\
