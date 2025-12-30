@@ -1,4 +1,3 @@
-//todo: is there a cleaner way to do DI?
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Data;
@@ -44,6 +43,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     });
 
 
+// Github OAuth should be configured using .NET user secrets
 if (string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTID"]) ||
     string.IsNullOrWhiteSpace(builder.Configuration["AUTHGITHUBCLIENTSECRET"])
 )

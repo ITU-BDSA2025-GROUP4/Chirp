@@ -34,8 +34,8 @@ public class AuthorService : IAuthorService
         _configuration = configuration;
     }
 
-    //todo: should prob fix this / make it better
-    // i use to generate a unique username if the username of the user when logging in with oauth is already in use
+    // TODO: This is not an ideal solution
+    // Used to generate a unique username if the username of the user when logging in with OAuth is already in use
     public async Task<String> GenerateUniqueUsername(string baseUsername)
     {
         string username;
@@ -149,6 +149,7 @@ public class AuthorService : IAuthorService
         await _signInManager.SignInAsync(user, isPersistent: false);
         return ExternalLoginStatus.Success;
     }
+
     // this is unused at the moment
     // my plan is to allow users to link accounts to extenral stuff in their account settings
     // why? because it would be nice if a user could login in traditionally or thru github :)
@@ -288,6 +289,7 @@ public class AuthorService : IAuthorService
         return;
     }
 
+    // UNUSED
     public async Task<IdentityResult> ConfirmEmailAsync(Guid userId, string token)
     {
         if (userId == Guid.Empty || string.IsNullOrEmpty(token))
@@ -320,6 +322,7 @@ public class AuthorService : IAuthorService
         return result;
     }
 
+    // UNUSED
     public async Task SendEmailConfirmationAsync(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -350,6 +353,7 @@ public class AuthorService : IAuthorService
         );
     }
 
+    // UNUSED
     private async Task<String> GenerateEmailConfirmationTokenAsync(Author user)
     {
         ArgumentNullException.ThrowIfNull(user);
