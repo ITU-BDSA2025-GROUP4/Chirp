@@ -43,9 +43,6 @@ jobs:
           - kind: macOS
             os: macos-latest
             target: osx-x64
-          - kind: macOS-arm
-            os: macosarm-latest
-            target: osx-arm64
     runs-on: ${{ matrix.os }}
 
     permissions: write-all
