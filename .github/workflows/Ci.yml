@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    uses: ITU-BDSA2025-GROUP4/Chirp/blob/main/.github/workflows/dotnet-actions.yml@main
+    uses: ITU-BDSA2025-GROUP4/Chirp/.github/workflows/dotnet-actions.yml@main
     
   prep-release:
     name: Prepare GitHub Release
