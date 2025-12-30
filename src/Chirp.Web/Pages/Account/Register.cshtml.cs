@@ -24,6 +24,13 @@ public class RegisterPageModel : PageModel
 
         var (success, msg) = task.Result;
 
+        // User registration might fail if the email or username is already in
+        // use. It can also fail that if the password and confirm password
+        // don't match.
+        //
+        // In case of failure, we want to keep the fields populated so that the
+        // user doesn't have to refill everything and only change the parts
+        // that are problematic. 
         if(!success)
         {
             TempData["message"] = msg;

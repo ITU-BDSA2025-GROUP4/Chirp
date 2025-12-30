@@ -49,9 +49,12 @@ public class PublicModel : PageModel
         _followService = followService;
     }
 
+    // HTTP get handler for public and private(author) timelines
     public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
     {
+        // Ensure page is always >= 1
         page = page > 1 ? page : 1;
+        // Value is rendered on UI to display the current page number
         TempData["currentPage"] = page;
 
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
@@ -62,10 +65,12 @@ public class PublicModel : PageModel
             FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
         }
 
+        // If author is an empty string, then the user has requested the public timeline rather than a author-specific timeline
         if (author == "")
             Cheeps = await _service.GetCheeps(page, _pageSize);
         else
         {
+            // Used to display the name of the author whose timeline is being shown
             TempData["timeline"] = author;
 
             if (currentAuthor != null && currentAuthor.Name == author)
@@ -84,10 +89,12 @@ public class PublicModel : PageModel
         }
     }
 
+    // Triggered when logged-in user clicks the follow button
     public async Task<IActionResult> OnPostFollow(string author, string returnUrl = "/")
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
 
+        // If the user isn't logged in, then simply ignore request
         if (!currentAuthor.HasValue)
         {
             return Redirect(returnUrl);
@@ -106,6 +113,7 @@ public class PublicModel : PageModel
         return Redirect(returnUrl);
     }
 
+    // Triggered when logged-in user clicks the un-follow button
     public async Task<IActionResult> OnPostUnfollow(string author, string returnUrl = "/")
     {
         var currentAuthor = await _authorService.GetLoggedInAuthor(User);
@@ -131,6 +139,8 @@ public class PublicModel : PageModel
     // For an unknown reason, returning Page() causes this.Cheeps to be null,
     // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
     // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
+    //
+    // Called when user submits cheep
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form, string returnUrl = "/")
     {
         if (!ModelState.IsValid)
@@ -148,6 +158,8 @@ public class PublicModel : PageModel
 
         name = tmp.Result.Value().Name;
 
+        // This should in theory never occur, since we previously established
+        // that hte user is already logged in; thus their account must exist
         var authorOpt = await _authorService.FindByNameAsync(name);
         if (!authorOpt.HasValue)
         {
@@ -172,6 +184,7 @@ public class PublicModel : PageModel
         return Redirect(returnUrl);
     }
 
+    // Called when user writes reply to cheep
     public async Task<IActionResult> OnPostReply(string ReplyText, int CheepId, string Author, string returnUrl = "/")
     {
         Optional<AuthorDTO> currentUserMaybe = await _authorService.GetLoggedInAuthor(User);
@@ -190,6 +203,7 @@ public class PublicModel : PageModel
         return Redirect(returnUrl);
     }
 
+    // Pagination handler
     public IActionResult OnPostPageHandle(string Page, string Author)
     {
         int page = 1;
