@@ -104,7 +104,7 @@ These secrets can naturally not be shared without exposing them to the entirety 
 
 ## How to run test suite locally
 ### Prerequisites
-Some of the test suite uses Playwright, so ensure it is installed.
+Some parts of the test suite rely on Playwright. Please ensure that Playwright is installed before running the tests.
 
 ### Running the tests
 Assuming you have local copy of the application repository, the simplest way to run the test suite is to run the helper script from the repository root:
