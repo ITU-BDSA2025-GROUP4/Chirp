@@ -1,0 +1,8 @@
+﻿@model (int CheepId, string ReturnUrl)
+
+    <form asp-page="/Public" asp-page-handler="Reply" method="post">
+    <input type="text" name="ReplyText" class="ReplyInputField" />
+    <input type="hidden" name="CheepId" value="@Model.CheepId" />
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+    <input type="submit" value="Reply" class="ReplySubmitButton" />
+    </form>
