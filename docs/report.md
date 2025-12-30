@@ -67,7 +67,7 @@ Our group follows a simple and structured development workflow from issue creati
 ![Team Work](./images/team-work.svg)
 
 ## How to make _Chirp!_ work locally
-### Dependencies
+### Prerequisites
 The _Chirp!_ application has the following dependencies that must be installed for the application to run:
 - `dotnet-runtime-8.0`
 - `dotnet-sdk-8.0`
@@ -103,20 +103,22 @@ dotnet user-secrets set "AUTHGITHUBCLIENTSECRET" "client-secret"
 These secrets can naturally not be shared without exposing them to the entirety of GitHub, so to test out the functionality please visit the deployed web app on [https://bdsagroup4chirprazor.azurewebsites.net/](https://bdsagroup4chirprazor.azurewebsites.net/).
 
 ## How to run test suite locally
-The simplest way to run all unit tests is to simply execute the helper script
-`scripts/run_all_tests.sh` like so.
+### Prerequisites
+Some of the test suite uses Playwright, so ensure it is installed.
 
+### Running the tests
+Assuming you have local copy of the application repository, the simplest way to run the test suite is to run the helper script from the repository root:
 ```
 ./scripts/run_all_tests.sh
 ```
 
-Alternatively, tests can be run individually by navigating to the appropriate
-unit test directory inside the `test` directory and running the .NET test
-command.
-
+You can also run tests individually by navigating to the relevant subdirectory within the test directory and running the .NET test command:
 ```
 dotnet test
 ```
+
+### Description of the test suite
+The test suite consists of unit tests and integration tests, which are found within `./test/Chirp.Core` and `test/Chirp.Infrastructure`. These tests ensure the correctness of core application logic and its interaction with infrastructure components. Additionally, the test suite contains end-to-end tests and UI tests, which are located in `test/Chirp.Web` and `test/Chirp.Web.PlayWrightTests`. These tests verify that the application functions correctly from a user's perspective.
 
 # Ethics
 ## License
