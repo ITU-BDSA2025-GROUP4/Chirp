@@ -13,15 +13,7 @@ numbersections: true
 # Design and Architecture of _Chirp!_
 
 ## Domain model
-
-The domain model consists of 4 concrete classes and an abstract class which
-stems from the .NET Identity library.
-
-
-Users on the *Chirp!* platform are represented with the **Author** class. A
-follow relationship between two users is represented using the **Follow**
-class. The **Cheep** class represents messages an **Author** can make. Finally,
-**Reply** is the class used for representing replies to messages.
+The domain model comprises four concrete classes and one abstract base class derived from the ASP.NET Core Identity library. On the *Chirp!* platform, users are represented by the `Author` class. Relationships where one `Author` follows another are represented by the `Follow` class. The `Cheep` class represents messages that an `Author` can make, while responses to those messages are modeled by the `Reply` class.
 
 ![bg right:50% 100%](./images/domain-model.svg)
 
