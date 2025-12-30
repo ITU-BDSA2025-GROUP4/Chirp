@@ -41,6 +41,13 @@ The diagram below shows the deployment architecture of the application. The appl
 ![Deployment Diagram](./images/deployment-diagram.svg)
 
 ## User activities
+For any Chirp! user, the entry point to the application is the root page, which displays the public timeline. This timeline shows all posted Cheeps sorted in order of the most recent cheeps first. Unauthorized users can browse the public timeline and view individual authors' timelines, but they are not able to interact with cheeps or authors in any way. To gain access to the rest of the features, users must authenticate by registering and/or logging in, as illustrated in the diagram below:
+
+![Use case diagram](./images/user-activities-unauthorized.svg)
+
+An authorized user is able to post cheeps, reply to cheeps and follow other authors. They are also able to view their own private timeline. The private timeline contains the users own cheeps, and cheeps from authors they have followed. Authorized users are also able to access their account settings, which allows them to change their password (if they are not signed up with OAuth) and deleting their account.
+
+![Authorized diagram](./images/user-activities-authorized.svg)
 
 ## Sequence of functionality/calls trough _Chirp!_
 
