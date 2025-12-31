@@ -20,7 +20,7 @@ The domain model comprises four concrete classes and one abstract base class der
 ## Architecture - in the small
 The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
-![bg right:50% 100%](./images/onion.png)\
+![Architecture of the application](./images/onion.png)\
 *The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one combined layer, and finally the UI layer.*
 
 The distinction between the repository and service layers is not strictly enforced, resulting in some overlap of responsibilities. Since the repository and service layers overlap in responsibilities, they can be considered as a single combined layer, resulting in a three-layered diagram as seen above. Nonetheless, the architecture still adheres to the onion architecture in the sense that all dependencies point inwards.
@@ -63,8 +63,14 @@ The application is deployed to an Azure App Service when commits are pushed to t
 ![Build-Deploy Diagram](./images/deploy-activity-diagram.svg) 
 
 ## Team work
-**DO NOT FORGET! SHOW A SCREENSHOT OF PROJECT BOARD RIGHT BEFORE HAND-IN AND BRIEFLY DESCRIBE WHICH TASKS ARE STILL UNRESOLVED, I.E. WHICH FEATURES ARE MISSING OR WHICH FUNCTIONALITY IS INCOMPLETE**
+### Project board
+The image below shows the GitHub project board used to make the status of development visible and transparent during this project:
 
+![Project Board](./images/project-board.png)
+
+As shown on the project board, most of the issues have been completed. The remaining issues concern the implementation of additional custom features that were identified as nice-to-haves during development but were not implemented.
+
+### Development process
 Our group follows a simple and structured development workflow from issue creation to feature integration. When a new issue (something that needs to be worked on) is identified, it is documented as an issue on GitHub in the format of a user story. The issue includes a clear task description, suitable acceptance criteria, and relevant labels. The issue is then assigned to one or more group members. The assigned developers then implement the required functionality and test it to verify that it meets the acceptance criteria. Once the work is completed, a pull request is opened against the main branch. Before the pull request is merged, it is automatically reviewed by CodeFactor and at least one team member. If the reviewer(s) approve the changes, the pull request is merged into the main branch. If any issues are identified during code review, the developers revise their implementation and repeat the testing and review process until it is approved. The flow can be seen in the activity diagram below:
 
 ![Team Work](./images/team-work.svg)
