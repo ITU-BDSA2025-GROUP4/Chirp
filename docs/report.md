@@ -42,6 +42,9 @@ An authorized user is able to post cheeps, reply to cheeps and follow other auth
 ![Authorized diagram](./images/user-activities-authorized.svg)
 
 ## Sequence of functionality/calls trough _Chirp!_
+The diagram shows the request flow for the public Razor Page in ASP.NET Core. A user initiates a ``GET /`` request, which is routed through the ASP.NET Core middleware pipeline and dispatched to ``PublicModel.OnGetAsync()``. The page model retrieves data by calling the application service, which in turn queries the repository backed by the database. The resulting data is returned to the page model, the Razor view ``Public.cshtml ``is rendered, and the generated HTML is sent back to the user as a ``200 OK`` response.
+
+![Sequence diagram](./images/sequence-diagram.svg)
 
 # Process
 
