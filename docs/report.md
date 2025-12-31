@@ -65,7 +65,7 @@ The image below shows the GitHub project board used to make the status of develo
 
 ![Project Board](./images/project-board.png)
 
-As shown on the project board, no mandatory features/functionalities are missing or incomplete. One of the issues references an inconsistency in the error message displayed when a user enters an invalid email during registration, while the remaining issues concern additional custom features desired by the team. 
+As shown on the project board, most of the issues have been completed. The remaining issues concern the implementation of additional custom features that were identified as nice-to-haves during development but were not implemented.
 
 ### Development process
 Our group follows a simple and structured development workflow from issue creation to feature integration. When a new issue (something that needs to be worked on) is identified, it is documented as an issue on GitHub in the format of a user story. The issue includes a clear task description, suitable acceptance criteria, and relevant labels. The issue is then assigned to one or more group members. The assigned developers then implement the required functionality and test it to verify that it meets the acceptance criteria. Once the work is completed, a pull request is opened against the main branch. Before the pull request is merged, it is automatically reviewed by CodeFactor and at least one team member. If the reviewer(s) approve the changes, the pull request is merged into the main branch. If any issues are identified during code review, the developers revise their implementation and repeat the testing and review process until it is approved. The flow can be seen in the activity diagram below:
