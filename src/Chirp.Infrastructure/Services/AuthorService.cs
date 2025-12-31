@@ -194,8 +194,16 @@ public class AuthorService : IAuthorService
 
         IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-        if (!result.Succeeded)
-            return (false, "Password is too weak");
+        if(result.Succeeded) {
+            return (true, null);
+        }
+
+        string errorMessage = 
+            String.Join('\n', 
+                result.Errors.Select(err => err.Description)
+        );
+
+        return (false, errorMessage);
 
         // If email confirmation is setup, we can re-enable this
         //        var token = await GenerateEmailConfirmationTokenAsync(user);
@@ -210,8 +218,6 @@ public class AuthorService : IAuthorService
         //            user.UserName,
         //            confirmationLink
         //        );
-
-        return (true, null);
     }
 
     public async Task<bool> DeleteAuthorAsync(AuthorDTO author) {
