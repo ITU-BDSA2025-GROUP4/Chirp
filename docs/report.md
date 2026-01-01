@@ -15,13 +15,14 @@ numbersections: true
 ## Domain model
 The domain model comprises four concrete classes and one abstract base class derived from the ASP.NET Identity library. On the *Chirp!* platform, users are represented by the `Author` class. `Author` inherits from `IdentityUser`, which is part of the ASP.NET Identity library. Relationships where one `Author` follows another are represented by the `Follow` class. The `Cheep` class represents messages that an `Author` can make, while responses to those messages are modeled by the `Reply` class.
 
-![bg right:50% 100%](./images/domain-model.svg)
+![bg right:50% 100%](./images/domain-model.svg)\
+*Illustration of the applications domain model*
 
 ## Architecture - in the small
 The project utilizes the onion architecture, and the codebase is organized accordingly. The organization of the code base can be seen in the diagram below:
 
 ![Architecture of the application](./images/onion.png)\
-*The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one combined layer, and finally the UI layer.*
+*Illustration of architecture and organization of the codebase. The innermost layer is the Domain layer, followed by the Repository layer and Services layer as one combined layer, and finally the UI layer*
 
 The distinction between the repository and service layers is not strictly enforced, resulting in some overlap of responsibilities. Since the repository and service layers overlap in responsibilities, they can be considered as a single combined layer, resulting in a three-layered diagram as seen above. Nonetheless, the architecture still adheres to the onion architecture in the sense that all dependencies point inwards.
 
@@ -30,21 +31,25 @@ As shown in the diagram above, `Chirp.Core` comprises the domain model, data tra
 ## Architecture of deployed application
 The diagram below shows the deployment architecture of the application. The application follows a client-server architecture. The server component is a monolith deployed on Microsoft Azure. The server processes incoming requests, interacts with its integrated SQLite database, and sends back responses. The web browser component on the user's device acts as the client and is capable of exchanging requests and responses with the server over HTTPS, and rendering the received data to the user.
 
-![Deployment Diagram](./images/deployment-diagram.svg)
+![Deployment Diagram](./images/deployment-diagram.svg)\
+*Illustration of the architecture of the deployed application*
 
 ## User activities
 For any Chirp! user, the entry point to the application is the root page, which displays the public timeline. This timeline shows all posted Cheeps sorted in order of the most recent cheeps first. Unauthorized users can browse the public timeline and view individual authors' timelines, but they are not able to interact with cheeps or authors in any way. To gain access to the rest of the features, users must authenticate by registering and/or logging in, as illustrated in the diagram below:
 
-![Use case diagram](./images/user-activities-unauthorized.svg)
+![Use case diagram](./images/user-activities-unauthorized.svg)\
+*Illustration of a typical unauthorized user's journey through the application before and during authentication*
 
 An authorized user is able to post cheeps, reply to cheeps and follow other authors. They are also able to view their own private timeline. The private timeline contains the users own cheeps, and cheeps from authors they have followed. Authorized users are also able to access their account settings, which allows them to change their password (if they are not signed up with OAuth) and deleting their account.
 
-![Authorized diagram](./images/user-activities-authorized.svg)
+![Authorized diagram](./images/user-activities-authorized.svg)\
+*Illustration of a typical authorized user's journey through the Chirp! application*
 
 ## Sequence of functionality/calls trough _Chirp!_
 The diagram shows the request flow for the public Razor Page in ASP.NET Core. A user initiates a ``GET /`` request, which is routed through the ASP.NET Core middleware pipeline and dispatched to ``PublicModel.OnGetAsync()``. The page model retrieves data by calling the application service, which in turn queries the repository backed by the database. The resulting data is returned to the page model, the Razor view ``Public.cshtml ``is rendered, and the generated HTML is sent back to the user as a ``200 OK`` response.
 
-![Sequence diagram](./images/sequence-diagram.svg)
+![Sequence diagram](./images/sequence-diagram.svg)\
+*Sequence diagram of the flow of messages and data through the Chirp! application from an unauthorized user's perspective*
 
 # Process
 
@@ -53,27 +58,32 @@ The application is built, tested, released, and deployed automatically using Git
 
 The application is continuously built and tested whenever commits are pushed to branches or when pull requests attempt to merge into the main branch. This ensures that changes are constantly validated and bugs are caught early in the development process:
 
-![Build-Test Diagram](./images/build-test.svg)
+![Build-Test Diagram](./images/build-test.svg)\
+*Activity diagram over the build and testing workflow*
 
 Commits tagged using the `x.y.z` format, trigger the release workflow. This workflow automatically tests the application on each major platform using the previous workflow. If all the tests succeed, releases are created for Windows, Linux, and MacOS:
 
-![Build-Release Diagram](./images/build-release-activity-diagram.svg) 
+![Build-Release Diagram](./images/build-release-activity-diagram.svg)\
+*Activity diagram over the release workflow*
 
 The application is deployed to an Azure App Service when commits are pushed to the main branch:
-![Build-Deploy Diagram](./images/deploy-activity-diagram.svg) 
+![Build-Deploy Diagram](./images/deploy-activity-diagram.svg)\
+*Activity diagram over the deployment of the application to Microsoft Azure*
 
 ## Team work
 ### Project board
 The image below shows the GitHub project board used to make the status of development visible and transparent during this project:
 
-![Project Board](./images/project-board.png)
+![Project Board](./images/project-board.png)\
+*Screenshot of the GitHub project board*
 
 As shown on the project board, most of the issues have been completed. The remaining issues concern the implementation of additional custom features that were identified as nice-to-haves during development but were not implemented.
 
 ### Development process
 Our group follows a simple and structured development workflow from issue creation to feature integration. When a new issue (something that needs to be worked on) is identified, it is documented as an issue on GitHub in the format of a user story. The issue includes a clear task description, suitable acceptance criteria, and relevant labels. The issue is then assigned to one or more group members. The assigned developers then implement the required functionality and test it to verify that it meets the acceptance criteria. Once the work is completed, a pull request is opened against the main branch. Before the pull request is merged, it is automatically reviewed by CodeFactor and at least one team member. If the reviewer(s) approve the changes, the pull request is merged into the main branch. If any issues are identified during code review, the developers revise their implementation and repeat the testing and review process until it is approved. The flow can be seen in the activity diagram below:
 
-![Team Work](./images/team-work.svg)
+![Team Work](./images/team-work.svg)\
+*Illustration of the flow of activities that happen from the creation of an issue (task description) until a feature is finally merged into the main branch*
 
 ## How to make _Chirp!_ work locally
 ### Prerequisites
