@@ -3,7 +3,6 @@ namespace Chirp.Core.Utils;
 using System.Globalization;
 
 public static class TimestampUtils {
-
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
