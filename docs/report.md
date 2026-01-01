@@ -1,6 +1,8 @@
 ---
 title: _Chirp!_ Project Report
-subtitle: ITU BDSA 2025 Group 4\**Course code:** BSANDSA1KU
+subtitle: |
+  ITU BDSA 2025 Group 4
+  Course code:** BSANDSA1KU
 author:
   - "Adam Yaser Sweilem  <adsw@itu.dk>"
   - "Ask Filip Christensen <asfc@itu.dk>"
@@ -8,7 +10,6 @@ author:
   - "Morgan Møller Torp <moto@itu.dk>"
   - "Vitus Ammitzbøll Brodersen <vitb@itu.dk>"
 numbersections: true
-geometry: margin=1in
 ---
 
 # Design and Architecture of _Chirp!_
