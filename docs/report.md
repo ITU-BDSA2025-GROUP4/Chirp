@@ -158,7 +158,7 @@ dotnet test
 
 ### Description of the test suite
 
-The test suite consists of unit tests and integration tests, which are found within `test/Chirp.Core.Tests` and `test/Chirp.Infrastructure.Tests`. These tests ensure the correctness of core application logic and its interaction with infrastructure components. Additionally, the test suite contains end-to-end tests and UI tests, which are located in `test/Chirp.Web.Tests` and `test/Chirp.Web.PlayWrightTests.Tests`. These tests verify that the application functions correctly from a user's perspective.
+The test suite consists of unit tests and integration tests, which are found within `test/Chirp.Core.Tests` and `test/Chirp.Infrastructure.Tests`. These tests ensure the correctness of core application logic and its interaction with infrastructure components. Additionally, the test suite contains end-to-end tests and UI tests, which are located in `test/Chirp.Web.Tests` and `test/Chirp.Web.PlayWrightTests`. These tests verify that the application functions correctly from a user's perspective.
 
 # Ethics
 
