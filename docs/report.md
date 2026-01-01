@@ -152,6 +152,9 @@ Assuming you have local copy of the application repository, the simplest way to 
 ./scripts/run_all_tests.sh
 ```
 
+Note that the app should not be running when invoking this script. Otherwise
+the end-to-end unit test will fail to start.
+
 You can also run tests individually by navigating to the relevant subdirectory within the test directory and running the .NET test command:
 
 ```
