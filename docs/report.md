@@ -2,7 +2,7 @@
 title: _Chirp!_ Project Report
 subtitle: |
   ITU BDSA 2025 Group 4
-  Course code:** BSANDSA1KU
+  **Course code:** BSANDSA1KU
 author:
   - "Adam Yaser Sweilem  <adsw@itu.dk>"
   - "Ask Filip Christensen <asfc@itu.dk>"
