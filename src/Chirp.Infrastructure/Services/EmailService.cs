@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chirp.Infrastructure.Services;
 
-//TODO: The content and style of the emails have been copied form https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/
-// someone change them later
+// NOTE: The content and style of the emails have been copied form https://dotnettutorials.net/lesson/register-login-logout-in-asp-net-core-identity/
+//
+// This is unused
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _configuration;

@@ -64,6 +64,7 @@ public class ReplyRepository(ChirpDbContext context) : IReplyRepository
         return AppResult<ReplyDTO>.Created(dtoOut, null);
     }
 
+    // Fetches reply with given ID and returns it as a DTO
     private Task<ReplyDTO> ProjectReplyDtoAsync(int id) =>
         _context.Replies
             .AsNoTracking()

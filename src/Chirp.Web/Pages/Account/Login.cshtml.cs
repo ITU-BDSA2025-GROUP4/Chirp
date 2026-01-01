@@ -22,6 +22,8 @@ public class LoginPageModel : PageModel
     {
         Optional<AuthorDTO> tmp = await _authorService.GetLoggedInAuthor(User);
 
+        // If the user is already logged in, then redirect them away from the
+        // login screen
         if (tmp.HasValue)
         {
             return Redirect("/");
@@ -30,6 +32,7 @@ public class LoginPageModel : PageModel
         return Page();
     }
 
+    // This is used for OAuth
     public IActionResult OnPostExternalLogin(string provider)
     {
         if (!OAuthEnabledStatus.IsOAuthEnabled)

@@ -64,6 +64,7 @@ public class AuthorRepository : IAuthorRepository
             await _context.Authors.Where(a => a.Email == author.Email).ToListAsync();
 
         // TODO - report error
+        // Although this shouldn't happen in theory since there is a unique constraint on Email
         if(result.Count() != 1) {
             return false;
         }
@@ -84,6 +85,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task Write() => await _context.SaveChangesAsync();
 
+    // Used for getting "conrete" instance of an Author, i.e. not a DTO
+    // This is needed for certain EF core operations where the Author object needs to be provided and the DTO cannot be used
     public async Task<Optional<Author>> GetConcreteAuthorAsync(string email)
     {
         var author = await _context.Authors

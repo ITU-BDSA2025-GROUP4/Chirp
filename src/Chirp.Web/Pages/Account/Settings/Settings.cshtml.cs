@@ -29,6 +29,9 @@ public class SettingsPageModel : PageModel
         }
 
         UsingOAuth = await _authorService.UsingOAuth(User);
+
+        // The Razor Page needs this information to display the current user's
+        // info in the settings page
         TempData["username"] = tmp.Value().Name;
         TempData["email"] = tmp.Value().Email;
 
