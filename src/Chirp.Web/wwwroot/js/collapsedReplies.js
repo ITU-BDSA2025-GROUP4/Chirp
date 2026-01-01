@@ -21,17 +21,16 @@ for (var button of buttons) {
 function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
-function reply_input_hide(button) {
+window.reply_input_hide = function(button) {
     let replyInputForm = button.nextElementSibling;
     button.style.display = "block";
     replyInputForm.style.display = "none";
-}
+};
 
-function toggle_reply_input(button) {
-    // Hide other reply input fields first
+window.toggle_reply_input = function(button) {
     let otherReplyButtons = document.getElementsByClassName("displayReplyInputButton");
-    for(var otherButton of otherReplyButtons) {
-        reply_input_hide(otherButton);
+    for (const otherButton of otherReplyButtons) {
+        window.reply_input_hide(otherButton);
     }
 
     let replyInputForm = button.nextElementSibling;
@@ -39,6 +38,5 @@ function toggle_reply_input(button) {
     replyInputForm.style.display = "block";
 
     let replyInputField = replyInputForm.getElementsByClassName("ReplyInputField")[0];
-
     replyInputField.focus();
-}
+};

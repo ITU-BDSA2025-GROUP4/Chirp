@@ -1,4 +1,7 @@
-﻿@model Chirp.Web.Pages.PublicModel
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model Chirp.Web.Pages.PublicModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 
 @{int NumberOfRepliesShown = 3;}    
 
@@ -70,10 +73,9 @@
 
                     @if (User.Identity!.IsAuthenticated)
                     {
-                        <div class="displayReplyInputButton">
+                        <div class="displayReplyInputButton" onclick="toggle_reply_input(this);">
                             <a>Reply</a>
                         </div>
-
                         <div class="replyInputContainer" style="display:none;">
                             <form asp-page-handler="Reply" method="post" style="display:inline;">
                                 <input type="text" name="ReplyText" class="ReplyInputField"/>
