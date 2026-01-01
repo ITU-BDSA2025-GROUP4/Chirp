@@ -23,21 +23,27 @@
 
             <b style="white-space: pre-line" class="warning">@TempData["message"]</b>
 
-            <form method="post">
-                <label for="Username">Username:</label><br>
-                <input type="text" id="Username" name="Username" value="@TempData["username"]"><br>
-                <label for="Email">Email:</label><br>
-                <input type="text" id="Email" name="Email" value="@TempData["email"]"><br>
-                <label for="Password">Password:</label><br>
-                <input type="password" id="Password" name="Password"><br>
-                <label for="ConfirmPassword">Confirm password:</label><br>
-                <input type="password" id="ConfirmPassword" name="ConfirmPassword"><br>
-                <input type="submit" id="RegisterSubmit" value="Register" asp-page-handler="Register"/>
-            </form>
-            <div class="text-center mt-1">
-                <span class="text-secondary small">Already have an account?</span>
-                <a href="/Account/Login" class="ms-1 text-primary text-decoration-none fw-semibold small">Login</a>
-            </div>
+        <form method="post">
+            <label for="Username">Username:</label><br>
+            <input type="text" id="Username" name="Username" size="30" value="@TempData["username"]"><br>
+
+            <label for="Email">Email:</label><br>
+            <input type="text" id="Email" name="Email" size="30" value="@TempData["email"]"><br>
+
+            <label for="Password">Password:</label><br>
+            <input type="password" id="Password" name="Password" size="30"><br>
+
+            <label for="ConfirmPassword">Confirm password:</label><br>
+            <input type="password" id="ConfirmPassword" name="ConfirmPassword" size="30"><br>
+
+            <input type="submit" id="RegisterSubmit" value="Register" asp-page-handler="Register"/>
+        </form>
+
+        <div class="text-center mt-1">
+            <span class="text-secondary small">Already have an account?</span>
+            <a href="/Account/Login" class="ms-1 text-primary text-decoration-none fw-semibold small">Login</a>
+        </div>
+
     </div>
 </div>
 

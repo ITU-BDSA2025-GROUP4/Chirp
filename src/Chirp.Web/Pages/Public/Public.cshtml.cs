@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
 using Chirp.Core.Application.Contracts;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Chirp.Core.Entities;
 using Chirp.Core.Interfaces;
 using Chirp.Core.Utils;
+
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Chirp.Web.Pages;
 
@@ -24,7 +24,8 @@ public class PublicModel : PageModel
     public HashSet<string> FollowedAuthorNames { get; set; } = [];
     public IEnumerable<CheepDTO> Cheeps { get; set; } = [];
     public Dictionary<int, IEnumerable<ReplyDTO>> Replies { get; set; } = [];
-
+    
+    public string ReturnUrl { get; private set; } = string.Empty;
     [BindProperty] public CheepSubmitForm Form { get; set; } = new();
 
     public class CheepSubmitForm : IValidatableObject
@@ -52,7 +53,6 @@ public class PublicModel : PageModel
     public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string author = "")
     {
         page = page > 1 ? page : 1;
-        TempData["currentPage"] = page;
 
         var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
         AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
@@ -62,11 +62,55 @@ public class PublicModel : PageModel
             FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
         }
 
-        if (author == "")
+        await LoadTimelinePageAsync(page, author, currentAuthor, setTempData: true);
+
+        ReturnUrl = HttpContext.Request.GetDisplayUrl();
+    }
+
+    public async Task<IActionResult> OnGetCheepCardsAsync([FromQuery] int page, [FromQuery] string author = "")
+    {
+        page = page > 1 ? page : 1;
+
+        var optionalAuthor = await _authorService.GetLoggedInAuthor(User);
+        AuthorDTO? currentAuthor = optionalAuthor.HasValue ? optionalAuthor.Value() : null;
+
+        if (currentAuthor != null)
+        {
+            FollowedAuthorNames = await _followService.GetFollowedAuthorNames(currentAuthor.Id);
+        }
+
+        await LoadTimelinePageAsync(page, author, currentAuthor, setTempData: false);
+
+        if (!Cheeps.Any())
+        {
+            // Signals the client that there are no more pages.
+            return Content(string.Empty);
+        }
+
+        return new PartialViewResult
+        {
+            ViewName = "Partials/_CheepCard",
+            ViewData = new ViewDataDictionary<PublicModel>(ViewData, this)
+        };
+    }
+
+    private async Task LoadTimelinePageAsync(int page, string author, AuthorDTO? currentAuthor, bool setTempData)
+    {
+        if (setTempData)
+        {
+            TempData["currentPage"] = page;
+        }
+
+        if (string.IsNullOrEmpty(author))
+        {
             Cheeps = await _service.GetCheeps(page, _pageSize);
+        }
         else
         {
-            TempData["timeline"] = author;
+            if (setTempData)
+            {
+                TempData["timeline"] = author;
+            }
 
             if (currentAuthor != null && currentAuthor.Name == author)
             {
@@ -78,7 +122,8 @@ public class PublicModel : PageModel
             }
         }
 
-        foreach(CheepDTO cheep in Cheeps)
+        Replies.Clear();
+        foreach (CheepDTO cheep in Cheeps)
         {
             Replies.Add(cheep.Id, await _replyService.GetReplies(cheep.Id));
         }
@@ -130,7 +175,7 @@ public class PublicModel : PageModel
     // BE AWARE OF BUG!
     // For an unknown reason, returning Page() causes this.Cheeps to be null,
     // which cases the Public.cshtml to throw an exception when it checks for Cheeps.
-    // Redirecting back to index seems to medigate the issue, but it's worth looking into it.
+    // Redirecting back to index seems to mitigate the issue, but it's worth looking into it.
     public async Task<IActionResult> OnPostSubmit(CheepSubmitForm form, string returnUrl = "/")
     {
         if (!ModelState.IsValid)

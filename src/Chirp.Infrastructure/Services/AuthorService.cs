@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 
 public class AuthorService : IAuthorService
 {
