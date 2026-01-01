@@ -67,6 +67,7 @@ Commits tagged using the `x.y.z` format, trigger the release workflow. This work
 *Activity diagram over the release workflow*
 
 The application is deployed to an Azure App Service when commits are pushed to the main branch:
+
 ![Build-Deploy Diagram](./images/deploy-activity-diagram.svg)\
 *Activity diagram over the deployment of the application to Microsoft Azure*
 
