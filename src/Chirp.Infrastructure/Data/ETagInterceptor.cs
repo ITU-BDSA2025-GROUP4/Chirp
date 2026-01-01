@@ -7,6 +7,7 @@ namespace Chirp.Infrastructure.Data;
 
 public sealed class ETagInterceptor : SaveChangesInterceptor
 {
+    // Updates ETags before a synchronous SaveChanges call
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -14,6 +15,7 @@ public sealed class ETagInterceptor : SaveChangesInterceptor
         return base.SavingChanges(eventData, result);
     }
 
+    // Updates ETags before an asynchronous SaveChanges call
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData, InterceptionResult<int> result, CancellationToken ct = default)
     {
@@ -21,6 +23,7 @@ public sealed class ETagInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, ct);
     }
 
+    // Assigns a new ETag to added or modified Cheep entities
     private static void Stamp(DbContext? ctx)
     {
         if (ctx is null) return;
